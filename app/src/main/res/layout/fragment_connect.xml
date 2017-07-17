@@ -1,0 +1,154 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/ll_main"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@color/login_bg_popup"
+            android:weightSum="1">
+
+            <LinearLayout
+                android:id="@+id/ll1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.13"
+                android:background="@mipmap/title_back"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txtName"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text=""
+                    android:textColor="@color/White"
+                    android:textSize="40sp" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/outside_imageview"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_alignBottom="@id/ll1"
+                android:layout_gravity="center"
+                android:layout_marginTop="-16dp"
+                android:src="@mipmap/contact" />
+
+            <SearchView
+                android:id="@+id/search"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="7dp"
+                android:layout_marginRight="7dp"
+                android:layout_marginTop="7dp"
+                android:background="@android:color/transparent"
+                android:focusable="false"
+                android:focusableInTouchMode="true"
+                android:gravity="center"
+                android:iconifiedByDefault="false"
+                android:queryHint="Search"
+                android:searchIcon="@null"
+                android:visibility="gone" />
+
+            <EditText
+                android:id="@+id/edSearch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#e6e6e6"
+                android:focusable="false"
+                android:gravity="center"
+                android:hint="SEARCH"
+                android:imeOptions="actionSearch"
+                android:maxLines="1"
+                android:padding="10dp"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.76"
+                android:orientation="horizontal"
+                android:paddingLeft="5dp"
+                android:background="@color/login_bg_popup"
+                tools:context=".MainActivity">
+
+                <!--<ListView
+                    android:id="@+id/list_contacts"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:paddingRight="5dp"></ListView>-->
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+
+                    <ListView
+                        android:id="@+id/list_contacts"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:clipToPadding="false"
+                        android:drawSelectorOnTop="true"
+                        android:overScrollMode="never"
+                        android:fastScrollEnabled="false"
+                        android:scrollbarStyle="outsideOverlay" />
+
+
+                    <TextView
+                        android:id="@+id/empty"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text=""
+                        android:textSize="30sp"
+                        android:visibility="gone" />
+
+                </FrameLayout>
+
+
+                <!--<LinearLayout
+                    android:id="@+id/side_index"
+                    android:layout_width="50dp"
+                    android:layout_height="fill_parent"
+                    android:background="#c3c3c3"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical" >
+                </LinearLayout>-->
+            </LinearLayout>
+
+            <include
+                layout="@layout/footer_layout"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.12" />
+
+        </LinearLayout>
+        <ProgressBar
+            android:id="@+id/progressBar_new"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:indeterminate="true"
+            android:visibility="gone"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/msg_title"
+            android:indeterminateDrawable="@drawable/my_progress_interminate"/>
+
+    </FrameLayout>
+
+</LinearLayout>

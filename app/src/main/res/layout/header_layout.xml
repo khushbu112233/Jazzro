@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:background="@color/blue_title">
+
+    <ImageView
+        android:id="@+id/txt_menu"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:gravity="center_vertical"
+        android:padding="5dp"
+        android:layout_marginLeft="8dp"
+        android:singleLine="true"
+        android:src="@mipmap/menu"
+        android:visibility="visible" />
+    <ProgressBar
+        android:id="@+id/progressBar_sync"
+        android:layout_width="35dp"
+        android:layout_height="match_parent"
+        android:indeterminate="true"
+        android:layout_marginLeft="10dp"
+        android:visibility="gone"
+        android:gravity="center_vertical"
+        android:layout_toRightOf="@+id/txt_menu"
+        android:indeterminateDrawable="@drawable/my_progress_interminate"/>
+
+    <ImageView
+        android:id="@+id/logo_status_img"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_centerHorizontal="true"
+        android:src="@mipmap/logo_on_status_bar"
+        android:visibility="visible" />
+
+    <ImageView
+
+        android:id="@+id/img_right_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="10dp"
+        android:src="@mipmap/profile"
+        android:visibility="gone" />
+
+    <ImageView
+
+        android:id="@+id/ivLogout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="10dp"
+        android:src="@mipmap/logout_img"
+        android:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/ivAdd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="10dp"
+        android:padding="10dp"
+        android:src="@mipmap/plush"
+        android:visibility="gone" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="15dp"
+        android:layout_toRightOf="@+id/logo_status_img">
+
+
+        <LinearLayout
+            android:id="@+id/ln_logout_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:visibility="gone"
+            android:layout_marginRight="5dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Log Out"
+                android:textColor="@color/White"
+                android:textSize="@dimen/edittextsize"
+                android:layout_gravity="center_vertical"
+                android:visibility="visible"/>
+
+            <ImageView
+                android:layout_width="17dp"
+                android:layout_height="17dp"
+                android:layout_gravity="center_vertical"
+                android:src="@mipmap/right_arrow"/>
+
+        </LinearLayout>
+
+        <SearchView
+            android:id="@+id/search"
+            android:layout_width="match_parent"
+            android:layout_height="32dp"
+            android:layout_marginRight="22dp"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:queryHint="Search"
+            android:visibility="gone">
+
+            <requestFocus />
+        </SearchView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.8">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edittext_shape">
+
+
+                    <EditText
+                        android:id="@+id/edt_search"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:focusable="false"
+                        android:focusableInTouchMode="true"
+                        android:gravity="center"
+                        android:hint="Search Contacts"
+                        android:imeOptions="actionSearch"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:padding="5dp"
+                        android:textSize="12sp"
+                        android:visibility="gone"
+
+                        />
+
+                    <ImageView
+                        android:id="@+id/img_cancle_search"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="right|center_vertical"
+                        android:layout_marginLeft="3dp"
+                        android:layout_marginRight="3dp"
+                        android:paddingRight="5dp"
+                        android:src="@mipmap/ic_cancel_black"
+                        android:visibility="gone" />
+
+                </FrameLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.2">
+
+                <ImageView
+                    android:id="@+id/img_search"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:paddingLeft="4dp"
+                    android:src="@mipmap/search_white"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+
+
+</RelativeLayout>

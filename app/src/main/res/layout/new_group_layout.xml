@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="1">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.13"
+        android:background="@mipmap/title_back"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/txt_title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="New Group"
+            android:textColor="@color/White"
+            android:textSize="40sp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="20dp"
+        android:layout_weight="0.76"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/edName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:background="@null"
+            android:gravity="center"
+            android:hint="Group Name"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:paddingBottom="15dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:paddingTop="15dp"
+            android:singleLine="true"
+            android:textAllCaps="true"
+            android:textColor="#767575"
+            android:textSize="@dimen/lablesize" />
+
+        <include layout="@layout/edittext_border" />
+
+        <FrameLayout
+            android:id="@+id/llSipner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="3dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="6dp"
+            android:weightSum="1">
+
+            <Spinner
+                android:id="@+id/spinner1"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="3dp"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:background="#f3f5f4" />
+
+            <TextView
+                android:id="@+id/txtBackgruondColor"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:layout_marginBottom="3dp"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:background="#ff0000"
+                android:gravity="center"
+                android:text="GROUP COLOR"
+                android:textColor="#767575"
+                android:visibility="visible" />
+
+            <ImageView
+                android:id="@+id/img_down"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="right|center"
+                android:layout_marginBottom="3dp"
+                android:src="@mipmap/down_arrow" />
+
+        </FrameLayout>
+
+        <include layout="@layout/edittext_border" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="100dp"
+            android:background="@color/dark_blue_grey" />
+
+        <TextView
+            android:id="@+id/txtSave"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="100dp"
+            android:layout_marginRight="100dp"
+            android:layout_marginTop="10dp"
+            android:background="#203c72"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="Save"
+            android:textAlignment="center"
+            android:textColor="#f3f5f4"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/txtCancel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="100dp"
+            android:layout_marginRight="100dp"
+            android:background="#f3f5f4"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="Cancel"
+            android:textAlignment="center"
+            android:textColor="#203c72"
+            android:textSize="13sp" />
+
+    </LinearLayout>
+
+    <include
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.12"
+        layout="@layout/footer_layout"/>
+</LinearLayout>

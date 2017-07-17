@@ -1,0 +1,117 @@
+<resources>
+    <string name="app_name">Jazzro</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_welcome">Home Screen</string>
+    <string name="next">NEXT</string>
+    <string name="skip">SKIP</string>
+    <string name="start">SUBMIT</string>
+
+    <string name="slide_1_title">WE\'RE MAKING IT EASIER THAN EVER TO MANAGE YOUR CONTACTS ON THE GO</string>
+    <string name="slide_1_desc">The easiest way to order food from your favourite restaurant!</string>
+
+    <string name="slide_2_title">USE OUR BUSINESS CARD SCANNER TO IMPORT NEW CONTACTS RIGHT WHEN YOU MEET THEM</string>
+    <string name="slide_2_desc">Book movie tickets for your family and friends!</string>
+
+    <string name="slide_3_title">EASILY ADD NEW CONTACTS TO GROUPS AND START YOUR MARKETING CAMPAIGNS</string>
+    <string name="slide_3_desc">Best discounts on every single service we offer!</string>
+
+    <string name="slide_4_title">ACCESS AND MANAGE YOUR CONTACTS ANY WHERE, ANY TIME</string>
+    <string name="slide_4_desc">Book tickets of any transportation and travel the world!</string>
+
+    <string name="slide_5_title">SIGN IN TO SYNC YOUR CONTACTS AND START MAKING IT HAPPEN</string>
+    <string name="slide_5_desc">Book tickets of any transportation and travel the world!</string>
+
+    <string name="play_again_desc">To see the welcome slider again, goto Settings -> apps -> welcome slider -> clear data</string>
+    <string name="play_again">Play Again</string>
+    <string name="MENU">MENU</string>
+    <string name="contact_name">ABIGAIL ADAMS</string>
+
+    //for login validation message
+    <string name="Email_is_required">Please provide email address!</string>
+    <string name="Invalid_email">Please provide valid email address!</string>
+    <string name="Password_is_required">Please provide password!</string>
+    <string name="Password_must_be_withine_6_to_15">Password length must be within 6 to 15</string>
+    <string name="please_provide_firstname">Please provide firstname!</string>
+    <string name="please_provide_lastname">Please provide lastname!</string>
+    <string name="please_provide_at_least_one_phone_number">Please provide at least one phone number!</string>
+    <string name="please_provide_phone_number">Please provide phone number!</string>
+    <string name="please_provide_valid_phone_number">Please provide valid phone number! </string>
+    <string name="please_provide_at_least_one_email_address">Please provide at least one email address!</string>
+    <string name="please_provide_email">Please provide email address!</string>
+    <string name="please_provide_valid_email">Please provide valid email address!</string>
+
+
+    //for toast
+    <string name="NO_INTERNET_CONNECTION">No Internet Connection</string>
+
+
+    //for logout dialog
+    <string name="are_you_sure_you_want_logout">Are you sure you want to logout?</string>
+    <string name="cancel">Cancel</string>
+    <string name="logout">Logout</string>
+
+
+    <string-array name="fruits_array">
+        <item>Apples</item>
+        <item>Apricots</item>
+        <item>Avocado</item>
+        <item>Annona</item>
+        <item>Banana</item>
+        <item>Blueberry</item>
+        <item>Blackberry</item>
+        <item>Blackapple</item>
+        <item>Custard Apple</item>
+        <item>Clementine</item>
+        <item>Cantalope</item>
+        <item>Date</item>
+        <item>Elderberry</item>
+        <item>Fig</item>
+        <item>Grapefruit</item>
+        <item>Grape</item>
+        <item>Gooseberry</item>
+        <item>Guava</item>
+        <item>Honeydew melon</item>
+        <item>Icecream</item>
+        <item>Jackfruit</item>
+        <item>Juniper Berry</item>
+        <item>Kiwi</item>
+        <item>Kumquat</item>
+        <item>Lemons</item>
+        <item>Limes</item>
+        <item>Lychee</item>
+        <item>Mango</item>
+        <item>Mandarin</item>
+        <item>Nectaraine</item>
+        <item>Orange</item>
+        <item>Olive</item>
+        <item>Prunes</item>
+        <item>Pears</item>
+        <item>Plum</item>
+        <item>Pineapple</item>
+        <item>Peach</item>
+        <item>Papaya</item>
+        <item>Pomelo</item>
+        <item>Qss</item>
+        <item>Raspberries</item>
+        <item>Rambutan</item>
+        <item>Strawberries</item>
+        <item>Sweety</item>
+        <item>Salmonberry</item>
+        <item>Tangerines</item>
+        <item>Tomato</item>
+        <item>Ugli</item>
+        <item>Vater</item>
+        <item>Watermelon</item>
+        <item>Woodapple</item>
+        <item>Xx</item>
+        <item>Yy</item>
+        <item>Zz</item>
+    </string-array>
+    <string name="title_activity_navigation">NavigationActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_new_card_scanner">NewCardScannerActivity</string>
+    <string name="title_activity_display_content">DisplayContentActivity</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="Sync_starts_in_background">Syncing contacts in background.</string>
+    <string name="Sync_completed">Sync completed!</string>
+</resources>

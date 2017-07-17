@@ -1,0 +1,499 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/White"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <LinearLayout
+            android:id="@+id/ln_contact_detail_back"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.6"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/img_left"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_gravity="center_vertical"
+                android:src="@mipmap/back"
+                android:visibility="visible" />
+
+            <TextView
+
+                android:id="@+id/txt_title_left"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="6dp"
+                android:layout_weight="0.50"
+                android:gravity="center_vertical"
+                android:paddingBottom="5dp"
+                android:paddingTop="9dp"
+                android:singleLine="true"
+                android:text="Contacts"
+                android:textColor="@color/Dark_green"
+                android:visibility="visible" />
+
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/txt_title_right"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="0.35"
+            android:gravity="right"
+            android:padding="5dp"
+            android:singleLine="true"
+            android:text="Edit"
+            android:textColor="@color/Dark_green"
+            android:visibility="visible" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <com.jlouistechnology.Jazzro.Helper.CircularImageView
+            android:id="@+id/img_photo"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:padding="7dp"
+            android:src="@mipmap/ic_launcher"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_weight="0.50"
+            android:orientation="vertical"
+            android:weightSum="1">
+
+            <TextView
+                android:id="@+id/txt_contact_name"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:layout_weight="0.50"
+                android:gravity="center"
+                android:padding="5dp"
+                android:textColor="@color/Black"
+                android:textSize="16dp"
+                android:visibility="visible"
+                tools:text="@string/contact_name" />
+
+            <TextView
+                android:id="@+id/txt_company_detail"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:layout_weight="0.50"
+                android:gravity="center"
+                android:padding="5dp"
+                android:textColor="@color/Dark_green"
+                android:textSize="10dp"
+                android:visibility="visible"
+                tools:text="ADDED BY ADMIN" />
+
+
+            <TextView
+                android:id="@+id/txt_contact_name1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:layout_weight="0.50"
+                android:gravity="center"
+                android:textColor="@color/Dark_green"
+                android:visibility="gone"
+                tools:text="Johnson" />
+
+            <TextView
+                android:id="@+id/txt_date"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="6dp"
+                android:layout_weight="0.50"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="ADDED BY ADMIN"
+                android:textColor="@color/Dark_green"
+                android:visibility="visible" />
+
+            <TextView
+                android:id="@+id/txt_date1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:layout_weight="0.50"
+                android:gravity="center"
+                android:textColor="@color/Dark_green"
+                android:visibility="visible"
+                tools:text="DECEMBER  2,2016" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:weightSum="1">
+
+
+                <LinearLayout
+                    android:id="@+id/llMobile1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/txt_mobile"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left"
+                            android:layout_marginBottom="4dp"
+                            android:layout_marginLeft="8dp"
+                            android:gravity="left"
+                            android:text="mobile"
+                            android:textColor="@color/Black"
+                            android:textSize="16dp"
+                            android:visibility="visible" />
+
+                        <TextView
+                            android:id="@+id/txt_mobile1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left|center"
+                            android:layout_marginBottom="4dp"
+                            android:layout_marginLeft="8dp"
+                            android:layout_weight="1"
+                            android:gravity="left|center"
+                            android:textColor="@color/Royal_Blue"
+                            android:textSize="@dimen/lablesize1"
+                            android:visibility="visible"
+                            tools:text="(567)567-8915" />
+
+                    </LinearLayout>
+
+
+                    <ImageView
+                        android:id="@+id/img_twitter"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@mipmap/chat"
+                        android:visibility="visible" />
+
+                    <ImageView
+                        android:id="@+id/img_call"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginRight="12dp"
+                        android:src="@mipmap/call"
+                        android:visibility="visible" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llMobile2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+
+                    <TextView
+                        android:id="@+id/txt_mobile2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left|center"
+                        android:layout_weight="1"
+                        android:gravity="left|center"
+                        android:padding="5dp"
+                        android:text="(567)567-8915"
+                        android:textColor="@color/Royal_Blue"
+                        android:textSize="@dimen/lablesize1"
+                        android:visibility="visible" />
+
+
+                    <ImageView
+                        android:id="@+id/img_twitter2"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:paddingBottom="5dp"
+                        android:paddingTop="5dp"
+                        android:src="@mipmap/chat"
+                        android:visibility="visible" />
+
+                    <ImageView
+                        android:id="@+id/img_call2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="12dp"
+                        android:paddingBottom="5dp"
+                        android:paddingTop="5dp"
+                        android:src="@mipmap/call"
+                        android:visibility="visible" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/llMobile3"
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+
+                    <TextView
+                        android:id="@+id/txt_mobile3"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left|center"
+                        android:layout_weight="1"
+                        android:gravity="left|center"
+                        android:padding="5dp"
+                        android:text="(567)567-8915"
+                        android:textColor="@color/Royal_Blue"
+                        android:textSize="@dimen/lablesize1"
+                        android:visibility="visible" />
+
+
+                    <ImageView
+                        android:id="@+id/img_twitter3"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:paddingBottom="5dp"
+                        android:paddingTop="5dp"
+                        android:src="@mipmap/chat"
+                        android:visibility="visible" />
+
+                    <ImageView
+                        android:id="@+id/img_call3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="12dp"
+                        android:paddingBottom="5dp"
+                        android:paddingTop="5dp"
+                        android:src="@mipmap/call"
+                        android:visibility="visible" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/material_blue_grey_800" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+
+                <LinearLayout
+                    android:id="@+id/llEmail1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/txt_email"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left"
+                            android:layout_marginBottom="4dp"
+                            android:layout_marginLeft="8dp"
+                            android:gravity="left"
+                            android:text="email"
+                            android:textColor="@color/Black"
+                            android:textSize="16dp"
+                            android:visibility="visible" />
+
+                        <TextView
+                            android:id="@+id/txt_email1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left|center"
+                            android:layout_marginBottom="4dp"
+                            android:layout_marginLeft="8dp"
+                            android:layout_weight="1"
+                            android:gravity="left"
+                            android:textColor="@color/Royal_Blue"
+                            android:textSize="@dimen/lablesize1"
+                            android:visibility="visible"
+                            tools:text="adamas@johnsonjohnson.com" />
+
+
+                    </LinearLayout>
+
+
+                    <ImageView
+                        android:id="@+id/img_email"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginRight="12dp"
+                        android:src="@mipmap/email"
+                        android:visibility="visible" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llEmail2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/txt_email2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left|center"
+                        android:layout_weight="1"
+                        android:gravity="left"
+                        android:padding="5dp"
+                        android:textColor="@color/Royal_Blue"
+                        android:textSize="@dimen/lablesize1"
+                        android:visibility="visible"
+                        tools:text="adamas@johnsonjohnson.com" />
+
+                    <ImageView
+                        android:id="@+id/img_email2"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginRight="12dp"
+                        android:paddingBottom="5dp"
+                        android:paddingTop="5dp"
+                        android:src="@mipmap/email"
+                        android:visibility="visible" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llEmail3"
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/txt_email3"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left|center"
+                        android:layout_weight="1"
+                        android:gravity="left"
+                        android:padding="5dp"
+                        android:textColor="@color/Royal_Blue"
+                        android:textSize="@dimen/lablesize1"
+                        android:visibility="visible"
+                        tools:text="adamas@johnsonjohnson.com" />
+
+                    <ImageView
+                        android:id="@+id/img_email3"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginRight="12dp"
+                        android:paddingBottom="5dp"
+                        android:paddingTop="5dp"
+                        android:src="@mipmap/email"
+                        android:visibility="visible" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/material_blue_grey_800" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:weightSum="1">
+
+        <TextView
+            android:id="@+id/txt_notes"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_gravity="left"
+            android:layout_weight="0.50"
+            android:gravity="left"
+            android:padding="5dp"
+            android:textColor="@color/material_blue_grey_800"
+            android:textSize="@dimen/lablesize1"
+            android:visibility="visible"
+            tools:text="notes" />
+    </LinearLayout>
+</LinearLayout>
