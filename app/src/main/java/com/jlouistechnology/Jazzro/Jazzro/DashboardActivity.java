@@ -708,7 +708,7 @@ public class DashboardActivity extends FragmentActivity {
                 DashboardActivity.this.runOnUiThread(new Runnable() {
                     public void run() {
 
-                        Toast.makeText(DashboardActivity.this,"No more contact to sync!",Toast.LENGTH_LONG).show();
+                        Toast.makeText(DashboardActivity.this,"No more contacts to sync!",Toast.LENGTH_LONG).show();
                         progressBar_sync.setVisibility(View.GONE);
                         Intent i = new Intent("android.intent.action.MAIN").putExtra("some_msg", "I will be sent!");
                         sendBroadcast(i);

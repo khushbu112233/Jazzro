@@ -236,7 +236,7 @@ public class GetallPhoneContact_auto_sync_from_middle extends Service {
                                             @Override
                                             public void run() {
 
-                                                Toast.makeText(GetallPhoneContact_auto_sync_from_middle.this, "No more contact to sync!", Toast.LENGTH_LONG).show();
+                                                Toast.makeText(GetallPhoneContact_auto_sync_from_middle.this, "No more contacts to sync!", Toast.LENGTH_LONG).show();
                                                 Intent i = new Intent("android.intent.action.MAIN").putExtra("some_msg", "I will be sent!");
                                                 sendBroadcast(i);
 
@@ -250,7 +250,7 @@ public class GetallPhoneContact_auto_sync_from_middle extends Service {
                                         @Override
                                         public void run() {
 
-                                            Toast.makeText(GetallPhoneContact_auto_sync_from_middle.this, "No more contact to sync!", Toast.LENGTH_LONG).show();
+                                            Toast.makeText(GetallPhoneContact_auto_sync_from_middle.this, "No more contacts to sync!", Toast.LENGTH_LONG).show();
                                             Intent i = new Intent("android.intent.action.MAIN").putExtra("some_msg", "I will be sent!");
                                             sendBroadcast(i);
 
@@ -266,7 +266,7 @@ public class GetallPhoneContact_auto_sync_from_middle extends Service {
                                     @Override
                                     public void run() {
 
-                                        Toast.makeText(GetallPhoneContact_auto_sync_from_middle.this, "No more contact to sync!", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(GetallPhoneContact_auto_sync_from_middle.this, "No more contacts to sync!", Toast.LENGTH_LONG).show();
                                         Intent i = new Intent("android.intent.action.MAIN").putExtra("some_msg", "I will be sent!");
                                         sendBroadcast(i);
 

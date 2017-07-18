@@ -131,7 +131,7 @@ public class GetallPhoneContactBackgroundAsync extends Service {
 
         }
         else {
-            Toast.makeText(context,"No more contact to sync!",Toast.LENGTH_LONG).show();
+            Toast.makeText(context,"No more contacts to sync!",Toast.LENGTH_LONG).show();
             Intent i = new Intent("android.intent.action.MAIN").putExtra("some_msg", "I will be sent!");
             context.sendBroadcast(i);
         }

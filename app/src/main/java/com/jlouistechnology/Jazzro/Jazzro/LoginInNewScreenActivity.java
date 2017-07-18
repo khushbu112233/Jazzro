@@ -94,8 +94,8 @@ public class LoginInNewScreenActivity extends Activity {
     public void Preview() {
          /*edt_email.setText("lgrimsley@gmail.com");
         edt_password.setText("bigbang1");*/
-        edt_email.setText("hadelman@jlouis.com");
-        edt_password.setText("aipx@1234");
+      //  edt_email.setText("hadelman@jlouis.com");
+       // edt_password.setText("aipx@1234");
         edt_email.setTypeface(FontCustom.setFontOpenSansLight(LoginInNewScreenActivity.this));
         edt_password.setTypeface(FontCustom.setFontOpenSansLight(LoginInNewScreenActivity.this));
         txt_signin.setTypeface(FontCustom.setFontOpenSansLight(LoginInNewScreenActivity.this));
