@@ -107,12 +107,10 @@ public class NewContactFragment extends Fragment {
          */
         context=getActivity();
         init();
-
         /**
          * set font style
          */
         Preview();
-
         DashboardActivity.txt_menu.setImageResource(R.mipmap.home);
         DashboardActivity.txt_menu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -494,7 +492,6 @@ public class NewContactFragment extends Fragment {
 
                 ArrayList<String> selectedIDS = new ArrayList<String>();
                 callAddnewContactAPI(selectedIDS);
-
             }
 
         }
@@ -680,7 +677,7 @@ public class NewContactFragment extends Fragment {
 
 
         group_selected_id=selectedIDS;
-
+        Log.e("group_selected_id",""+group_selected_id);
         if (!TextUtils.isEmpty(updateID)) {
             Pref.setValue(context,"updateID_add",updateID);
             Log.e("updateID",""+updateID);
@@ -724,16 +721,16 @@ public class NewContactFragment extends Fragment {
         @Override
         protected String doInBackground(String... params) {
 
-
             String res = WebService.PostData2(group_selected_id,Pref.getValue(context,"updateID_add",""),Pref.getValue(context,"firstName_add",""),Pref.getValue(context,"lastName_add",""), Pref.getValue(context,"company_name_add",""), Pref.getValue(context,"phone1_add",""),Pref.getValue(context,"email1_add",""), WebService.SINGLE_CONTACT,Pref.getValue(context, Constants.TOKEN, ""));
-
-
             Log.d("nnn", " Response : " + res);
             return res;
         }
 
         @Override
         protected void onPostExecute(String result) {
+
+            Log.e("my_result",result+"---------");
+
             try {
                 WebService.dismissProgress();
                 JSONObject json2;

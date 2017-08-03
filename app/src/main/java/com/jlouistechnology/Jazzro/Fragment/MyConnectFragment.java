@@ -417,6 +417,8 @@ public class MyConnectFragment extends Fragment implements View.OnClickListener,
 
         @Override
         protected void onPostExecute(String result) {
+
+            Log.e("my_result",result+"--");
             try {
                 //  WebService.showProgress(context);
                 JSONObject json2;
@@ -558,6 +560,9 @@ public class MyConnectFragment extends Fragment implements View.OnClickListener,
         @Override
         protected void onPostExecute(String result) {
             try {
+
+                Log.e("my_result",result+"-----");
+
                 JSONObject json2;
                 JSONObject json1 = new JSONObject(result);
                 json2 = json1.getJSONObject("data");

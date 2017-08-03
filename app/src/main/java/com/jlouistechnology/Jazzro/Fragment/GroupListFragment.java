@@ -359,13 +359,14 @@ public class GroupListFragment extends BaseFragment implements StickyListHeaders
 
         @Override
         protected String doInBackground(String... params) {
-            res = WebService.deleteGroup(WebService.BASE_URL + "group/delete", id, Pref.getValue(getActivity(), Constants.TOKEN, ""));
+            res = WebService.deleteGroup(WebService.BASE_URL + WebService.DELETEGROUP, id, Pref.getValue(getActivity(), Constants.TOKEN, ""));
             return null;
         }
 
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
+            Log.e("my_new_response",s+"--");
             WebService.dismissProgress();
             try {
                 JSONObject jsonObject = new JSONObject(res);
@@ -390,6 +391,7 @@ public class GroupListFragment extends BaseFragment implements StickyListHeaders
             ApiInterface apiService =
                     ApiClient.getClient().create(ApiInterface.class);
 
+            Log.e("token",Pref.getValue(getActivity(), Constants.TOKEN, "")+"----");
             Call<GroupListServiceModel> call = apiService.groupList(Pref.getValue(getActivity(), Constants.TOKEN, ""),
                     String.valueOf(index), String.valueOf(length), "label", "asc");
             WebService.showProgress(getActivity());
@@ -399,6 +401,7 @@ public class GroupListFragment extends BaseFragment implements StickyListHeaders
                 public void onResponse(Call<GroupListServiceModel> call, Response<GroupListServiceModel> response) {
                     WebService.dismissProgress();
 
+                    Log.e("my_result",response+"---");
                     if (response.body().status != 400) {
                         griupList.addAll(response.body().data.data);
 

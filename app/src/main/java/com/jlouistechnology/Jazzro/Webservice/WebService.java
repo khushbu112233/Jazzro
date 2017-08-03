@@ -67,6 +67,7 @@ public class WebService {
     public static String SINGLE_CONTACT = BASE_URL + "singleContact";
 
     public static String GROUP = BASE_URL + "group";
+    public static String DELETEGROUP = BASE_URL + "group/delete";
     public static String Login = BASE_URL + "token";
     public static String CONTACT_DELETE = BASE_URL + "contact/delete";
     public static TextView mProgressTitleTv;
@@ -550,7 +551,6 @@ public class WebService {
             List<NameValuePair> list = new ArrayList<NameValuePair>();
             JSONObject jsonObject = new JSONObject();
             // for (int i =values.length;i>0;i--) {
-
             jsonObject.put("id", id);
 
             //     list.add(new cz.msebera.android.httpclient.message.BasicNameValuePair(values[i], URLEncoder.encode(valuse[i], "UTF-8")));

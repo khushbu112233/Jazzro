@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentActivity;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -270,6 +271,8 @@ public class GroupDetailListFargment extends BaseFragment {
 
         @Override
         protected void onPostExecute(String result) {
+
+            Log.e("my_result",result+"----");
             WebService.dismissProgress();
             try {
                 JSONObject json2;
