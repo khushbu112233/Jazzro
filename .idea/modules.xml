@@ -6,6 +6,7 @@
       <module fileurl="file://$PROJECT_DIR$/abbyy-rtr-sdk-new/abbyy-rtr-sdk-new.iml" filepath="$PROJECT_DIR$/abbyy-rtr-sdk-new/abbyy-rtr-sdk-new.iml" />
       <module fileurl="file://$PROJECT_DIR$/abbyy-rtr-sdk-new1/abbyy-rtr-sdk-new1.iml" filepath="$PROJECT_DIR$/abbyy-rtr-sdk-new1/abbyy-rtr-sdk-new1.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jazzro-android.iml" filepath="$PROJECT_DIR$/jazzro-android.iml" />
       <module fileurl="file://$PROJECT_DIR$/jazzro_android.iml" filepath="$PROJECT_DIR$/jazzro_android.iml" />
       <module fileurl="file://$PROJECT_DIR$/sectionIndexerlibrary/sectionIndexerlibrary.iml" filepath="$PROJECT_DIR$/sectionIndexerlibrary/sectionIndexerlibrary.iml" />
     </modules>

@@ -18,6 +18,8 @@ import java.util.ArrayList;
 /**
  * Created by aipxperts on 9/12/16.
  */
+
+//brach testing
 public class ColorAdapter extends BaseAdapter {
     Context context;
     private ArrayList<String> datalist = new ArrayList<>();
