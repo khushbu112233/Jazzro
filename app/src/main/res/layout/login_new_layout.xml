@@ -1,112 +1,130 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:background="@mipmap/home_login_screen">
-    <ImageView
-        android:id="@+id/img_logo"
-        android:layout_width="150dp"
-        android:layout_height="100dp"
-        android:visibility="visible"
-        android:layout_marginTop="50dp"
-        android:layout_gravity="center"
-        android:src="@mipmap/logo_market_simple"/>
-
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@mipmap/home_login_screen"
+        android:weightSum="1">
 
-        <TextView
-            android:id="@+id/txt_1"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:gravity="center"
-            android:text="START MAKING IT HAPPEN"
-            android:textColor="@color/blue_title"
-            android:textStyle="bold"
-            android:textSize="17sp" />
+            android:layout_height="0dp"
+            android:layout_weight="0.40"
+            android:background="@mipmap/top_login"
+            android:orientation="vertical">
 
+            <ImageView
+                android:id="@+id/img_logo"
+                android:layout_width="150dp"
+                android:layout_height="100dp"
+                android:visibility="visible"
+                android:layout_marginTop="30dp"
+                android:layout_gravity="center"
+                android:src="@mipmap/logo_market_simple"/>
+            <com.jlouistechnology.Jazzro.Widget.TextView_Light
+                android:id="@+id/txt_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:text="Add and manage all of your contacts \nanytime, anywhere"
+                android:textColor="@color/New_white"
+                android:textStyle="bold"
+                android:textSize="17sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.60"
+            android:background="#ffffff"
+            android:orientation="vertical">
+
+            <com.jlouistechnology.Jazzro.Widget.Edittext_Regular
+                android:id="@+id/edt_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:background="@null"
+                android:gravity="left"
+                android:hint="Username"
+                android:textColorHint="@color/new_black"
+                android:imeOptions="actionNext"
+                android:inputType="text"
+                android:paddingTop="10dp"
+                android:singleLine="true"
+                android:textColor="@color/new_black"
+                android:textSize="@dimen/edittextsize" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginLeft="30dp"
+                android:background="@color/black_10"/>
+
+
+            <com.jlouistechnology.Jazzro.Widget.Edittext_Regular
+                android:id="@+id/edt_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:background="@null"
+                android:gravity="left"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:hint="Password"
+                android:imeOptions="actionDone"
+                android:inputType="textPassword"
+                android:textColorHint="@color/new_black"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:singleLine="true"
+                android:textColor="@color/new_black"
+                android:textSize="@dimen/edittextsize" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginLeft="30dp"
+                android:background="@color/black_10"/>
+
+
+            <com.jlouistechnology.Jazzro.Widget.TextView_Regular
+                android:id="@+id/txt_signin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="40dp"
+                android:background="@drawable/round_background_blue"
+                android:gravity="center"
+                android:padding="15dp"
+                android:text="Sign In"
+                android:textAlignment="center"
+                android:textAllCaps="false"
+                android:textColor="@color/New_white"
+                android:textSize="@dimen/edittextsize" />
+
+            <com.jlouistechnology.Jazzro.Widget.TextView_Regular
+                android:id="@+id/txtForgotpassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:padding="15dp"
+                android:text="Forgot?"
+                android:textAllCaps="false"
+                android:textColor="@color/black_40"
+                android:textSize="@dimen/edittextsize" />
+
+        </LinearLayout>
     </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/round_background_white"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="10dp"
-        android:orientation="vertical">
-        <EditText
-            android:id="@+id/edt_email"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            android:layout_marginTop="25dp"
-            android:gravity="center"
-            android:hint="USERNAME"
-            android:background="@null"
-            android:imeOptions="actionNext"
-            android:inputType="text"
-            android:paddingTop="10dp"
-            android:singleLine="true"
-            android:textColor="@color/material_blue_grey_800"
-            android:textSize="@dimen/lablesize" />
-
-        <include layout="@layout/edittext_border"/>
-        <EditText
-            android:id="@+id/edt_password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:background="@null"
-            android:layout_marginTop="15dp"
-            android:hint="PASSWORD"
-            android:imeOptions="actionDone"
-            android:inputType="textPassword"
-            android:paddingBottom="10dp"
-            android:textSize="@dimen/lablesize"
-            android:paddingTop="10dp"
-            android:singleLine="true"
-            android:textColor="@color/material_blue_grey_800"
-            />
-
-        <include layout="@layout/edittext_border"/>
-        <TextView
-            android:id="@+id/txt_signin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="100dp"
-            android:layout_marginRight="100dp"
-            android:layout_marginTop="30dp"
-            android:background="@drawable/round_background_blue"
-            android:gravity="center"
-            android:padding="10dp"
-            android:text="Sign In"
-            android:textAllCaps="false"
-            android:textAlignment="center"
-            android:textColor="#f3f5f4"
-            android:textSize="@dimen/edittextsize" />
-
-        <TextView
-            android:id="@+id/txtForgotpassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:gravity="center"
-            android:layout_marginBottom="20dp"
-            android:text="Forgot Password?"
-            android:textAllCaps="false"
-            android:textColor="#1a2a37"
-            android:textSize="@dimen/edittextsize" />
-
-    </LinearLayout>
-    <include
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        layout="@layout/footer_layout"/>
-</LinearLayout>
+</layout>

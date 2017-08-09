@@ -1,30 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
-
-
-    <ImageView
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:scaleType="fitXY"
-        android:layout_alignParentBottom="true"
-        android:src="@mipmap/copyright_ftr"/>
-    <TextView
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="5dp"
+            android:background="@color/black_10"/>
 
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_gravity="center"
-        android:layout_alignParentBottom="true"
-        android:paddingTop="10dp"
-        android:paddingBottom="18dp"
-        android:text=" 2017 jazzro"
-        android:visibility="gone"
-        android:textColor="@color/White"
-        android:background="@color/dark_blue_grey"
-        android:textSize="@dimen/lablesize" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="1">
+            <LinearLayout
+                android:id="@+id/ll_groups"
+                android:layout_width="0dp"
+                android:layout_weight="0.33"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <ImageView
+                    android:id="@+id/img_groups"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/group_unselect" />
+                <com.jlouistechnology.Jazzro.Widget.TextView_Regular
+                    android:id="@+id/txt_groups"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:text="Groups"
+                    android:textSize="15sp"
+                    android:textColor="@color/new_black"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/ll_contacts"
+                android:layout_width="0dp"
+                android:layout_weight="0.33"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <ImageView
+                    android:id="@+id/img_contacts"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.33"
+                    android:src="@mipmap/contact_selected" />
+                <com.jlouistechnology.Jazzro.Widget.TextView_Regular
+                    android:id="@+id/txt_contact"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:text="Contacts"
+                    android:textSize="15sp"
+                    android:textColor="@color/new_black"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/ll_settings"
+                android:layout_width="0dp"
+                android:layout_weight="0.33"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <ImageView
+                    android:id="@+id/img_settings"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.33"
+                    android:src="@mipmap/settings_unselect" />
+                <com.jlouistechnology.Jazzro.Widget.TextView_Regular
+                    android:id="@+id/txt_settings"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:text="Settings"
+                    android:textSize="15sp"
+                    android:textColor="@color/new_black"
+                    />
+            </LinearLayout>
+        </LinearLayout>
 
-
-</RelativeLayout>
+    </LinearLayout>
+</layout>

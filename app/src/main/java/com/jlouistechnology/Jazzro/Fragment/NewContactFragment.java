@@ -721,7 +721,7 @@ public class NewContactFragment extends Fragment {
         @Override
         protected String doInBackground(String... params) {
 
-            String res = WebService.PostData2(group_selected_id,Pref.getValue(context,"updateID_add",""),Pref.getValue(context,"firstName_add",""),Pref.getValue(context,"lastName_add",""), Pref.getValue(context,"company_name_add",""), Pref.getValue(context,"phone1_add",""),Pref.getValue(context,"email1_add",""), WebService.SINGLE_CONTACT,Pref.getValue(context, Constants.TOKEN, ""));
+          String res ="";/*= WebService.PostData2(group_selected_id,Pref.getValue(context,"updateID_add",""),Pref.getValue(context,"firstName_add",""),Pref.getValue(context,"lastName_add",""), Pref.getValue(context,"company_name_add",""), Pref.getValue(context,"phone1_add",""),Pref.getValue(context,"email1_add",""), WebService.SINGLE_CONTACT,Pref.getValue(context, Constants.TOKEN, ""));*/
             Log.d("nnn", " Response : " + res);
             return res;
         }

@@ -1,6 +1,7 @@
 package com.jlouistechnology.Jazzro.Adapter;
 
 import android.content.Context;
+import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.support.v4.app.FragmentActivity;
@@ -21,6 +22,8 @@ import com.jlouistechnology.Jazzro.Helper.Utils;
 import com.jlouistechnology.Jazzro.Model.ColorModel;
 import com.jlouistechnology.Jazzro.Model.Contact;
 import com.jlouistechnology.Jazzro.R;
+import com.jlouistechnology.Jazzro.databinding.ListContactItemLayoutBinding;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,11 +40,14 @@ public class ListContactAdapter extends BaseAdapter {
     String acc_no;
     private ArrayList<Contact> myList = new ArrayList<>();
     ArrayList<Contact> copyList = new ArrayList<>();
+    LayoutInflater inflater ;
 
     public ListContactAdapter(Context context, ArrayList<Contact> list) {
         this.context = context;
         this.list = list;
 
+        inflater = (LayoutInflater) context.
+                getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
     }
 
@@ -74,12 +80,6 @@ public class ListContactAdapter extends BaseAdapter {
     }
 
 
-    public class ViewHolder {
-        TextView txt_username_contact;
-        TextView txt_company_name_contact;
-        LinearLayout ln_main_alluser_contact;
-        ImageView mGroupBgColor;
-    }
 
     @Override
     public int getCount() {
@@ -98,38 +98,14 @@ public class ListContactAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
-
-        LayoutInflater inflater = ((FragmentActivity) context).getLayoutInflater();
-
-        View rowView = convertView;
-        if (rowView == null) {
-
-            rowView = inflater.inflate(
-                    R.layout.list_contact_item_layout, null);
-
-            ViewHolder viewHolder = new ViewHolder();
-
-            viewHolder.txt_username_contact = (TextView) rowView
-                    .findViewById(R.id.txt_username_contact);
-            viewHolder.txt_company_name_contact = (TextView) rowView
-                    .findViewById(R.id.txt_company_name_contact);
-            viewHolder.ln_main_alluser_contact = (LinearLayout) rowView.findViewById(R.id.ln_main_alluser_contact);
-            viewHolder.mGroupBgColor = (ImageView) rowView.findViewById(R.id.img_group_color);
+    public View getView(final int position, View convertView, ViewGroup viewGroup) {
+        final View rowView;
 
 
-            rowView.setTag(viewHolder);
-        }
-        ViewHolder holder = (ViewHolder) rowView.getTag();
-       /* if(!TextUtils.isEmpty(holder.txt_username_contact.getText().toString())){
-            WebService.dismissProgress();
-        }
-        else {
-            WebService.showProgress(context);
-        }*/
-        holder.mGroupBgColor.setBackgroundResource(R.drawable.circle_group_shape);
+        final ListContactItemLayoutBinding binding = DataBindingUtil.inflate(inflater, R.layout.list_contact_item_layout, viewGroup, false);
+        rowView = binding.getRoot();
 
-        GradientDrawable drawable = (GradientDrawable) holder.mGroupBgColor.getBackground();
+
         ArrayList<ColorModel> colorList = new ArrayList<>();
         colorList = Utils.colorList();
 
@@ -138,46 +114,53 @@ public class ListContactAdapter extends BaseAdapter {
 
         final ArrayList<ColorModel> finalColorList = colorList;
 
+
+
         if (list.get(position).getGroup_list().size() > 0) {
 
-            for(int i=0;i<finalColorList.size();i++)
+
+            Log.e("finalColorList",""+finalColorList);
+            for(int i=0;i<list.get(position).getGroup_list().size();i++)
             {
-              /*  Log.e("background",""+finalColorList.get(i).background);
+                Log.e("background",""+finalColorList.get(i).background);
                 Log.e("edit name",""+finalColorList.get(i).name);
 
                 Log.e("edit color",""+finalColorList.get(i).color);
-            */
-                if(list.get(position).getGroup_list().get(0).getColor1().equals(finalColorList.get(i).name))
-                {
-                    drawable.setColor(Color.parseColor(finalColorList.get(i).color));
-                    break;
-                }
+                ImageView imageView = new ImageView(context);
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(15, 15);
+                lp.setMargins(5, 5, 5, 5);
+                imageView.setLayoutParams(lp);
+                binding.llGroupColor.addView(imageView);
+                imageView.setBackgroundResource(R.drawable.circle_group_shape);
+                GradientDrawable drawable = (GradientDrawable) imageView.getBackground();
+                /*if(list.get(position).getGroup_list().get(i).getColor1().equals(finalColorList.get(i).name))
+                {*/
+                drawable.setColor(Color.parseColor(finalColorList.get(i).color));
+                //}
+
+
             }
 
 
-/*
             //for (int i = 0; i < list.get(position).getGroup_list().size(); i++) {
-            if (list.get(position).getGroup_list().get(0).getColor1().startsWith("#")) {
+           /* if (list.get(position).getGroup_list().get(0).getColor1().startsWith("#")) {
                 drawable.setColor(Color.parseColor(list.get(position).getGroup_list().get(0).getColor1()));
             } else {
                 Log.e("color group",""+list.get(position).getGroup_list().get(0).getColor1());
                 if(!(list.get(position).getGroup_list().get(0).getColor1().startsWith("groupcolor"))&&!(list.get(position).getGroup_list().get(0).getColor1().startsWith("level"))) {
                     drawable.setColor(Color.parseColor("#" + list.get(position).getGroup_list().get(0).getColor1()));
                 }
-            }
-            //}*/
+            }*/
+            //}
 
-        } else {
-            holder.mGroupBgColor.setBackgroundResource(R.mipmap.group_dark_img);
+        }else
+        {
+            binding.llGroupColor.setVisibility(View.GONE);
         }
-        holder.txt_username_contact.setText(list.get(position).getFname() + " " + list.get(position).getLname());
-     /*   if (!TextUtils.isEmpty(list.get(position).getCompany_name())) {
-            holder.txt_company_name_contact.setText(list.get(position).getCompany_name());
-            holder.txt_company_name_contact.setVisibility(View.VISIBLE);
-        } else {
-            holder.txt_company_name_contact.setVisibility(View.GONE);
-        }*/
-        holder.ln_main_alluser_contact.setOnClickListener(new View.OnClickListener() {
+        Picasso.with(context).load(list.get(position).getImage_url()).into(binding.imgContact);
+        binding.txtUsernameContact.setText(list.get(position).getFname() + " " + list.get(position).getLname());
+        binding.txtPhoneNumber.setText(list.get(position).getPhone1());
+        binding.lnMainAlluserContact.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -191,74 +174,12 @@ public class ListContactAdapter extends BaseAdapter {
             }
         });
 
-/*
-        if (Integer.parseInt(MyConnectFragment.totoalContact) > position + 1) {
-            Log.e("III ", "size : " + MyConnectFragment.totoalContact + "   posion +1 " + position);
-            if (MyConnectFragment.conatctArrayList.size() == position + 1) {
-                offset++;
-                MyConnectFragment.datasync();
 
-                Pref.setValue(context, "offset0", MyConnectFragment.conatctArrayList.size());
-
-                Log.e("list_a.size()", "" + MyConnectFragment.conatctArrayList.size());
-                Log.e("groupPosition", "" + position);
-
-
-            }
-        }
-*/
 
 
         return rowView;
     }
 
-/*
-    public void addalldata(ArrayList<Contact> list_new) {
-        this.list.addAll(list_new);
-        notifyDataSetChanged();
-    }
-*/
-
-
-/*
-    public Filter getFilter() {
-        return new Filter() {
-
-            @Override
-            protected FilterResults performFiltering(CharSequence constraint) {
-                final FilterResults oReturn = new FilterResults();
-                final ArrayList<Contact> results = new ArrayList<Contact>();
-                if (list_filter == null)
-                    list_filter = list;
-                if (constraint != null) {
-                    if (list_filter != null && list_filter.size() > 0) {
-                        for (final Contact g : list_filter) {
-                            if (g.getFname().toString().toLowerCase()
-                                    .startsWith(constraint.toString().toLowerCase()) || g.getLname().toString().toLowerCase().startsWith(constraint.toString().toLowerCase()))
-                                results.add(g);
-                        }
-                    }
-                    oReturn.values = results;
-                }
-                return oReturn;
-            }
-
-            @SuppressWarnings("unchecked")
-            @Override
-            protected void publishResults(CharSequence constraint,
-                                          FilterResults results) {
-
-                list = (ArrayList<Contact>) results.values;
-
-                Log.e("list...filter", "" + list);
-                if (list.size() == 0) {
-                    // Toast.makeText(_context, R.string.No_result_found, Toast.LENGTH_SHORT).show();
-                }
-                notifyDataSetChanged();
-            }
-        };
-    }
-*/
 
 
 }

@@ -16,6 +16,7 @@ public class Contact {
     public String zipcode;
     public String note;
     public String image;
+    public String image_url;
     public String phone1;
     public String phone2;
     public String phone3;
@@ -30,6 +31,14 @@ public class Contact {
     public String created_at_formatted;
     public String updated_at_formatted;
     public ArrayList<Group> group_list;
+
+    public String getImage_url() {
+        return image_url;
+    }
+
+    public void setImage_url(String image_url) {
+        this.image_url = image_url;
+    }
 
     public String getId() {
         return id;

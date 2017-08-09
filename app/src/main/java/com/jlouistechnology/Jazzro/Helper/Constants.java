@@ -3,8 +3,10 @@ package com.jlouistechnology.Jazzro.Helper;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
+import android.view.View;
 import android.view.WindowManager;
 
+import com.jlouistechnology.Jazzro.Jazzro.DashboardNewActivity;
 import com.jlouistechnology.Jazzro.R;
 
 /**

@@ -55,11 +55,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
         </LinearLayout>
-        <include
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.12"
-            layout="@layout/footer_layout"/>
     </LinearLayout>
 
 </layout>

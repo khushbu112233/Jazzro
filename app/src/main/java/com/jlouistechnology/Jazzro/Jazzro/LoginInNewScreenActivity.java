@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
+import android.databinding.DataBindingUtil;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -23,6 +24,7 @@ import com.jlouistechnology.Jazzro.Model.PhoneContact;
 import com.jlouistechnology.Jazzro.Model.SignupErrorStep1;
 import com.jlouistechnology.Jazzro.R;
 import com.jlouistechnology.Jazzro.Webservice.WebService;
+import com.jlouistechnology.Jazzro.databinding.LoginNewLayoutBinding;
 
 import org.json.JSONObject;
 
@@ -41,16 +43,16 @@ import java.util.regex.Pattern;
 
 public class LoginInNewScreenActivity extends Activity {
     Constants constants;
-    EditText edt_email, edt_password;
-    TextView txt_signin, txtForgotpassword,txt_1;
     String value, value1;
     FieldsValidator mValidator;
     String token;
+    LoginNewLayoutBinding mBinding;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.login_new_layout);
+        mBinding = DataBindingUtil.setContentView(this, R.layout.login_new_layout);
+
 
         /**
          * initial component
@@ -70,7 +72,7 @@ public class LoginInNewScreenActivity extends Activity {
         /**
          * go to the forgot password
          */
-        txtForgotpassword.setOnClickListener(new View.OnClickListener() {
+        mBinding.txtForgotpassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(LoginInNewScreenActivity.this, ForgotPasswordActivity.class);
@@ -81,7 +83,7 @@ public class LoginInNewScreenActivity extends Activity {
         /**
          * go to the login button
          */
-        txt_signin.setOnClickListener(new View.OnClickListener() {
+        mBinding.txtSignin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mLoginBtnClicked();
@@ -94,24 +96,19 @@ public class LoginInNewScreenActivity extends Activity {
     public void Preview() {
          /*edt_email.setText("lgrimsley@gmail.com");
         edt_password.setText("bigbang1");*/
-      //  edt_email.setText("hadelman@jlouis.com");
-       // edt_password.setText("aipx@1234");
-        edt_email.setTypeface(FontCustom.setFontOpenSansLight(LoginInNewScreenActivity.this));
-        edt_password.setTypeface(FontCustom.setFontOpenSansLight(LoginInNewScreenActivity.this));
-        txt_signin.setTypeface(FontCustom.setFontOpenSansLight(LoginInNewScreenActivity.this));
-        txtForgotpassword.setTypeface(FontCustom.setFontOpenSansLight(LoginInNewScreenActivity.this));
-        txt_1.setTypeface(FontCustom.setFontOpenSansRegular(LoginInNewScreenActivity.this));
+       mBinding.edtEmail.setText("hadelman@jlouis.com");
+       mBinding.edtPassword.setText("aipx@1234");
+        mBinding.edtEmail.setTypeface(FontCustom.setFontOpenSansLight(LoginInNewScreenActivity.this));
+        mBinding.edtPassword.setTypeface(FontCustom.setFontOpenSansLight(LoginInNewScreenActivity.this));
+        mBinding.txtSignin.setTypeface(FontCustom.setFontOpenSansLight(LoginInNewScreenActivity.this));
+        mBinding.txtForgotpassword.setTypeface(FontCustom.setFontOpenSansLight(LoginInNewScreenActivity.this));
+        mBinding.txt1.setTypeface(FontCustom.setFontOpenSansRegular(LoginInNewScreenActivity.this));
 
     }
 
     public void init() {
         constants = new Constants(LoginInNewScreenActivity.this);
         mValidator = new FieldsValidator(LoginInNewScreenActivity.this);
-        edt_email = (EditText) findViewById(R.id.edt_email);
-        edt_password = (EditText) findViewById(R.id.edt_password);
-        txtForgotpassword = (TextView)findViewById(R.id.txtForgotpassword);
-        txt_signin = (TextView) findViewById(R.id.txt_signin);
-        txt_1 = (TextView)findViewById(R.id.txt_1);
 
     }
 
@@ -121,22 +118,22 @@ public class LoginInNewScreenActivity extends Activity {
 
         isCorrect = isCorrect
                 && mValidator
-                .validateNotEmpty(edt_email,
+                .validateNotEmpty(mBinding.edtEmail,
                         getString(R.string.Email_is_required));
 
         isCorrect = isCorrect
                 && mValidator
-                .validateEmail(edt_email,
+                .validateEmail(mBinding.edtEmail,
                         getString(R.string.Invalid_email));
 
 
         isCorrect = isCorrect
                 && mValidator
-                .validateNotEmpty(edt_password,
+                .validateNotEmpty(mBinding.edtPassword,
                         getString(R.string.Password_is_required));
         isCorrect = isCorrect
                 && mValidator
-                .validateLength(edt_password, 6, 15,
+                .validateLength(mBinding.edtPassword, 6, 15,
                         getString(R.string.Password_must_be_withine_6_to_15));
 
 
@@ -146,8 +143,8 @@ public class LoginInNewScreenActivity extends Activity {
         }
 
 
-        value = edt_email.getText().toString();
-        value1 = edt_password.getText().toString();
+        value = mBinding.edtEmail.getText().toString();
+        value1 = mBinding.edtPassword.getText().toString();
 
         if (Utils.checkInternetConnection(LoginInNewScreenActivity.this)) {
             new ExecuteTask_Login().execute();
@@ -243,7 +240,7 @@ public class LoginInNewScreenActivity extends Activity {
                         R.anim.anim_slide_out_left);
                 Pref.setValue(LoginInNewScreenActivity.this,"first_login","1");
                // Pref.setValue(LoginInNewScreenActivity.this,"last_sync_contact_id",0);
-                Intent i = new Intent(LoginInNewScreenActivity.this, DashboardActivity.class);
+                Intent i = new Intent(LoginInNewScreenActivity.this, DashboardNewActivity.class);
                 startActivity(i);
                 finish();
 

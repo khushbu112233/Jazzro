@@ -61,7 +61,7 @@ public class SplashActivity extends Activity {
 
             } else {
 
-                Intent i = new Intent(SplashActivity.this, DashboardActivity.class);
+                Intent i = new Intent(SplashActivity.this, DashboardNewActivity.class);
                 startActivity(i);
                 finish();
             }

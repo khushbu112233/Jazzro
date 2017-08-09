@@ -11,11 +11,13 @@ public class GroupListDataDetailModel implements Parcelable{
     public String id;
     public String label;
     public String color;
+    public String isClick = "false";
 
     public GroupListDataDetailModel(Parcel in) {
         id = in.readString();
         label = in.readString();
         color = in.readString();
+        isClick = in.readString();
     }
 
     public GroupListDataDetailModel() {
@@ -45,5 +47,6 @@ public class GroupListDataDetailModel implements Parcelable{
         dest.writeString(id);
         dest.writeString(label);
         dest.writeString(color);
+        dest.writeString(isClick);
     }
 }

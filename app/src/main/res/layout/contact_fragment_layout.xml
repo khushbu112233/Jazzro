@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <LinearLayout
+            android:id="@+id/ll_contact_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:orientation="vertical">
+            <LinearLayout
+                android:id="@+id/ll_search"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_below="@+id/header"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:background="@drawable/round_background_black10">
+
+                <ImageView
+                    android:id="@+id/ivsearch"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.10"
+                    android:layout_marginLeft="8dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@mipmap/search_contact" />
+                <EditText
+                    android:id="@+id/search_contact"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.90"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:background="@null"
+                    android:gravity="left|center"
+                    android:imeOptions="actionSearch"
+                    android:textColor="#656565"
+                    android:textSize="15sp"
+                    android:textColorHint="@color/Royal_Blue"
+                    android:hint="Search in contacts..."
+                    android:inputType="text" />
+                <ImageView
+                    android:id="@+id/ivcancelSearch"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.10"
+                    android:layout_marginRight="5dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:visibility="gone"
+                    android:src="@android:drawable/ic_menu_close_clear_cancel" />
+
+            </LinearLayout>
+
+            <ListView
+                android:id="@+id/list_contact"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="vertical"
+                android:layout_marginTop="10dp"
+                android:divider="@null"
+                android:dividerHeight="15dp"
+                />
+        </LinearLayout>
+        <com.jlouistechnology.Jazzro.Widget.TextView_Regular
+            android:id="@+id/txt_msg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:visibility="gone"
+            android:textColor="@color/black_40"
+            android:text="No contacts yet"
+            android:textSize="19sp" />
+    </LinearLayout>
+</layout>

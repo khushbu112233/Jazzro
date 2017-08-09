@@ -1,5 +1,6 @@
 package com.jlouistechnology.Jazzro.Jazzro;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -41,38 +42,7 @@ public class ForgotPasswordActivity extends BaseActivity {
         mBinding.txtSignin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-           /*     JSONObject jsonObject = new JSONObject();
-                RequestBody body = null;
-                try {
-                    jsonObject.put("email", mBinding.edForgotPass.getText().toString());
 
-                    body = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"), String.valueOf((new JSONObject((jsonObject.toString())))));
-
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-                ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-                Call<ForgotpasswordModel> call = apiService.forgotPassword(jsonObject.toString());
-                //  mProgressDialog.show();
-                call.enqueue(new Callback<ForgotpasswordModel>() {
-                    @Override
-                    public void onResponse(Call<ForgotpasswordModel> call, Response<ForgotpasswordModel> response) {
-
-                        if (response.body() != null) {
-                            if (response.body().status != 400) {
-                                finish();
-                            }
-                            Toast.makeText(ForgotPasswordActivity.this, response.body().detail, Toast.LENGTH_SHORT).show();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<ForgotpasswordModel> call, Throwable t) {
-
-                    }
-                });*/
 
                 if (TextUtils.isEmpty(mBinding.edForgotPass.getText().toString())) {
                     Toast.makeText(ForgotPasswordActivity.this, "Please provide email address.", Toast.LENGTH_LONG).show();
@@ -85,7 +55,14 @@ public class ForgotPasswordActivity extends BaseActivity {
             }
         });
 
-
+        mBinding.txtCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(ForgotPasswordActivity.this, LoginInNewScreenActivity.class);
+                startActivity(i);
+                finish();
+            }
+        });
     }
 
     public boolean emailValidator(String email) {

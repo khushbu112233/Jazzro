@@ -57,10 +57,10 @@ public class WebService {
     public static ProgressDialog mProgressDialog;
     // public static String BASE_URL ="http://dev.jazzro.com/api/";
     //dev url link
-    ///public static String BASE_URL = "https://dev.jazzro.com/api/v1/";
+    public static String BASE_URL = "https://dev.jazzro.com/api/v1/";
 
     //live url link
-    public static  String BASE_URL="https://dashboard.jazzro.com/api/v1/";
+    //public static  String BASE_URL="https://dashboard.jazzro.com/api/v1/";
 
     public static String USER = BASE_URL + "user";
     public static String CONTACT = BASE_URL + "contact";

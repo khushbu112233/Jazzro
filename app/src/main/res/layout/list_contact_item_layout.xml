@@ -1,56 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/ln_main_alluser_contact"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center"
-    android:padding="5dp"
-    android:orientation="horizontal">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
-        android:id="@+id/ln_bg_color"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:gravity="center_vertical"
-        android:orientation="vertical">
-
-        <ImageView
-            android:id="@+id/img_group_color"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-             />
-    </LinearLayout>
-
-    <LinearLayout
+        android:id="@+id/ln_main_alluser_contact"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_toRightOf="@+id/ln_bg_color"
-        android:gravity="center_vertical"
-        android:orientation="vertical">
+        android:gravity="center"
+        android:padding="5dp"
+        android:weightSum="3"
+        android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/txt_username_contact"
-            android:layout_width="match_parent"
+        <LinearLayout
+
+            android:id="@+id/ln_bg_color"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:paddingLeft="10dp"
-            android:textColor="@color/Royal_Blue"
-            tools:text="abc" />
+            android:gravity="center_horizontal"
+            android:layout_weight="0.6">
 
+            <com.jlouistechnology.Jazzro.Helper.CircularImageView
+                android:id="@+id/img_contact"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                />
+        </LinearLayout>
 
-        <TextView
-            android:id="@+id/txt_company_name_contact"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="2.2"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_toRightOf="@+id/ln_bg_color"
             android:gravity="center_vertical"
-            android:paddingBottom="4dp"
-            android:visibility="gone"
-            android:paddingLeft="10dp"
-            android:textColor="@color/Dark_green"
-            android:textSize="12dp"
-            tools:text="company" />
+            android:orientation="vertical">
 
+
+            <TextView
+                android:id="@+id/txt_username_contact"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:paddingLeft="10dp"
+                android:textColor="@color/Royal_Blue"
+                tools:text="abc" />
+
+
+            <TextView
+                android:id="@+id/txt_phone_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:gravity="center_vertical"
+                android:paddingBottom="4dp"
+                android:visibility="visible"
+                android:paddingLeft="10dp"
+                android:textColor="@color/Dark_green"
+                android:textSize="12dp"
+                tools:text="" />
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:background="@color/black_10"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/ll_group_color"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:orientation="vertical">
+        </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+</layout>

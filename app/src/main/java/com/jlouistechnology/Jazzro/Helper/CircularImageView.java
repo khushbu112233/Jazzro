@@ -15,7 +15,7 @@ import com.jlouistechnology.Jazzro.R;
 
 
 public class CircularImageView extends ImageView {
-    private int borderWidth = 8;
+    private int borderWidth = 0;
     private int viewWidth;
     private int viewHeight;
     private Bitmap image;

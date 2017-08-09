@@ -5,20 +5,19 @@
     android:layout_height="match_parent"
     android:layout_gravity="center"
     android:gravity="center"
-    android:background="#f3f5f4"
+    android:background="@mipmap/splash_screen"
     android:orientation="vertical"
     android:weightSum="1"
     >
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.83"
+        android:layout_height="match_parent"
         android:orientation="vertical">
         <ImageView
             android:id="@+id/img_logo"
             android:layout_width="150dp"
             android:layout_height="100dp"
-            android:visibility="visible"
+            android:visibility="gone"
             android:layout_marginTop="70dp"
             android:layout_gravity="center"
             android:src="@mipmap/logo_market_simple"/>
@@ -29,6 +28,7 @@
             android:layout_height="wrap_content"
             android:text="Add and manage all \n of your contacts"
             android:textColor="#203c72"
+            android:visibility="gone"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:gravity="center"
@@ -41,6 +41,7 @@
             android:layout_height="wrap_content"
             android:text="Anytime, Anywhere"
             android:textColor="#203c72"
+            android:visibility="gone"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:gravity="center"
@@ -50,15 +51,10 @@
 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="visible"
+            android:visibility="gone"
             android:layout_marginTop="50dp"
             android:layout_gravity="center"
             android:src="@mipmap/loading"/>
     </LinearLayout>
-    <include
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.18"
-        layout="@layout/footer_layout"/>
 
 </LinearLayout>

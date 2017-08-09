@@ -1,12 +1,14 @@
 package com.jlouistechnology.Jazzro.Fragment;
 
 import android.content.Context;
+import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.res.ResourcesCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,6 +28,7 @@ import com.jlouistechnology.Jazzro.Helper.FontCustom;
 import com.jlouistechnology.Jazzro.Helper.Pref;
 import com.jlouistechnology.Jazzro.Helper.Utils;
 import com.jlouistechnology.Jazzro.Jazzro.DashboardActivity;
+import com.jlouistechnology.Jazzro.Jazzro.DashboardNewActivity;
 import com.jlouistechnology.Jazzro.Model.ColorModel;
 import com.jlouistechnology.Jazzro.Model.Contact;
 import com.jlouistechnology.Jazzro.Model.Group;
@@ -33,6 +36,7 @@ import com.jlouistechnology.Jazzro.Model.GroupListServiceModel;
 import com.jlouistechnology.Jazzro.Model.Group_g;
 import com.jlouistechnology.Jazzro.R;
 import com.jlouistechnology.Jazzro.Webservice.WebService;
+import com.jlouistechnology.Jazzro.databinding.NewGroupLayoutBinding;
 import com.jlouistechnology.Jazzro.network.ApiClient;
 import com.jlouistechnology.Jazzro.network.ApiInterface;
 
@@ -53,6 +57,7 @@ import retrofit2.Response;
 
 public class NewGroupFragment extends Fragment {
     Context context;
+    NewGroupLayoutBinding mBinding;
     TextView txt_title,txtSave,txtCancel;
     EditText edName;
     TextView txtBackgruondColor;
@@ -64,22 +69,11 @@ public class NewGroupFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.new_group_layout, container, false);
+        mBinding = DataBindingUtil.inflate(
+                inflater, R.layout.new_group_layout, container, false);
+        rootView = mBinding.getRoot();
         context = getActivity();
-        init();
-        settypeface();
-
-
-        DashboardActivity.txt_menu.setImageResource(R.mipmap.home);
-        DashboardActivity.txt_menu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AddContactGroupFragment fragment = new AddContactGroupFragment();
-                ((FragmentActivity)context).getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, fragment).addToBackStack(null).commit();
-
-            }
-        });
-
+        preview();
         ArrayList<ColorModel> colorList = new ArrayList<>();
         colorList = Utils.colorList();
 
@@ -87,18 +81,18 @@ public class NewGroupFragment extends Fragment {
         for (int i = 0; i < colorList.size(); i++) {
             colorName.add(colorList.get(i).color);
         }
-
-        ColorAdapter adapter=new ColorAdapter(context,colorName);
-        final ArrayList<ColorModel> finalColorList = colorList;
-        spinner1.setAdapter(adapter);
-        img_down.setOnClickListener(new View.OnClickListener() {
+        mBinding.txtBackgruondColor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                spinner1.performClick();
+                mBinding.spinner1.performClick();
+
             }
         });
-
-        spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        ColorAdapter adapter=new ColorAdapter(context,colorName);
+        final ArrayList<ColorModel> finalColorList = colorList;
+        mBinding.spinner1.setAdapter(adapter);
+        Log.e("222",""+ ResourcesCompat.getColor(getResources(),R.color.new_black, null));
+        mBinding.spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
@@ -125,14 +119,17 @@ public class NewGroupFragment extends Fragment {
                                 }
                             }
 
-                            edName.setText(Pref.getValue(getActivity(),"Edit_label",""));
+                            mBinding.txtBackgruondColor.setText(Pref.getValue(getActivity(),"Edit_label",""));
                         }
                         if(Pref.getValue(getActivity(),"Edit_color","").startsWith("#"))
                         {
-                            txtBackgruondColor.setBackgroundColor(Color.parseColor(Pref.getValue(getActivity(), "Edit_color", "")));
+                            mBinding.txtBackgruondColor.setTextColor(Color.parseColor(Pref.getValue(getActivity(), "Edit_color", "")));
+                            Log.e("color","111"+Pref.getValue(getActivity(), "Edit_color", ""));
                         }else {
                             if(!(Pref.getValue(getActivity(), "Edit_color", "").startsWith("groupcolor"))&&!(Pref.getValue(getActivity(), "Edit_color", "").startsWith("level"))) {
-                                txtBackgruondColor.setBackgroundColor(Color.parseColor("#" + Pref.getValue(getActivity(), "Edit_color", "")));
+                                mBinding.txtBackgruondColor.setTextColor(Color.parseColor("#" + Pref.getValue(getActivity(), "Edit_color", "")));
+                                Log.e("color","111"+"#"+Pref.getValue(getActivity(), "Edit_color", ""));
+
                             }
 
                         }
@@ -140,11 +137,17 @@ public class NewGroupFragment extends Fragment {
                         Pref.setValue(getActivity(),"Edit_label","");
                     }
                     else {
-                        txtBackgruondColor.setBackgroundColor(Color.parseColor(finalColorList.get(position).background));
+                        mBinding.txtBackgruondColor.setTextColor(Color.parseColor(finalColorList.get(position).background));
+                        mBinding.txtBackgruondColor.setText(finalColorList.get(position).name);
+                        Log.e("color","111"+finalColorList.get(position).background);
+
                     }
                 }else
                 {
-                    txtBackgruondColor.setBackgroundColor(Color.parseColor(finalColorList.get(position).background));
+                    mBinding.txtBackgruondColor.setTextColor(Color.parseColor(finalColorList.get(position).background));
+                    mBinding.txtBackgruondColor.setText(finalColorList.get(position).name);
+                    Log.e("color","111"+finalColorList.get(position).background);
+
                 }
             }
 
@@ -153,29 +156,21 @@ public class NewGroupFragment extends Fragment {
 
             }
         });
-
-        txtCancel.setOnClickListener(new View.OnClickListener() {
+        ((DashboardNewActivity)context).mBinding.header.txtTitleRight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getActivity().getSupportFragmentManager().popBackStack();
-            }
-        });
-        txtSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
                 if (Utils.checkInternetConnection(getActivity())) {
-                    if (TextUtils.isEmpty(edName.getText().toString().trim())) {
-                        edName.setError("Please provide groupname!");
+                    if (TextUtils.isEmpty(mBinding.edName.getText().toString().trim())) {
+                        mBinding.edName.setError("Please provide groupname!");
 
                     } else {
                         // Log.e("color code add",""+finalColorList.get(colorPosition).background);
-                        if(Pref.getValue(getActivity(),"from_group","").equalsIgnoreCase("1")) {
+                      /*  if(Pref.getValue(getActivity(),"from_group","").equalsIgnoreCase("1")) {
 
                             new updateTask(Pref.getValue(getActivity(),"Edit_id",""), edName.getText().toString(), Pref.getValue(getActivity(),"position",0), finalColorList.get(colorPosition).name).execute();
-                        }else {
-                            new createGroupTask(edName.getText().toString(), finalColorList.get(colorPosition).name).execute();
-                        }
+                        }else {*/
+                            new createGroupTask(mBinding.edName.getText().toString(), finalColorList.get(colorPosition).name).execute();
+                        //}
 
                     }
 
@@ -184,36 +179,33 @@ public class NewGroupFragment extends Fragment {
                 }
             }
         });
+        ((DashboardNewActivity)context).mBinding.header.txtTitleLeft.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().getSupportFragmentManager().popBackStack();
+            }
+        });
+
 
         return rootView;
     }
 
-    private void settypeface() {
-        txt_title.setTypeface(FontCustom.setTitleFont(context));
-        edName.setTypeface(FontCustom.setFontOpenSansLight(context));
-        txtBackgruondColor.setTypeface(FontCustom.setFontOpenSansLight(context));
-        txtSave.setTypeface(FontCustom.setFontOpenSansLight(context));
-        txtCancel.setTypeface(FontCustom.setFontOpenSansLight(context));
+
+    private void preview() {
+        ((DashboardNewActivity) context).visibilityTxtTitleleft(View.VISIBLE);
+        ((DashboardNewActivity) context).visibilityTxtTitleright(View.VISIBLE);
+        ((DashboardNewActivity) context).SettextTxtTitle("New Group");
+        ((DashboardNewActivity) context).SettextTxtTitleLeft("Cancel");
+        ((DashboardNewActivity) context).SettextTxtTitleRight("Save");
+
+
+
     }
 
-    private void init() {
-
-        txt_title = (TextView)rootView.findViewById(R.id.txt_title);
-        edName = (EditText)rootView.findViewById(R.id.edName);
-        txtCancel = (TextView)rootView.findViewById(R.id.txtCancel);
-        txtSave = (TextView)rootView.findViewById(R.id.txtSave);
-        txtBackgruondColor = (TextView)rootView.findViewById(R.id.txtBackgruondColor);
-        img_down = (ImageView)rootView.findViewById(R.id.img_down);
-        spinner1 = (Spinner)rootView.findViewById(R.id.spinner1);
-        if(Pref.getValue(context,"Editg","").equalsIgnoreCase("1"))
-
-        {
-            txt_title.setText("Update Group");
-
-        }else if (Pref.getValue(context,"Editg","").equalsIgnoreCase("0"))
-        {
-            txt_title.setText("New Group");
-        }
+    @Override
+    public void onPause() {
+        super.onPause();
+        ((DashboardNewActivity)context).Set_header_visibility();
     }
 
     public class createGroupTask extends AsyncTask<String, Integer, String> {
@@ -252,9 +244,7 @@ public class NewGroupFragment extends Fragment {
                 } else {
 
                     Toast.makeText(getActivity(),"Group added successfully!", Toast.LENGTH_SHORT).show();
-                    AddContactGroupFragment fragment = new AddContactGroupFragment();
-                    ((FragmentActivity)context).getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, fragment).addToBackStack(null).commit();
-
+                    getActivity().getSupportFragmentManager().popBackStack();
                     new ExecuteTask_get_data().execute();
                     WebService.dismissProgress();
                 }
