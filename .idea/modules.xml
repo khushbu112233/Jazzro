@@ -9,6 +9,7 @@
       <module fileurl="file://$PROJECT_DIR$/jazzro-android.iml" filepath="$PROJECT_DIR$/jazzro-android.iml" />
       <module fileurl="file://$PROJECT_DIR$/jazzro_android.iml" filepath="$PROJECT_DIR$/jazzro_android.iml" />
       <module fileurl="file://$PROJECT_DIR$/sectionIndexerlibrary/sectionIndexerlibrary.iml" filepath="$PROJECT_DIR$/sectionIndexerlibrary/sectionIndexerlibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/src_jazzro.iml" filepath="$PROJECT_DIR$/src_jazzro.iml" />
     </modules>
   </component>
 </project>

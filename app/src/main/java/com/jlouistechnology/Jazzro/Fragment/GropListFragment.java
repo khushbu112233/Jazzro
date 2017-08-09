@@ -1,6 +1,5 @@
 package com.jlouistechnology.Jazzro.Fragment;
 
-import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -22,6 +21,7 @@ import com.jlouistechnology.Jazzro.Model.GroupListServiceModel;
 import com.jlouistechnology.Jazzro.R;
 import com.jlouistechnology.Jazzro.Webservice.WebService;
 import com.jlouistechnology.Jazzro.databinding.GroupListFragmentLayoutBinding;
+import com.jlouistechnology.Jazzro.interfaces.OnClickEditGroupListener;
 import com.jlouistechnology.Jazzro.network.ApiClient;
 import com.jlouistechnology.Jazzro.network.ApiInterface;
 
@@ -30,39 +30,50 @@ import java.util.ArrayList;
 import retrofit2.Call;
 import retrofit2.Callback;
 
+import static com.jlouistechnology.Jazzro.Fragment.MyConnectFragment.context;
+
 /**
  * Created by aipxperts-ubuntu-01 on 4/8/17.
  */
 
 public class GropListFragment extends Fragment {
     GroupListFragmentLayoutBinding mBinding;
-    Context context;
     View rootView;
     ArrayList<GroupListDataDetailModel> griupList = new ArrayList<GroupListDataDetailModel>();
+
     @Override
-    public View onCreateView(LayoutInflater inflater,ViewGroup container,Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(
                 inflater, R.layout.group_list_fragment_layout, container, false);
         rootView = mBinding.getRoot();
         context = getActivity();
         preview();
         grouplistTask();
-        ((DashboardNewActivity)context).mBinding.header.imgRight.setOnClickListener(new View.OnClickListener() {
+        ((DashboardNewActivity) context).mBinding.header.imgRight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 NewGroupFragment fragment = new NewGroupFragment();
-                ((FragmentActivity)context).getSupportFragmentManager().beginTransaction().replace(R.id.frame_main_container, fragment).addToBackStack(null).commit();
+                ((FragmentActivity) context).getSupportFragmentManager().beginTransaction().replace(R.id.frame_main_container, fragment).addToBackStack(null).commit();
 
             }
         });
+
+        mBinding.listGroup.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+            }
+        });
+
         return rootView;
     }
 
     private void preview() {
-        ((DashboardNewActivity)context).SettextTxtTitle("Groups");
-        ((DashboardNewActivity)context).visibilityimgright(View.VISIBLE);
-        ((DashboardNewActivity)context).SetimageresourceImgright(R.mipmap.plus_contact);
+        ((DashboardNewActivity) context).SettextTxtTitle("Groups");
+        ((DashboardNewActivity) context).visibilityimgright(View.VISIBLE);
+        ((DashboardNewActivity) context).SetimageresourceImgright(R.mipmap.plus_contact);
     }
+
     private void grouplistTask() {
 
 
@@ -71,27 +82,26 @@ public class GropListFragment extends Fragment {
                     ApiClient.getClient().create(ApiInterface.class);
 
             Call<GroupListServiceModel> call = apiService.groupList(Pref.getValue(getActivity(), Constants.TOKEN, ""),
-                    "1",Pref.getValue(getActivity(), "total_group", ""), "label", "asc");
+                    "1", Pref.getValue(getActivity(), "total_group", ""), "label", "asc");
             call.enqueue(new Callback<GroupListServiceModel>() {
                 @Override
                 public void onResponse(Call<GroupListServiceModel> call, retrofit2.Response<GroupListServiceModel> response) {
-                    Log.e("VVV","111"+ new Gson().toJson(response.body()));
+                    Log.e("VVV", "111" + new Gson().toJson(response.body()));
 
                     if (response.body().status != 400) {
                         griupList = (response.body().data.data);
-                        if(griupList.size()>0)
-                        {
+                        if (griupList.size() > 0) {
                             mBinding.listGroup.setVisibility(View.VISIBLE);
                             mBinding.txtMsg.setVisibility(View.GONE);
-                        }else
-                        {
+                        } else {
                             mBinding.listGroup.setVisibility(View.GONE);
                             mBinding.txtMsg.setVisibility(View.VISIBLE);
                         }
 
                         Pref.setValue(context, "selectedGroud", "");
                         Pref.setValue(context, "selectedGroup_label", "");
-                        NewGroupListAdapter newGroupListAdapter = new NewGroupListAdapter(context,griupList,((DashboardNewActivity)context).mBinding.header.txtTitleRight,"main");
+                        NewGroupListAdapter newGroupListAdapter = new NewGroupListAdapter(context, griupList, ((DashboardNewActivity) context).mBinding.header.txtTitleRight, "main");
+                        newGroupListAdapter.onClickEdit(onClickEditGroupListener);
                         mBinding.listGroup.setAdapter(newGroupListAdapter);
                         // groupChoiceOPenDialog(griupList);
 
@@ -115,4 +125,18 @@ public class GropListFragment extends Fragment {
 
         ((DashboardNewActivity) context).Set_header_visibility();
     }
+
+    OnClickEditGroupListener onClickEditGroupListener = new OnClickEditGroupListener() {
+        @Override
+        public void onClick(int position) {
+            Gson gson = new Gson();
+            Bundle args = new Bundle();
+            EditGroupFragment fragment = new EditGroupFragment();
+            args.putSerializable("data", gson.toJson(griupList.get(position)));
+            fragment.setArguments(args);
+            ((FragmentActivity) context).getSupportFragmentManager().beginTransaction().replace(R.id.frame_main_container, fragment).addToBackStack(null).commit();
+
+        }
+    };
+
 }

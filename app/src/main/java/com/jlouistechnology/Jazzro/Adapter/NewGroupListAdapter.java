@@ -1,11 +1,9 @@
 package com.jlouistechnology.Jazzro.Adapter;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
-import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,8 +18,8 @@ import com.jlouistechnology.Jazzro.Helper.Utils;
 import com.jlouistechnology.Jazzro.Model.ColorModel;
 import com.jlouistechnology.Jazzro.Model.GroupListDataDetailModel;
 import com.jlouistechnology.Jazzro.R;
-import com.jlouistechnology.Jazzro.databinding.ListContactItemLayoutBinding;
 import com.jlouistechnology.Jazzro.databinding.NewGroupListLayoutBinding;
+import com.jlouistechnology.Jazzro.interfaces.OnClickEditGroupListener;
 
 import java.util.ArrayList;
 
@@ -35,16 +33,18 @@ public class NewGroupListAdapter extends BaseAdapter {
     LayoutInflater mInflater;
     ArrayList<GroupListDataDetailModel> datalist;
     TextView mHeaderRight;
-    ArrayList<String> selectedGroud=new ArrayList<>();
-    ArrayList<String> selectedGroup_label=new ArrayList<>();
+    ArrayList<String> selectedGroud = new ArrayList<>();
+    ArrayList<String> selectedGroup_label = new ArrayList<>();
     String type;
-    public NewGroupListAdapter(Context context, ArrayList<GroupListDataDetailModel> datalist,TextView mHeaderRight,String type) {
+    OnClickEditGroupListener onClickEditGroupListener;
+
+    public NewGroupListAdapter(Context context, ArrayList<GroupListDataDetailModel> datalist, TextView mHeaderRight, String type) {
         this.context = context;
         mInflater = (LayoutInflater) context.
                 getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        this.type=type;
+        this.type = type;
         this.datalist = datalist;
-        this.mHeaderRight=mHeaderRight;
+        this.mHeaderRight = mHeaderRight;
     }
 
     @Override
@@ -93,12 +93,17 @@ public class NewGroupListAdapter extends BaseAdapter {
             }
         });
 
-        if(type.equalsIgnoreCase("main"))
-        {
+        binding.lnBgColor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onClickEditGroupListener.onClick(position);
+            }
+        });
+
+        if (type.equalsIgnoreCase("main")) {
             mHeaderRight.setVisibility(View.GONE);
             binding.lnMainAlluserContact.setEnabled(false);
-        }else if(type.equalsIgnoreCase("selected"))
-        {
+        } else if (type.equalsIgnoreCase("selected")) {
             mHeaderRight.setVisibility(View.VISIBLE);
             binding.lnMainAlluserContact.setEnabled(true);
         }
@@ -118,14 +123,13 @@ public class NewGroupListAdapter extends BaseAdapter {
         mHeaderRight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                for(int i=0;i<datalist.size();i++){
-                    if(datalist.get(i).isClick.equalsIgnoreCase("true")){
+                for (int i = 0; i < datalist.size(); i++) {
+                    if (datalist.get(i).isClick.equalsIgnoreCase("true")) {
                         selectedGroud.add(datalist.get(i).id);
                         selectedGroup_label.add(Utils.capitalize(datalist.get(i).label));
                     }
                 }
-                Gson gson=new Gson();
-
+                Gson gson = new Gson();
 
 
                 //   SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
@@ -134,22 +138,24 @@ public class NewGroupListAdapter extends BaseAdapter {
                 String json = gson.toJson(selectedGroud);
                 String json1 = gson.toJson(selectedGroup_label);
 
-                Pref.setValue(context,"selectedGroud",json);
-                Pref.setValue(context,"selectedGroup_label",json1);
+                Pref.setValue(context, "selectedGroud", json);
+                Pref.setValue(context, "selectedGroup_label", json1);
 
                /* editor.putString("selectedGroud", json);
                 editor.putString("selectedGroup_label",json1);
                 editor.commit();*/
-                Log.e("Adaper###","%%% " + selectedGroud.size());
+                Log.e("Adaper###", "%%% " + selectedGroud.size());
                 // notifyDataSetChanged();
-                ((FragmentActivity)context).getSupportFragmentManager().popBackStack();
+                ((FragmentActivity) context).getSupportFragmentManager().popBackStack();
             }
         });
 
         return rowView;
     }
 
-
+    public void onClickEdit(OnClickEditGroupListener onClickEditGroupListener) {
+        this.onClickEditGroupListener = onClickEditGroupListener;
+    }
 
 
 }

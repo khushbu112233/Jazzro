@@ -11,6 +11,7 @@ import android.view.View;
 import com.jlouistechnology.Jazzro.Fragment.AddNewContactFragment;
 import com.jlouistechnology.Jazzro.Fragment.ContactFragment;
 import com.jlouistechnology.Jazzro.Fragment.GropListFragment;
+import com.jlouistechnology.Jazzro.Fragment.SettingFragment;
 import com.jlouistechnology.Jazzro.R;
 import com.jlouistechnology.Jazzro.databinding.DashboardNewLayoutBinding;
 
@@ -82,6 +83,10 @@ public class DashboardNewActivity extends FragmentActivity {
                 mBinding.footer.imgContacts.setImageResource(R.mipmap.contact_unselected);
                 mBinding.footer.imgGroups.setImageResource(R.mipmap.group_unselect);
                 mBinding.footer.imgSettings.setImageResource(R.mipmap.setting_selected);
+
+                SettingFragment fragment = new SettingFragment();
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame_main_container, fragment).commit();
+
 
             }
         });
