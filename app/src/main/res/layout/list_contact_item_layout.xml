@@ -5,7 +5,7 @@
     <LinearLayout
         android:id="@+id/ln_main_alluser_contact"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="5dp"
         android:weightSum="3"
@@ -35,17 +35,17 @@
             android:orientation="vertical">
 
 
-            <TextView
+            <com.jlouistechnology.Jazzro.Widget.TextView_Regular
                 android:id="@+id/txt_username_contact"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:paddingLeft="10dp"
-                android:textColor="@color/Royal_Blue"
+                android:textColor="@color/new_black"
                 tools:text="abc" />
 
 
-            <TextView
+            <com.jlouistechnology.Jazzro.Widget.TextView_Regular
                 android:id="@+id/txt_phone_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -54,7 +54,7 @@
                 android:paddingBottom="4dp"
                 android:visibility="visible"
                 android:paddingLeft="10dp"
-                android:textColor="@color/Dark_green"
+                android:textColor="@color/black_40"
                 android:textSize="12dp"
                 tools:text="" />
 
@@ -69,6 +69,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.2"
+            android:gravity="center"
+            android:layout_gravity="center"
             android:orientation="vertical">
         </LinearLayout>
     </LinearLayout>

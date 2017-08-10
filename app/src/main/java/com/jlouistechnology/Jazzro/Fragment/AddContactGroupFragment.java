@@ -145,15 +145,6 @@ public class AddContactGroupFragment extends Fragment {
             }
         });
 
-        txt_add_contacts.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Pref.setValue(getActivity(),"Edit","0");
-                NewContactFragment fragment1 = new NewContactFragment();
-                ((FragmentActivity) context).getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, fragment1).addToBackStack(null).commit();
-            }
-        });
 
         txt_title.setText("Welcome" + " " + Pref.getValue(context, "fname", ""));
 

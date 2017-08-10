@@ -24,7 +24,6 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TextView;
 
-import com.jlouistechnology.Jazzro.Fragment.NewContactFragment;
 import com.jlouistechnology.Jazzro.Helper.Constants;
 import com.jlouistechnology.Jazzro.Helper.ParsedResponse;
 import com.jlouistechnology.Jazzro.Helper.Pref;

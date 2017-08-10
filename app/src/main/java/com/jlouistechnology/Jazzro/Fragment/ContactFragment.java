@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -55,7 +56,7 @@ public class ContactFragment extends Fragment {
     public static int storePageNumber = 1;
     public static ArrayList<Contact> copyContactlist = new ArrayList<>();
     @Override
-    public View onCreateView(LayoutInflater inflater,ViewGroup container,Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
 
         mBinding = DataBindingUtil.inflate(
                 inflater, R.layout.contact_fragment_layout, container, false);
@@ -117,9 +118,9 @@ public class ContactFragment extends Fragment {
             }
         });
 
-/**
- * on scroll set pagination
- */
+        /**
+         * on scroll set pagination
+         */
         mBinding.listContact.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {

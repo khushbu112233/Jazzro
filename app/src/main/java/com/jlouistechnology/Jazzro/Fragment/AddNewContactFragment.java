@@ -39,6 +39,7 @@ import com.jlouistechnology.Jazzro.Helper.ConnectionDetector;
 import com.jlouistechnology.Jazzro.Helper.Constants;
 import com.jlouistechnology.Jazzro.Helper.CountryToPhonePrefix;
 import com.jlouistechnology.Jazzro.Helper.Pref;
+import com.jlouistechnology.Jazzro.Helper.Utils;
 import com.jlouistechnology.Jazzro.Jazzro.DashboardNewActivity;
 import com.jlouistechnology.Jazzro.R;
 import com.jlouistechnology.Jazzro.Webservice.WebService;
@@ -133,6 +134,8 @@ public class AddNewContactFragment extends Fragment {
 
             }
         });
+
+
         ((DashboardNewActivity) context).mBinding.header.txtTitleLeft.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -262,11 +265,14 @@ public class AddNewContactFragment extends Fragment {
 
             for (int i = 0; i < selectedGroud.size(); i++) {
                 Log.e("Adaper###", "****  " + selectedGroud.get(i) + " " + selectedGroup_label.get(i));
-                if (i == (selectedGroud.size() - 1)) {
-                    group = group + selectedGroup_label.get(i);
-                } else {
-                    group = group + selectedGroup_label.get(i) + ",";
+                if(i==0)
+                {
+                    group=selectedGroup_label.get(i);
+                }else
+                {
+                    group=group+","+selectedGroup_label.get(i);
                 }
+
 
             }
 

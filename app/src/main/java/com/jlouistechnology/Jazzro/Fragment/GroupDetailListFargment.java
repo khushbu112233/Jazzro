@@ -76,17 +76,7 @@ public class GroupDetailListFargment extends BaseFragment {
         edt_search.setText("");
         img_search.setVisibility(View.VISIBLE);
         edt_search.setFocusableInTouchMode(true);
-        DashboardActivity.txt_menu.setImageResource(R.mipmap.home);
-        DashboardActivity.txt_menu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AddContactGroupFragment fragment = new AddContactGroupFragment();
-                ((FragmentActivity) getActivity()).getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, fragment).addToBackStack(null).commit();
-
-            }
-        });
-
-        edt_search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+          edt_search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH || event.getAction() == KeyEvent.ACTION_DOWN) {

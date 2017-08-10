@@ -154,21 +154,6 @@ public class ContactDetailsFragment extends Fragment {
                 getActivity().getSupportFragmentManager().popBackStack();
             }
         });
-        txt_title_right.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Pref.setValue(context,"Edit","1");
-                Pref.setValue(context,"scan_email",txt_email1.getText().toString());
-                Pref.setValue(context,"scan_pno",txt_mobile1.getText().toString());
-                NewContactFragment fragment2 = new NewContactFragment();
-                Bundle args = new Bundle();
-                args.putString("jsonString", jsonString);
-                fragment2.setArguments(args);
-                ((FragmentActivity) context).getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, fragment2).addToBackStack(null).commit();
-
-            }
-        });
-
         img_right_header.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

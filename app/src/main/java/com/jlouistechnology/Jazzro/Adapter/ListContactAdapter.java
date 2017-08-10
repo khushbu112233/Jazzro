@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.jlouistechnology.Jazzro.Fragment.ContactDetailsFragment;
+import com.jlouistechnology.Jazzro.Fragment.DetailContactFragment;
 import com.jlouistechnology.Jazzro.Helper.Constants;
 import com.jlouistechnology.Jazzro.Helper.Pref;
 import com.jlouistechnology.Jazzro.Helper.Utils;
@@ -163,12 +164,10 @@ public class ListContactAdapter extends BaseAdapter {
         binding.lnMainAlluserContact.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Pref.setValue(context,"Detail_id",list.get(position).getId());
 
-                Pref.setValue(context, Constants.PREF_ID, list.get(position).getId());
-                Pref.setValue(context, "is_Profile", "false");
-                Utils.hideKeyboard(context);
-                ContactDetailsFragment fragment = new ContactDetailsFragment();
-                ((FragmentActivity) context).getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, fragment).addToBackStack(null).commit();
+                DetailContactFragment fragment = new DetailContactFragment();
+                ((FragmentActivity)context).getSupportFragmentManager().beginTransaction().replace(R.id.frame_main_container, fragment).addToBackStack(null).commit();
 
 
             }

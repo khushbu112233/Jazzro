@@ -37,6 +37,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import static com.jlouistechnology.Jazzro.Fragment.MyConnectFragment.context;
+
 /**
  * Created by aipxperts on 9/8/17.
  */
@@ -219,7 +221,12 @@ public class EditGroupFragment extends BaseFragment {
 
 
     }
+    @Override
+    public void onPause() {
+        super.onPause();
 
+        ((DashboardNewActivity) context).Set_header_visibility();
+    }
     public class updateTask extends AsyncTask<String, Integer, String> {
 
         private String res;
