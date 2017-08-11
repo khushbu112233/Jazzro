@@ -76,8 +76,8 @@
 
                         <ImageView
                             android:id="@+id/ivmsg1"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:layout_marginRight="10dp"
                             android:src="@mipmap/msg"
                             />
@@ -89,8 +89,8 @@
 
                         <ImageView
                             android:id="@+id/ivcall1"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:layout_marginRight="10dp"
                             android:src="@mipmap/call"
                             />
@@ -143,8 +143,8 @@
 
                         <ImageView
                             android:id="@+id/ivmsg2"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:layout_marginRight="10dp"
                             android:src="@mipmap/msg"
                             />
@@ -156,8 +156,8 @@
 
                         <ImageView
                             android:id="@+id/ivcall2"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:layout_marginRight="10dp"
                             android:src="@mipmap/call"
                             />
@@ -210,8 +210,8 @@
 
                         <ImageView
                             android:id="@+id/ivmsg3"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:layout_marginRight="10dp"
                             android:src="@mipmap/msg"
                             />
@@ -223,8 +223,8 @@
 
                         <ImageView
                             android:id="@+id/ivcall3"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:layout_marginRight="10dp"
                             android:src="@mipmap/call"
                             />
@@ -277,8 +277,8 @@
                         android:layout_height="wrap_content">
 
                         <ImageView
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:layout_marginRight="10dp"
                             android:src="@mipmap/msg"
                             />
@@ -290,8 +290,8 @@
 
                         <ImageView
                             android:id="@+id/ivemail1"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:layout_marginRight="10dp"
                             android:src="@mipmap/email"
                             />
@@ -344,8 +344,8 @@
                         android:layout_height="wrap_content">
 
                         <ImageView
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:layout_marginRight="10dp"
                             android:src="@mipmap/msg"
                             />
@@ -357,8 +357,8 @@
 
                         <ImageView
                             android:id="@+id/ivemail2"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:layout_marginRight="10dp"
                             android:src="@mipmap/email"
                             />
@@ -411,8 +411,8 @@
                         android:layout_height="wrap_content">
 
                         <ImageView
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:layout_marginRight="10dp"
                             android:src="@mipmap/msg"
                             />
@@ -424,8 +424,8 @@
 
                         <ImageView
                             android:id="@+id/ivemail3"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:layout_marginRight="10dp"
                             android:src="@mipmap/email"
                             />

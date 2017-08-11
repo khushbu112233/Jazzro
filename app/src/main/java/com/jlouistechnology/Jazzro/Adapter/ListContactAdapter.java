@@ -160,7 +160,12 @@ public class ListContactAdapter extends BaseAdapter {
         }
         Picasso.with(context).load(list.get(position).getImage_url()).into(binding.imgContact);
         binding.txtUsernameContact.setText(list.get(position).getFname() + " " + list.get(position).getLname());
-        binding.txtPhoneNumber.setText(list.get(position).getPhone1());
+        if(!list.get(position).getPhone1().equalsIgnoreCase("")) {
+            binding.txtPhoneNumber.setText(list.get(position).getPhone1());
+        }else
+        {
+            binding.txtPhoneNumber.setText(list.get(position).getEmail1());
+        }
         binding.lnMainAlluserContact.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

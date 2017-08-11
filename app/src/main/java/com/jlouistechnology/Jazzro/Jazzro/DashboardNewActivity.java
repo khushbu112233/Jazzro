@@ -9,6 +9,7 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -55,6 +56,7 @@ public class DashboardNewActivity extends FragmentActivity {
         mBinding.footer.imgContacts.setImageResource(R.mipmap.contact_selected);
         mBinding.footer.imgGroups.setImageResource(R.mipmap.group_unselect);
         mBinding.footer.imgSettings.setImageResource(R.mipmap.settings_unselect);
+
 
 
         mBinding.footer.llContacts.setOnClickListener(new View.OnClickListener() {
@@ -169,6 +171,7 @@ public class DashboardNewActivity extends FragmentActivity {
 
     }
 
+
     @Override
     protected void onPause() {
         super.onPause();
@@ -188,12 +191,18 @@ public class DashboardNewActivity extends FragmentActivity {
     public void visibilityimgleft(int visible)
     {
 
+        mBinding.header.imgLeftBack.setVisibility(visible);
+    }
+    public void visibilityimgleftProgress(int visible)
+    {
+
         mBinding.header.progressBarSync.setVisibility(visible);
     }
     public void visibilityTxtTitleleft(int visible)
     {
         mBinding.header.txtTitleLeft.setVisibility(visible);
     }
+
     public void visibilityimgright(int visible)
     {
 
@@ -251,6 +260,7 @@ public class DashboardNewActivity extends FragmentActivity {
         visibilityTxtTitleright(View.INVISIBLE);
         visibilityimgleft(View.INVISIBLE);
         visibilityTxtTitleleft(View.INVISIBLE);
+        visibilityimgleftProgress(View.INVISIBLE);
         visibilityimgleftback(View.GONE);
 
     }

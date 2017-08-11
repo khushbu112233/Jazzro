@@ -44,7 +44,7 @@
             android:background="#ffffff"
             android:orientation="vertical">
 
-            <com.jlouistechnology.Jazzro.Widget.Edittext_Regular
+            <com.jlouistechnology.Jazzro.Widget.Edittext_bold
                 android:id="@+id/edt_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -60,7 +60,6 @@
                 android:inputType="text"
                 android:paddingTop="10dp"
                 android:singleLine="true"
-                android:textStyle="bold"
                 android:textColor="@color/new_black"
                 android:textSize="@dimen/edittextsize" />
             <View
@@ -71,7 +70,7 @@
                 android:background="@color/black_10"/>
 
 
-            <com.jlouistechnology.Jazzro.Widget.Edittext_Regular
+            <com.jlouistechnology.Jazzro.Widget.Edittext_bold
                 android:id="@+id/edt_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -86,7 +85,6 @@
                 android:textColorHint="@color/new_black"
                 android:paddingBottom="10dp"
                 android:paddingTop="10dp"
-                android:textStyle="bold"
                 android:singleLine="true"
                 android:textColor="@color/new_black"
                 android:textSize="@dimen/edittextsize" />

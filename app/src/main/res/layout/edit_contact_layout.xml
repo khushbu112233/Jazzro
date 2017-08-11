@@ -30,7 +30,7 @@
                 android:layout_weight="0.70"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-                <com.jlouistechnology.Jazzro.Widget.Edittext_Regular
+                <com.jlouistechnology.Jazzro.Widget.Edittext_bold
                     android:id="@+id/edt_first_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -53,7 +53,7 @@
                     android:layout_marginRight="30dp"
                     android:layout_marginLeft="30dp"
                     android:background="@color/black_10"/>
-                <com.jlouistechnology.Jazzro.Widget.Edittext_Regular
+                <com.jlouistechnology.Jazzro.Widget.Edittext_bold
                     android:id="@+id/edt_last_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -250,19 +250,24 @@
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
                     android:background="@color/black_40"/>
-                <com.jlouistechnology.Jazzro.Widget.TextView_Regular
-                    android:id="@+id/txt_delete_contacts"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="left"
-                    android:gravity="left"
-                    android:padding="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:visibility="visible"
-                    android:textColor="#d0011b"
-                    android:text="Delete contact"
-                    android:textSize="15sp" />
-
+                    android:orientation="vertical"
+                    android:background="#f2f2f2">
+                    <com.jlouistechnology.Jazzro.Widget.TextView_Regular
+                        android:id="@+id/txt_delete_contacts"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:gravity="left"
+                        android:padding="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:visibility="visible"
+                        android:textColor="#d0011b"
+                        android:text="Delete contact"
+                        android:textSize="15sp" />
+                </LinearLayout>
                 <View
 
                     android:layout_width="match_parent"

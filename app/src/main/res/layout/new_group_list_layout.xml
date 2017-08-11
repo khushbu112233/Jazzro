@@ -54,13 +54,15 @@
             android:gravity="center_vertical"
             android:orientation="vertical">
 
-            <com.jlouistechnology.Jazzro.Widget.TextView_Regular
+            <com.jlouistechnology.Jazzro.Widget.TextView_Bold
                 android:id="@+id/txt_group_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:paddingLeft="10dp"
                 android:textColor="@color/new_black"
+                android:textStyle="bold"
+                android:textSize="15sp"
                 tools:text="abc" />
 
 
@@ -68,11 +70,10 @@
                 android:id="@+id/txt_member"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
                 android:gravity="center_vertical"
                 android:paddingLeft="10dp"
                 android:textColor="@color/black_40"
-                android:textSize="12dp"
+                android:textSize="14sp"
                 tools:text="1 member" />
 
             <View

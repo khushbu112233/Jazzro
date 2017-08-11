@@ -342,6 +342,7 @@ public class Utils {
 
 
         ColorModel model = new ColorModel();
+
         model.name = "groupcolor1";
         model.background = "#41cf34";
         model.color = "#41cf34";

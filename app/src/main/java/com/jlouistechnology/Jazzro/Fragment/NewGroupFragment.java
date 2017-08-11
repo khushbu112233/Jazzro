@@ -81,6 +81,7 @@ public class NewGroupFragment extends Fragment {
         for (int i = 0; i < colorList.size(); i++) {
             colorName.add(colorList.get(i).color);
         }
+        mBinding.spinner1.setVisibility(View.GONE);
         mBinding.txtBackgruondColor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,6 +89,7 @@ public class NewGroupFragment extends Fragment {
 
             }
         });
+
         ColorAdapter adapter=new ColorAdapter(context,colorName);
         final ArrayList<ColorModel> finalColorList = colorList;
         mBinding.spinner1.setAdapter(adapter);

@@ -127,6 +127,12 @@ public class AddNewContactFragment extends Fragment {
                 showInputDialog_camera();
             }
         });
+        ((DashboardNewActivity)context).mBinding.header.txtTitleLeft.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().getSupportFragmentManager().popBackStack();
+            }
+        });
         mBinding.edtGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

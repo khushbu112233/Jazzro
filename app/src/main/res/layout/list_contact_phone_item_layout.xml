@@ -45,7 +45,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:weightSum="1">
-                    <com.jlouistechnology.Jazzro.Widget.Edittext_Regular
+                    <com.jlouistechnology.Jazzro.Widget.Edittext_bold
                         android:id="@+id/edt_phone1"
                         android:layout_width="0dp"
                         android:layout_weight="0.85"
