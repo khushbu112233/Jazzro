@@ -9,7 +9,6 @@ import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -63,6 +62,11 @@ public class ContactFragment extends Fragment {
                 inflater, R.layout.contact_fragment_layout, container, false);
         rootView = mBinding.getRoot();
         context = getActivity();
+        mainConatctArrayList.clear();
+        copyContactlist.clear();
+
+        isMainLoad = 1;
+        pageNumber = 1;
         preview();
 
         Pref.setValue(context, "selectedGroud", "");
@@ -102,7 +106,7 @@ public class ContactFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 mBinding.searchContact.setText("");
-
+                pageNumber = 1;
                 isMainLoad = 1;
                 isHavingData = true;
                 isPagination = true;
@@ -110,6 +114,8 @@ public class ContactFragment extends Fragment {
                 pageNumber = storePageNumber;
                 mainConatctArrayList.clear();
                 mainConatctArrayList.addAll(copyContactlist);
+                e("MMM", "mainConatctArrayList size : " + mainConatctArrayList.size());
+                e("MMM", "copyContactlist size : " + copyContactlist.size());
                 adapter.notifyDataSetChanged();
 
 
@@ -550,5 +556,29 @@ public class ContactFragment extends Fragment {
     public void onResume() {
         super.onResume();
         preview();
+        mBinding.searchContact.setText("");
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        getView().setFocusableInTouchMode(true);
+        getView().requestFocus();
+
+        getView().setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (event.getAction() == KeyEvent.ACTION_DOWN) {
+                    if (keyCode == KeyEvent.KEYCODE_BACK) {
+
+                        getActivity().getSupportFragmentManager().popBackStack();
+
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
     }
 }

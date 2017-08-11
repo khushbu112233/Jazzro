@@ -11,7 +11,6 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -172,6 +171,13 @@ public class EditContactFragment extends Fragment {
             }
         });
 
+        ((DashboardNewActivity) getActivity()).mBinding.header.txtTitleLeft.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getActivity().getSupportFragmentManager().popBackStack();
+            }
+        });
+
         mBinding.txtGroups1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -180,13 +186,7 @@ public class EditContactFragment extends Fragment {
                 {
                     if(!selectedGroup_label.contains(ContactArrayList.get(0).getGroup_list().get(i).getLabel())) {
                         selectedGroup_label.add(ContactArrayList.get(0).getGroup_list().get(i).getLabel());
-
                     }
-                    if(!selectedGroud.contains(selectedGroud.add(ContactArrayList.get(0).getGroup_list().get(i).getId1())))
-                    {
-                        selectedGroud.add(ContactArrayList.get(0).getGroup_list().get(i).getId1());
-                    }
-
                 }
                 Gson gson = new Gson();
                 String json = gson.toJson(selectedGroup_label);
@@ -289,7 +289,6 @@ public class EditContactFragment extends Fragment {
                     }
 */
                     Pref.setValue(context, "SelectedGroupList", "");
-
 
                     callAddnewContactAPI(selectedGroud);
                 }
@@ -548,6 +547,8 @@ public class EditContactFragment extends Fragment {
                 ((FragmentActivity) context).getSupportFragmentManager().beginTransaction().replace(R.id.frame_main_container, fragment).addToBackStack(null).commit();
 
                 Toast.makeText(getActivity(),"Contact deleted successfully!", Toast.LENGTH_SHORT).show();
+                getActivity().getSupportFragmentManager().popBackStack();
+                Toast.makeText(getActivity(), "Contact deleted successfully!", Toast.LENGTH_SHORT).show();
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -623,13 +624,8 @@ public class EditContactFragment extends Fragment {
                 Pref.setValue(context, "phone3_add", "");
                 Pref.setValue(context, "email3_add", "");
                 Pref.setValue(context, "groups_add", "");
-                selectedGroud.clear();
-                selectedGroup_label.clear();
-                group_selected_id.clear();
 
 
-                Pref.setValue(context, "selectedGroud", "");
-                Pref.setValue(context, "selectedGroup_label", "");
                 Toast.makeText(getActivity(), "Contact updated successfully!", Toast.LENGTH_SHORT).show();
 
 

@@ -79,7 +79,7 @@ public class GropListFragment extends Fragment {
 
     private void grouplistTask() {
 
-
+WebService.showProgress(getActivity());
         if (WebService.isNetworkAvailable(getActivity())) {
 
             ApiInterface apiService =
@@ -91,7 +91,7 @@ public class GropListFragment extends Fragment {
                 @Override
                 public void onResponse(Call<GroupListServiceModel> call, retrofit2.Response<GroupListServiceModel> response) {
                     Log.e("VVV", "111" + new Gson().toJson(response.body()));
-
+WebService.dismissProgress();
                     if (response.body().status != 400) {
                         griupList = (response.body().data.data);
                         if (griupList.size() > 0) {
@@ -116,6 +116,7 @@ public class GropListFragment extends Fragment {
                 @Override
                 public void onFailure(Call<GroupListServiceModel> call, Throwable t) {
                     Log.e("VVV", "Failuar : " + t.toString());
+                    WebService.dismissProgress();
                 }
             });
         } else {

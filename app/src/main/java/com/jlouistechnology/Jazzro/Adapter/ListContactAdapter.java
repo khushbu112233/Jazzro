@@ -5,7 +5,6 @@ import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.support.v4.app.FragmentActivity;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,11 +12,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
-import com.jlouistechnology.Jazzro.Fragment.ContactDetailsFragment;
 import com.jlouistechnology.Jazzro.Fragment.DetailContactFragment;
-import com.jlouistechnology.Jazzro.Helper.Constants;
 import com.jlouistechnology.Jazzro.Helper.Pref;
 import com.jlouistechnology.Jazzro.Helper.Utils;
 import com.jlouistechnology.Jazzro.Model.ColorModel;
@@ -123,21 +119,29 @@ public class ListContactAdapter extends BaseAdapter {
             Log.e("finalColorList",""+finalColorList);
             for(int i=0;i<list.get(position).getGroup_list().size();i++)
             {
-                Log.e("background",""+finalColorList.get(i).background);
-                Log.e("edit name",""+finalColorList.get(i).name);
 
-                Log.e("edit color",""+finalColorList.get(i).color);
-                ImageView imageView = new ImageView(context);
-                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(15, 15);
-                lp.setMargins(5, 5, 5, 5);
-                imageView.setLayoutParams(lp);
-                binding.llGroupColor.addView(imageView);
-                imageView.setBackgroundResource(R.drawable.circle_group_shape);
-                GradientDrawable drawable = (GradientDrawable) imageView.getBackground();
+                for(int  j = 0 ; j<finalColorList.size();j++)
+                {
+                    if(list.get(position).getGroup_list().get(i).getColor1().equalsIgnoreCase(finalColorList.get(j).name))
+                    {
+                        Log.e("background",""+finalColorList.get(j).background);
+                        Log.e("edit name",""+finalColorList.get(j).name);
+
+                        Log.e("edit color",""+finalColorList.get(j).color);
+                        ImageView imageView = new ImageView(context);
+                        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(25, 25);
+                        lp.setMargins(5, 5, 5, 5);
+                        imageView.setLayoutParams(lp);
+                        binding.llGroupColor.addView(imageView);
+                        imageView.setBackgroundResource(R.drawable.circle_group_shape);
+                        GradientDrawable drawable = (GradientDrawable) imageView.getBackground();
                 /*if(list.get(position).getGroup_list().get(i).getColor1().equals(finalColorList.get(i).name))
                 {*/
-                drawable.setColor(Color.parseColor(finalColorList.get(i).color));
-                //}
+                        drawable.setColor(Color.parseColor(finalColorList.get(j).color));
+                        //}
+                    }
+                }
+
 
 
             }

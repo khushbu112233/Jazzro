@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+
 import com.google.gson.Gson;
 import com.jlouistechnology.Jazzro.Helper.Pref;
 import com.jlouistechnology.Jazzro.Helper.Utils;
@@ -34,9 +35,10 @@ public class NewGroupListAdapter extends BaseAdapter {
     TextView mHeaderRight;
     ArrayList<String> selectedGroud = new ArrayList<>();
     ArrayList<String> selectedGroup_label = new ArrayList<>();
-    ArrayList<String> SelectedGroupList=new ArrayList<>();
+    ArrayList<String> SelectedGroupList = new ArrayList<>();
     String type;
     OnClickEditGroupListener onClickEditGroupListener;
+    boolean isFirstTime = true;
 
     public NewGroupListAdapter(Context context, ArrayList<GroupListDataDetailModel> datalist, TextView mHeaderRight, String type, ArrayList<String> SelectedGroupList) {
         this.context = context;
@@ -45,7 +47,7 @@ public class NewGroupListAdapter extends BaseAdapter {
         this.type = type;
         this.datalist = datalist;
         this.mHeaderRight = mHeaderRight;
-        this.SelectedGroupList=SelectedGroupList;
+        this.SelectedGroupList = SelectedGroupList;
     }
 
     @Override
@@ -76,15 +78,18 @@ public class NewGroupListAdapter extends BaseAdapter {
         final ArrayList<ColorModel> finalColorList = colorList;
 
 
-        for(int i=0;i<SelectedGroupList.size();i++)
-        {
-            for(int j=0;j<datalist.size();j++) {
+        if (isFirstTime) {
+            isFirstTime = false;
+            for (int i = 0; i < SelectedGroupList.size(); i++) {
+                for (int j = 0; j < datalist.size(); j++) {
 
-                if (SelectedGroupList.get(i).equalsIgnoreCase(datalist.get(j).label)) {
-                    datalist.get(j).isClick = "true";
+                    if (SelectedGroupList.get(i).equalsIgnoreCase(datalist.get(j).label)) {
+                        datalist.get(j).isClick = "true";
+                    }
                 }
             }
         }
+
         if (datalist.get(position).isClick.equalsIgnoreCase("false")) {
             binding.ivTick.setVisibility(View.GONE);
         } else {

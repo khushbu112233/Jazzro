@@ -1,17 +1,12 @@
 package com.jlouistechnology.Jazzro.Jazzro;
 
 import android.app.Activity;
-import android.content.ContentResolver;
 import android.content.Intent;
-import android.database.Cursor;
 import android.databinding.DataBindingUtil;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jlouistechnology.Jazzro.Helper.Constants;
@@ -19,9 +14,6 @@ import com.jlouistechnology.Jazzro.Helper.FieldsValidator;
 import com.jlouistechnology.Jazzro.Helper.FontCustom;
 import com.jlouistechnology.Jazzro.Helper.Pref;
 import com.jlouistechnology.Jazzro.Helper.Utils;
-import com.jlouistechnology.Jazzro.Model.ContactVO;
-import com.jlouistechnology.Jazzro.Model.PhoneContact;
-import com.jlouistechnology.Jazzro.Model.SignupErrorStep1;
 import com.jlouistechnology.Jazzro.R;
 import com.jlouistechnology.Jazzro.Webservice.WebService;
 import com.jlouistechnology.Jazzro.databinding.LoginNewLayoutBinding;
@@ -29,13 +21,6 @@ import com.jlouistechnology.Jazzro.databinding.LoginNewLayoutBinding;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.regex.Pattern;
 
 /**
  * Created by aipxperts-ubuntu-01 on 21/4/17.
@@ -96,10 +81,10 @@ public class LoginInNewScreenActivity extends Activity {
     public void Preview() {
          /*edt_email.setText("lgrimsley@gmail.com");
         edt_password.setText("bigbang1");*/
-       mBinding.edtEmail.setText("hadelman@jlouis.com");
+      mBinding.edtEmail.setText("hadelman@jlouis.com");
        mBinding.edtPassword.setText("aipx@1234");
-        mBinding.edtEmail.setTypeface(FontCustom.setFontOpenSansLight(LoginInNewScreenActivity.this));
-        mBinding.edtPassword.setTypeface(FontCustom.setFontOpenSansLight(LoginInNewScreenActivity.this));
+     //   mBinding.edtEmail.setTypeface(FontCustom.setFontOpenSansLight(LoginInNewScreenActivity.this));
+      //  mBinding.edtPassword.setTypeface(FontCustom.setFontOpenSansLight(LoginInNewScreenActivity.this));
         mBinding.txtSignin.setTypeface(FontCustom.setFontOpenSansLight(LoginInNewScreenActivity.this));
         mBinding.txtForgotpassword.setTypeface(FontCustom.setFontOpenSansLight(LoginInNewScreenActivity.this));
         mBinding.txt1.setTypeface(FontCustom.setFontOpenSansRegular(LoginInNewScreenActivity.this));
@@ -231,12 +216,14 @@ public class LoginInNewScreenActivity extends Activity {
                 String fname = json2.optString("fname");
                 String lname = json2.optString("lname");
                 String email = json2.optString("email");
+                String phone = json2.optString("phone");
                 Log.e("email",""+email);
                 Pref.setValue(LoginInNewScreenActivity.this, Constants.PREF_PROFILE_EMAIL, email);
                 /**
                  * for set dashboard title display login first last name
                  */
                 Pref.setValue(LoginInNewScreenActivity.this, "fname", fname + " " + lname);
+                Pref.setValue(LoginInNewScreenActivity.this, "phone", phone);
 
 
                 LoginInNewScreenActivity.this.overridePendingTransition(R.anim.anim_slide_in_left,
