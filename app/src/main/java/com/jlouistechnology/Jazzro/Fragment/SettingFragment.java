@@ -8,7 +8,6 @@ import android.database.Cursor;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,15 +19,13 @@ import android.widget.Toast;
 import com.jlouistechnology.Jazzro.Helper.Constants;
 import com.jlouistechnology.Jazzro.Helper.DatabaseHelper;
 import com.jlouistechnology.Jazzro.Helper.Pref;
-import com.jlouistechnology.Jazzro.Jazzro.DashboardActivity;
 import com.jlouistechnology.Jazzro.Jazzro.DashboardNewActivity;
 import com.jlouistechnology.Jazzro.Jazzro.LoginInNewScreenActivity;
 import com.jlouistechnology.Jazzro.R;
 import com.jlouistechnology.Jazzro.Service.GetallPhoneContact_auto_sync;
 import com.jlouistechnology.Jazzro.Service.GetallPhoneContact_auto_sync_from_middle;
 import com.jlouistechnology.Jazzro.databinding.FragmentSettingBinding;
-
-import static com.jlouistechnology.Jazzro.Jazzro.DashboardActivity.progressBar_sync;
+import com.squareup.picasso.Picasso;
 
 /**
  * Created by aipxperts on 9/8/17.
@@ -57,6 +54,9 @@ public class SettingFragment extends BaseFragment {
             Log.e("khushbu", is_exit + "");
             c.moveToNext();
         }
+
+        Picasso.with(context).load(R.mipmap.profile_image).into(mBinding.ivProfile);
+
         dh.close();
 
         if(Pref.getValue(getActivity(),"auto_sync","").equalsIgnoreCase("1")){
@@ -68,6 +68,12 @@ public class SettingFragment extends BaseFragment {
             mBinding.ivToggle.setBackgroundResource(R.mipmap.toggle_off);
 
         }
+                ;
+
+        mBinding.txtName.setText(Pref.getValue(getActivity(), "fname", ""));
+        mBinding.txtPhoneNumber.setText(Pref.getValue(getActivity(), "phone", ""));
+
+
         mBinding.ivToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

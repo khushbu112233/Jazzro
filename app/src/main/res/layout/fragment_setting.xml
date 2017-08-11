@@ -14,6 +14,48 @@
             android:layout_weight="1"
             android:orientation="vertical">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:layout_marginLeft="30dp"
+                android:gravity="center_vertical">
+
+                <com.jlouistechnology.Jazzro.Helper.CircularImageView
+                    android:layout_width="50dp"
+                    android:id="@+id/ivProfile"
+                    android:layout_height="50dp"
+                    android:scaleType="centerInside"
+                    android:src="@mipmap/profile_image" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:orientation="vertical">
+
+                    <com.jlouistechnology.Jazzro.Widget.TextView_Bold
+                        android:id="@+id/txtName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Florin Gaina"
+                        android:textColor="@color/new_black"
+                        android:textSize="17dp" />
+
+                    <com.jlouistechnology.Jazzro.Widget.TextView_Regular
+                        android:id="@+id/txtPhoneNumber"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="9898502045"
+                        android:textColor="@color/black_40"
+                        android:textSize="14dp" />
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.7dp"

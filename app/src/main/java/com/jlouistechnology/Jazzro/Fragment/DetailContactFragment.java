@@ -66,6 +66,7 @@ public class DetailContactFragment extends Fragment {
                 ((DashboardNewActivity) context).getSupportFragmentManager().popBackStack();
             }
         });
+        arrayList_group.clear();
         return rootView;
     }
 
@@ -295,6 +296,7 @@ public class DetailContactFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        Pref.setValue(context, "selectedGroud", "");
     }
 
     private void msg_click(String phone) {

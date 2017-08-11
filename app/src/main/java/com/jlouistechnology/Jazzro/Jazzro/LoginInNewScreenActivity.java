@@ -216,12 +216,14 @@ public class LoginInNewScreenActivity extends Activity {
                 String fname = json2.optString("fname");
                 String lname = json2.optString("lname");
                 String email = json2.optString("email");
+                String phone = json2.optString("phone");
                 Log.e("email",""+email);
                 Pref.setValue(LoginInNewScreenActivity.this, Constants.PREF_PROFILE_EMAIL, email);
                 /**
                  * for set dashboard title display login first last name
                  */
                 Pref.setValue(LoginInNewScreenActivity.this, "fname", fname + " " + lname);
+                Pref.setValue(LoginInNewScreenActivity.this, "phone", phone);
 
 
                 LoginInNewScreenActivity.this.overridePendingTransition(R.anim.anim_slide_in_left,
