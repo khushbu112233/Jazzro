@@ -3,75 +3,81 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
-        android:id="@+id/ln_main_alluser_contact"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:padding="5dp"
-        android:weightSum="3"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
         <LinearLayout
-
-            android:id="@+id/ln_bg_color"
-            android:layout_width="0dp"
+            android:id="@+id/ln_main_alluser_contact"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:layout_weight="0.6">
-
-            <com.jlouistechnology.Jazzro.Helper.CircularImageView
-                android:id="@+id/img_contact"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="2.2"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/ln_bg_color"
-            android:gravity="center_vertical"
-            android:orientation="vertical">
-
-
-            <com.jlouistechnology.Jazzro.Widget.TextView_Regular
-                android:id="@+id/txt_username_contact"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:paddingLeft="10dp"
-                android:textColor="@color/new_black"
-                tools:text="abc" />
-
-
-            <com.jlouistechnology.Jazzro.Widget.TextView_Regular
-                android:id="@+id/txt_phone_number"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:gravity="center_vertical"
-                android:paddingBottom="4dp"
-                android:visibility="visible"
-                android:paddingLeft="10dp"
-                android:textColor="@color/black_40"
-                android:textSize="12dp"
-                tools:text="" />
-
-            <View
-                android:layout_width="wrap_content"
-                android:layout_height="1dp"
-                android:background="@color/black_10"
-                />
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/ll_group_color"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.2"
             android:gravity="center"
-            android:layout_gravity="center"
-            android:orientation="vertical">
+            android:orientation="horizontal"
+            android:padding="5dp">
+
+            <LinearLayout
+
+                android:id="@+id/ln_bg_color"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal">
+
+                <com.jlouistechnology.Jazzro.Helper.CircularImageView
+                    android:id="@+id/img_contact"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@mipmap/symbol3" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@+id/ln_bg_color"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+
+                <com.jlouistechnology.Jazzro.Widget.TextView_Bold
+                    android:id="@+id/txt_username_contact"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="10dp"
+                    android:textColor="@color/new_black"
+                    android:textSize="18dp"
+                    tools:text="abc" />
+
+
+                <com.jlouistechnology.Jazzro.Widget.TextView_Regular
+                    android:id="@+id/txt_phone_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:paddingBottom="4dp"
+                    android:paddingLeft="10dp"
+                    android:text="1234567890"
+                    android:textColor="@color/black_40"
+                    android:textSize="12dp"
+                    android:visibility="visible" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_group_color"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="0.1"
+                android:gravity="center"
+                android:orientation="vertical" />
         </LinearLayout>
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:layout_marginLeft="60dp"
+            android:layout_marginTop="6dp"
+            android:background="@color/black_10" />
     </LinearLayout>
 </layout>

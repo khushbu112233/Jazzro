@@ -5,7 +5,6 @@ import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.support.v4.app.FragmentActivity;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,11 +12,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
-import com.jlouistechnology.Jazzro.Fragment.ContactDetailsFragment;
 import com.jlouistechnology.Jazzro.Fragment.DetailContactFragment;
-import com.jlouistechnology.Jazzro.Helper.Constants;
 import com.jlouistechnology.Jazzro.Helper.Pref;
 import com.jlouistechnology.Jazzro.Helper.Utils;
 import com.jlouistechnology.Jazzro.Model.ColorModel;
@@ -128,7 +124,7 @@ public class ListContactAdapter extends BaseAdapter {
 
                 Log.e("edit color",""+finalColorList.get(i).color);
                 ImageView imageView = new ImageView(context);
-                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(15, 15);
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(25, 25);
                 lp.setMargins(5, 5, 5, 5);
                 imageView.setLayoutParams(lp);
                 binding.llGroupColor.addView(imageView);
