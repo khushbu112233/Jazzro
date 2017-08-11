@@ -34,11 +34,17 @@
                     android:textColor="@color/blue_setting"
                     android:textSize="17dp" />
 
-                <ImageView
+                <Switch
                     android:id="@+id/ivToggle"
                     android:layout_width="40dp"
                     android:layout_height="20dp"
-                    android:src="@mipmap/toggel" />
+                    android:layout_alignParentRight="true"
+                    android:background="@mipmap/toggle_off"
+                    android:text=""
+                    android:textOff=""
+                    android:textOn=""
+                    android:thumb="@android:color/transparent"
+                    android:track="@android:color/transparent"></Switch>
 
             </LinearLayout>
 
@@ -62,6 +68,7 @@
                 android:background="@color/black_10" />
 
             <LinearLayout
+                android:id="@+id/ll_refresh"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#f2f2f2"

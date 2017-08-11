@@ -73,6 +73,7 @@ public class ContactPhoneAdapter extends BaseAdapter {
 
         final ListContactPhoneItemLayoutBinding binding = DataBindingUtil.inflate(inflater, R.layout.list_contact_phone_item_layout, parent, false);
         rowView = binding.getRoot();
+        binding.v1.setVisibility(View.VISIBLE);
         binding.edtPhone1.setText(list.get(position));
         binding.ivPdelete1.setOnClickListener(new View.OnClickListener() {
             @Override

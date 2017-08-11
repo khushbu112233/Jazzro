@@ -381,13 +381,15 @@ public class EditContactFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
+        email_arraylist.clear();
+        phone_arraylist.clear();
         String group="";
         Gson gson = new Gson();
         if (!Pref.getValue(context, "ContactArrayList", "").equalsIgnoreCase("")) {
             String json = Pref.getValue(context, "ContactArrayList", "");
             Type type = new TypeToken<ArrayList<Contact>>() {
             }.getType();
+
             ContactArrayList = gson.fromJson(json, type);
 
             if(!ContactArrayList.get(0).getPhone1().equalsIgnoreCase("")) {
@@ -586,11 +588,11 @@ public class EditContactFragment extends Fragment {
                 Pref.setValue(context, "groups_add", "");
 
 
-                    Toast.makeText(getActivity(), "Contact updated successfully!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Contact updated successfully!", Toast.LENGTH_SHORT).show();
 
 
 
-                    getActivity().getSupportFragmentManager().popBackStack();
+                getActivity().getSupportFragmentManager().popBackStack();
             } catch (Exception e) {
                 e.printStackTrace();
             }

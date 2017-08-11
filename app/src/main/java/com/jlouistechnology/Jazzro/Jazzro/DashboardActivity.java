@@ -709,7 +709,7 @@ public class DashboardActivity extends FragmentActivity {
                     public void run() {
 
                         Toast.makeText(DashboardActivity.this,"No more contacts to sync!",Toast.LENGTH_LONG).show();
-                        progressBar_sync.setVisibility(View.GONE);
+
                         Intent i = new Intent("android.intent.action.MAIN").putExtra("some_msg", "I will be sent!");
                         sendBroadcast(i);
 
@@ -741,6 +741,7 @@ public class DashboardActivity extends FragmentActivity {
                 //log our message value
               // Toast.makeText(DashboardActivity.this,msg_for_me+"",Toast.LENGTH_LONG).show();
                 progressBar_sync.setVisibility(View.GONE);
+
 
             }
         };

@@ -187,7 +187,7 @@ public class ContactFragment extends Fragment {
         ((DashboardNewActivity)context).visibilityimgright(View.VISIBLE);
         ((DashboardNewActivity)context).visibilityimgleft(View.VISIBLE);
         ((DashboardNewActivity)context).SetimageresourceImgright(R.mipmap.plus_contact);
-        ((DashboardNewActivity)context).SetimageresourceImgleft(R.mipmap.refresh);
+        //((DashboardNewActivity)context).SetimageresourceImgleft(R.mipmap.refresh);
         ((DashboardNewActivity)context).Setimagebackgroundresource(R.mipmap.contact_bar);
 
     }

@@ -1,18 +1,29 @@
 package com.jlouistechnology.Jazzro.Jazzro;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.database.Cursor;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.jlouistechnology.Jazzro.Fragment.AddNewContactFragment;
 import com.jlouistechnology.Jazzro.Fragment.ContactFragment;
 import com.jlouistechnology.Jazzro.Fragment.GropListFragment;
 import com.jlouistechnology.Jazzro.Fragment.SettingFragment;
+import com.jlouistechnology.Jazzro.Helper.Constants;
+import com.jlouistechnology.Jazzro.Helper.DatabaseHelper;
+import com.jlouistechnology.Jazzro.Helper.Pref;
 import com.jlouistechnology.Jazzro.R;
+import com.jlouistechnology.Jazzro.Service.GetallPhoneContact_auto_sync;
+import com.jlouistechnology.Jazzro.Service.GetallPhoneContact_auto_sync_from_middle;
 import com.jlouistechnology.Jazzro.databinding.DashboardNewLayoutBinding;
 
 /**
@@ -20,8 +31,10 @@ import com.jlouistechnology.Jazzro.databinding.DashboardNewLayoutBinding;
  */
 
 public class DashboardNewActivity extends FragmentActivity {
-    public DashboardNewLayoutBinding mBinding;
+    public static DashboardNewLayoutBinding mBinding;
+    public static ProgressBar progressBar_sync;
 
+    private BroadcastReceiver mReceiver;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +45,7 @@ public class DashboardNewActivity extends FragmentActivity {
 
 
 
+        mBinding.header.progressBarSync.setImageResource(R.mipmap.refresh);
 
         ContactFragment fragment = new ContactFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.frame_main_container, fragment).commit();
@@ -91,6 +105,75 @@ public class DashboardNewActivity extends FragmentActivity {
             }
         });
 
+        mBinding.header.progressBarSync.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(DashboardNewActivity.this, R.string.Sync_starts_in_background,Toast.LENGTH_LONG).show();
+                //   ((DashboardNewActivity)context).mBinding.header.progressBarSync.setVisibility(View.VISIBLE);
+
+                mBinding.header.progressBarSync.setImageResource(R.drawable.my_progress_interminate1);
+                Log.e("s", "first" + System.currentTimeMillis());
+                if (Pref.getValue(DashboardNewActivity.this, "first_login", "").equals("1")) {
+
+
+                    Intent intent=new Intent(DashboardNewActivity.this,GetallPhoneContact_auto_sync.class);
+                    startService(intent);
+
+
+                }
+                else {
+                    Intent intent=new Intent(DashboardNewActivity.this,GetallPhoneContact_auto_sync_from_middle.class);
+                    startService(intent);
+
+                    //((DashboardActivity) getActivity()).getAllContacts(getActivity());
+                    //new LoadData().execute();
+                }
+            }
+        });
+        //sync check database value.
+        DatabaseHelper dh = new DatabaseHelper(DashboardNewActivity.this);
+        dh.open();
+        Cursor c = dh.get_sync(Pref.getValue(DashboardNewActivity.this, Constants.PREF_PROFILE_EMAIL, ""));
+        c.moveToFirst();
+        while (!c.isAfterLast()) {
+
+            String is_sync = c.getString(1);
+            if (is_sync.equalsIgnoreCase("1")) {
+                Pref.setValue(DashboardNewActivity.this, "auto_sync", "1");
+
+                mBinding.header.progressBarSync.setVisibility(View.VISIBLE);
+
+
+                Toast.makeText(DashboardNewActivity.this, R.string.Sync_starts_in_background,Toast.LENGTH_LONG).show();
+                mBinding.header.progressBarSync.setImageResource(R.drawable.my_progress_interminate1);
+
+                //new LoadData().execute();
+                if(Pref.getValue(DashboardNewActivity.this, "first_login", "").equals("1"))
+                {
+
+                    startService(new Intent(DashboardNewActivity.this, GetallPhoneContact_auto_sync.class));
+                }
+                else {
+                    startService(new Intent(DashboardNewActivity.this, GetallPhoneContact_auto_sync_from_middle.class));
+                    //getAllContacts(DashboardActivity.this);
+                }
+                break;
+
+            } else {
+                Pref.setValue(DashboardNewActivity.this, "auto_sync", "0");
+            }
+            c.moveToNext();
+        }
+
+        dh.close();
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        this.unregisterReceiver(mReceiver);
     }
 
     /**
@@ -105,7 +188,7 @@ public class DashboardNewActivity extends FragmentActivity {
     public void visibilityimgleft(int visible)
     {
 
-        mBinding.header.imgLeft.setVisibility(visible);
+        mBinding.header.progressBarSync.setVisibility(visible);
     }
     public void visibilityTxtTitleleft(int visible)
     {
@@ -113,6 +196,7 @@ public class DashboardNewActivity extends FragmentActivity {
     }
     public void visibilityimgright(int visible)
     {
+
         mBinding.header.imgRight.setVisibility(visible);
     }
     public void visibilityimgleftback(int visible)
@@ -142,9 +226,13 @@ public class DashboardNewActivity extends FragmentActivity {
     {
         mBinding.header.txtTitleRight.setText(text);
     }
+    public static void SetimageresourceImgleftprogress()
+    {
+        mBinding.header.progressBarSync.setImageResource(R.mipmap.refresh);
+    }
     public void SetimageresourceImgleft(int id)
     {
-        mBinding.header.imgLeft.setImageResource(id);
+        mBinding.header.progressBarSync.setImageResource(id);
     }
     public void SetimageresourceImgright(int id)
     {
@@ -194,5 +282,33 @@ public class DashboardNewActivity extends FragmentActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
 
+        IntentFilter intentFilter = new IntentFilter(
+                "android.intent.action.MAIN");
+
+        mReceiver = new BroadcastReceiver() {
+
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                Intent intent1=new Intent(context,GetallPhoneContact_auto_sync.class);
+                context.stopService(intent1);
+                Intent intent2=new Intent(context,GetallPhoneContact_auto_sync_from_middle.class);
+                context.stopService(intent2);
+                //extract our message from intent
+                String msg_for_me = intent.getStringExtra("some_msg");
+                //   Toast.makeText(DashboardActivity.this, R.string.Sync_completed,Toast.LENGTH_LONG).show();
+
+                //log our message value
+                // Toast.makeText(DashboardActivity.this,msg_for_me+"",Toast.LENGTH_LONG).show();
+                SetimageresourceImgleftprogress();
+
+
+            }
+        };
+        //registering our receiver
+        this.registerReceiver(mReceiver, intentFilter);
+    }
 }

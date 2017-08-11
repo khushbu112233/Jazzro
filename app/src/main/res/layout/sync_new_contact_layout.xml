@@ -4,6 +4,88 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:weightSum="1">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.76"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="40dp"
+            android:orientation="horizontal"
+            android:weightSum="5">
+
+            <TextView
+                android:id="@+id/txt_contact_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:gravity="center"
+                android:text="Auto Sync on Load"
+                android:textSize="18sp" />
+
+            <Switch
+                android:id="@+id/SyncSwitch"
+                android:layout_width="40dp"
+                android:layout_height="20dp"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/toggle_selector"
+                android:text=""
+                android:textOff=""
+                android:textOn=""
+                android:thumb="@android:color/transparent"
+                android:track="@android:color/transparent" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/txt_contact_title1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="30dp"
+            android:gravity="left"
+            android:text="Enabling this feature will automatically sync your phone contacts to Jazzro each time you open the app"
+            android:textColor="@color/blue_title"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/txt_sync_now"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="100dp"
+            android:layout_marginRight="100dp"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/round_background_blue"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="Sync Now"
+            android:textAlignment="center"
+            android:textColor="#f3f5f4"
+            android:textSize="@dimen/edittextsize"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txt_contact_title2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="20dp"
+            android:gravity="left"
+            android:text="Notice: Syncing your phone contacts to Jazzro may take several minutes. Please be patient and do not close the app while we process your contacts."
+            android:textSize="13sp" />
+
+    </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -21,84 +103,5 @@
             android:textSize="40sp" />
     </LinearLayout>
 
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.76"
-        android:orientation="vertical"
-        >
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:orientation="horizontal"
-            android:weightSum="5">
-
-            <TextView
-                android:id="@+id/txt_contact_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textSize="18sp"
-                android:layout_alignParentLeft="true"
-                android:text="Auto Sync on Load" />
-
-            <Switch
-                android:id="@+id/SyncSwitch"
-                android:layout_width="40dp"
-                android:layout_height="20dp"
-                android:textOn=""
-                android:textOff=""
-                android:text=""
-                android:background="@drawable/toggle_selector"
-                android:thumb="@android:color/transparent"
-                android:track="@android:color/transparent"
-                android:layout_alignParentRight="true"
-                />
-        </RelativeLayout>
-        <TextView
-            android:id="@+id/txt_contact_title1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="left"
-            android:layout_marginTop="30dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:textSize="13sp"
-            android:textColor="@color/blue_title"
-            android:layout_gravity="center"
-            android:text="Enabling this feature will automatically sync your phone contacts to Jazzro each time you open the app" />
-        <TextView
-            android:id="@+id/txt_sync_now"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="100dp"
-            android:layout_marginRight="100dp"
-            android:layout_marginTop="40dp"
-            android:background="@drawable/round_background_blue"
-            android:gravity="center"
-            android:layout_gravity="center"
-            android:padding="10dp"
-            android:textStyle="bold"
-            android:text="Sync Now"
-            android:textAlignment="center"
-            android:textColor="#f3f5f4"
-            android:textSize="@dimen/edittextsize" />
-        <TextView
-            android:id="@+id/txt_contact_title2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="left"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:textSize="13sp"
-            android:layout_gravity="center"
-            android:text="Notice: Syncing your phone contacts to Jazzro may take several minutes. Please be patient and do not close the app while we process your contacts." />
-
-    </LinearLayout>
 
 </LinearLayout>
