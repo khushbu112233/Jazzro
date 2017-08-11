@@ -1,4 +1,4 @@
-package com.jlouistechnology.Jazzro.interfaces;
+package com.jlouistechnology.Jazzro.Interface;
 
 /**
  * Created by aipxperts on 8/2/17.

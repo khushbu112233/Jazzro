@@ -183,7 +183,7 @@ public class WebService {
 
     }
 
-    public static String PostData2(ArrayList<String> group_ids,String value1, String value2,String value3,String value4,String value5,String value6, String url, String value) {
+    public static String PostData2(ArrayList<String> group_ids,String value1, String value2,String value3,String value4,String value5,String value6,String value7,String value8,String value9,String value10, String url, String value) {
 
         String s="";
         try
@@ -216,6 +216,10 @@ public class WebService {
             jsonObject.put("company_name", value4);
             jsonObject.put("phone1", value5);
             jsonObject.put("email1", value6);
+            jsonObject.put("phone2",value7);
+            jsonObject.put("email2", value8);
+            jsonObject.put("phone3",value9);
+            jsonObject.put("email3", value10);
             //     list.add(new cz.msebera.android.httpclient.message.BasicNameValuePair(values[i], URLEncoder.encode(valuse[i], "UTF-8")));
             //  list.add(new cz.msebera.android.httpclient.message.BasicNameValuePair(valuse[i],values[i]));
 

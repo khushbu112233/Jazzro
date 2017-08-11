@@ -46,7 +46,7 @@ import static com.jlouistechnology.Jazzro.Jazzro.DashboardActivity.edt_search;
 /**
  * Created by aipxperts on 9/12/16.
  */
-public class GrouListAdapter extends BaseAdapter implements StickyListHeadersAdapter, SectionIndexer,Filterable {
+public class GroupListAdapter extends BaseAdapter implements StickyListHeadersAdapter, SectionIndexer,Filterable {
     Context context;
     public static ArrayList<GroupListDataDetailModel> datalist = new ArrayList<>();
     private ArrayList<GroupListDataDetailModel> myList = new ArrayList<>();
@@ -54,7 +54,7 @@ public class GrouListAdapter extends BaseAdapter implements StickyListHeadersAda
     private Character[] mSectionLetters;
     private LayoutInflater mInflater;
 
-    public GrouListAdapter(Context context, ArrayList<GroupListDataDetailModel> datalist) {
+    public GroupListAdapter(Context context, ArrayList<GroupListDataDetailModel> datalist) {
         this.context = context;
         mInflater = LayoutInflater.from(context);
         this.datalist = datalist;

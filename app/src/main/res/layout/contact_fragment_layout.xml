@@ -66,15 +66,66 @@
                 android:dividerHeight="15dp"
                 />
         </LinearLayout>
-        <com.jlouistechnology.Jazzro.Widget.TextView_Regular
-            android:id="@+id/txt_msg"
+
+        <LinearLayout
+            android:id="@+id/ll_not_found"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:gravity="center"
+            android:layout_marginTop="15dp"
             android:visibility="gone"
-            android:textColor="@color/black_40"
-            android:text="No contacts yet"
-            android:textSize="19sp" />
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.15"
+                    android:gravity="right|center">
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@mipmap/tap_here_left" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.85"
+                    android:orientation="vertical">
+
+                    <com.jlouistechnology.Jazzro.Widget.TextView_Regular
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:layout_marginLeft="20dp"
+                        android:gravity="bottom"
+                        android:paddingTop="10dp"
+                        android:layout_marginTop="40dp"
+                        android:text="Tap here to sync your contacts"
+                        android:textColor="#253768"
+                        android:textSize="19sp" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <com.jlouistechnology.Jazzro.Widget.TextView_Regular
+                android:id="@+id/txt_msg"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:text="No contacts yet"
+                android:textColor="@color/black_40"
+                android:textSize="35sp"
+                android:visibility="visible" />
+        </LinearLayout>
     </LinearLayout>
 </layout>

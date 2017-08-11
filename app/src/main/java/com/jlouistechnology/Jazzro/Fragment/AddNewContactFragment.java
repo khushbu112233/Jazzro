@@ -109,6 +109,7 @@ public class AddNewContactFragment extends Fragment {
 
         preview();
 
+        Pref.setValue(context, "SelectedGroupList", "");
         TelephonyManager tm = (TelephonyManager) getActivity()
                 .getSystemService(Context.TELEPHONY_SERVICE);
         String phNo = tm.getLine1Number();
@@ -129,6 +130,10 @@ public class AddNewContactFragment extends Fragment {
         mBinding.edtGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Gson gson = new Gson();
+                String json = gson.toJson(selectedGroup_label);
+                Pref.setValue(context, "SelectedGroupList", json);
+
                 SelectedGropListFragment fragment = new SelectedGropListFragment();
                 ((FragmentActivity) context).getSupportFragmentManager().beginTransaction().replace(R.id.frame_main_container, fragment).addToBackStack(null).commit();
 
@@ -164,7 +169,16 @@ public class AddNewContactFragment extends Fragment {
                         check_Valid_or_not = 1;
                         mBinding.edtEmail.setError(getString(R.string.please_provide_valid_email));
                     }
-                } else {
+                }
+                if (mBinding.edtPhone.getText().toString().length() > 0) {
+                    if ((mBinding.edtPhone.getText().toString().length() < 10) || (mBinding.edtPhone.getText().toString().length() > 15)) {
+                        check_Valid_or_not = 1;
+                        mBinding.edtPhone.setError(getString(R.string.please_provide_valid_phone_number));
+
+                    }
+                }
+
+                /* else {
                     check_Valid_or_not = 1;
                     mBinding.edtEmail.setError(getString(R.string.please_provide_email));
                 }
@@ -179,7 +193,7 @@ public class AddNewContactFragment extends Fragment {
                     check_Valid_or_not = 1;
                     mBinding.edtPhone.setError(getString(R.string.please_provide_phone_number));
 
-                }
+                }*/
                 int count = 0;
 
                 if (check_Valid_or_not == 0) {
@@ -199,6 +213,8 @@ public class AddNewContactFragment extends Fragment {
                         callAddnewContactAPI(selectedIDS);
                     }
 */
+                    Pref.setValue(context, "SelectedGroupList", "");
+
                     callAddnewContactAPI(selectedGroud);
                 }
 
@@ -551,7 +567,7 @@ public class AddNewContactFragment extends Fragment {
         @Override
         protected String doInBackground(String... params) {
 
-            String res = WebService.PostData2(group_selected_id, Pref.getValue(context, "updateID_add", ""), Pref.getValue(context, "firstName_add", ""), Pref.getValue(context, "lastName_add", ""), Pref.getValue(context, "company_name_add", ""), Pref.getValue(context, "phone1_add", ""), Pref.getValue(context, "email1_add", ""), WebService.SINGLE_CONTACT, Pref.getValue(context, Constants.TOKEN, ""));
+            String res = WebService.PostData2(group_selected_id, Pref.getValue(context, "updateID_add", ""), Pref.getValue(context, "firstName_add", ""), Pref.getValue(context, "lastName_add", ""), Pref.getValue(context, "company_name_add", ""), Pref.getValue(context, "phone1_add", ""), Pref.getValue(context, "email1_add", ""),"","","","", WebService.SINGLE_CONTACT, Pref.getValue(context, Constants.TOKEN, ""));
             Log.d("nnn", " Response : " + res);
             return res;
         }

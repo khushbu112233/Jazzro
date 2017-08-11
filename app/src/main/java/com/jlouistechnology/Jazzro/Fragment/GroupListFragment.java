@@ -21,7 +21,6 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -35,17 +34,13 @@ import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
-import com.google.gson.Gson;
-import com.jlouistechnology.Jazzro.Adapter.ColorAdapter;
-import com.jlouistechnology.Jazzro.Adapter.GrouListAdapter;
-import com.jlouistechnology.Jazzro.Adapter.ListContactAdapter;
+import com.jlouistechnology.Jazzro.Adapter.GroupListAdapter;
 import com.jlouistechnology.Jazzro.Helper.Constants;
 import com.jlouistechnology.Jazzro.Helper.FontCustom;
 import com.jlouistechnology.Jazzro.Helper.Pref;
 import com.jlouistechnology.Jazzro.Helper.Utils;
 import com.jlouistechnology.Jazzro.Jazzro.DashboardActivity;
 import com.jlouistechnology.Jazzro.Model.ColorModel;
-import com.jlouistechnology.Jazzro.Model.GroupListDatModel;
 import com.jlouistechnology.Jazzro.Model.GroupListDataDetailModel;
 import com.jlouistechnology.Jazzro.Model.GroupListServiceModel;
 import com.jlouistechnology.Jazzro.R;
@@ -65,10 +60,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
-import se.emilsjolander.stickylistheaders.WrapperView;
-import se.emilsjolander.stickylistheaders.WrapperViewList;
 
-import static com.jlouistechnology.Jazzro.Adapter.GrouListAdapter.datalist;
+import static com.jlouistechnology.Jazzro.Adapter.GroupListAdapter.datalist;
 import static com.jlouistechnology.Jazzro.Jazzro.DashboardActivity.edt_search;
 import static com.jlouistechnology.Jazzro.Jazzro.DashboardActivity.img_cancel_search;
 import static com.jlouistechnology.Jazzro.Jazzro.DashboardActivity.img_search;
@@ -84,7 +77,7 @@ public class GroupListFragment extends BaseFragment implements StickyListHeaders
 
     FragmentGrouplistBinding mBinding;
     private ArrayList<GroupListDataDetailModel> griupList = new ArrayList<>();
-    private GrouListAdapter adapter;
+    private GroupListAdapter adapter;
     private int pageNumber = 1;
     boolean isHavingMoreData = true;
     private int colorPosition = 0;
@@ -425,7 +418,7 @@ public class GroupListFragment extends BaseFragment implements StickyListHeaders
                             }
                         });
 
-                        adapter = new GrouListAdapter(getActivity(), griupList);
+                        adapter = new GroupListAdapter(getActivity(), griupList);
                         mBinding.listContacts.setAdapter(adapter);
                         filter=adapter.getFilter();
                         adapter.notifyDataSetChanged();

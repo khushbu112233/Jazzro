@@ -12,10 +12,12 @@ import android.widget.AdapterView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.jlouistechnology.Jazzro.Adapter.NewGroupListAdapter;
 import com.jlouistechnology.Jazzro.Helper.Constants;
 import com.jlouistechnology.Jazzro.Helper.Pref;
 import com.jlouistechnology.Jazzro.Jazzro.DashboardNewActivity;
+import com.jlouistechnology.Jazzro.Model.Group;
 import com.jlouistechnology.Jazzro.Model.GroupListDataDetailModel;
 import com.jlouistechnology.Jazzro.Model.GroupListServiceModel;
 import com.jlouistechnology.Jazzro.R;
@@ -24,6 +26,7 @@ import com.jlouistechnology.Jazzro.databinding.GroupListFragmentLayoutBinding;
 import com.jlouistechnology.Jazzro.network.ApiClient;
 import com.jlouistechnology.Jazzro.network.ApiInterface;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 import retrofit2.Call;
@@ -37,6 +40,7 @@ public class SelectedGropListFragment extends Fragment {
     GroupListFragmentLayoutBinding mBinding;
     Context context;
     View rootView;
+    ArrayList<String> SelectedGroupList = new ArrayList<>();
     ArrayList<GroupListDataDetailModel> griupList = new ArrayList<GroupListDataDetailModel>();
     @Override
     public View onCreateView(LayoutInflater inflater,ViewGroup container,Bundle savedInstanceState) {
@@ -52,6 +56,12 @@ public class SelectedGropListFragment extends Fragment {
                 Log.e("group_id",""+griupList.get(position).id);
             }
         });
+        ((DashboardNewActivity)context).mBinding.header.imgLeftBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((DashboardNewActivity) context).getSupportFragmentManager().popBackStack();
+            }
+        });
         return rootView;
     }
 
@@ -59,7 +69,7 @@ public class SelectedGropListFragment extends Fragment {
         ((DashboardNewActivity)context).SettextTxtTitle("Select groups");
         ((DashboardNewActivity)context).visibilityTxtTitleright(View.VISIBLE);
         ((DashboardNewActivity)context).SettextTxtTitleRight("Save");
-        ((DashboardNewActivity)context).visibilityimgleft(View.VISIBLE);
+        ((DashboardNewActivity)context).visibilityimgleftback(View.VISIBLE);
         ((DashboardNewActivity)context).SetimageresourceImgleft(R.mipmap.back_white);
     }
     private void grouplistTask() {
@@ -90,7 +100,7 @@ public class SelectedGropListFragment extends Fragment {
 
                         Pref.setValue(context, "selectedGroud", "");
                         Pref.setValue(context, "selectedGroup_label", "");
-                        NewGroupListAdapter newGroupListAdapter = new NewGroupListAdapter(context,griupList,((DashboardNewActivity)context).mBinding.header.txtTitleRight,"selected");
+                        NewGroupListAdapter newGroupListAdapter = new NewGroupListAdapter(context,griupList,((DashboardNewActivity)context).mBinding.header.txtTitleRight,"selected",SelectedGroupList);
                         mBinding.listGroup.setAdapter(newGroupListAdapter);
                         // groupChoiceOPenDialog(griupList);
 
@@ -113,5 +123,21 @@ public class SelectedGropListFragment extends Fragment {
         super.onPause();
 
         ((DashboardNewActivity) context).Set_header_visibility();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Gson gson = new Gson();
+        if (!Pref.getValue(context, "SelectedGroupList", "").equalsIgnoreCase("")) {
+            String json = Pref.getValue(context, "SelectedGroupList", "");
+            Type type = new TypeToken<ArrayList<String>>() {
+            }.getType();
+            SelectedGroupList = gson.fromJson(json, type);
+
+            for (int i = 0; i < SelectedGroupList.size(); i++) {
+                Log.e("selected", "****  " + SelectedGroupList.get(i));
+            }
+        }
     }
 }

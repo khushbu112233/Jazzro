@@ -29,9 +29,8 @@ public class SettingFragment extends BaseFragment {
     FragmentSettingBinding mBinding;
     Context context;
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater,ViewGroup container,Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(
                 inflater, R.layout.fragment_setting, container, false);
 

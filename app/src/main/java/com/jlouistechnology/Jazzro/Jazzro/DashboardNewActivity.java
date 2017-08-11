@@ -115,6 +115,12 @@ public class DashboardNewActivity extends FragmentActivity {
     {
         mBinding.header.imgRight.setVisibility(visible);
     }
+    public void visibilityimgleftback(int visible)
+    {
+        mBinding.header.imgLeftBack.setVisibility(visible);
+    }
+
+
     public void visibilityTxtTitleright(int visible)
     {
         mBinding.header.txtTitleRight.setVisibility(visible);
@@ -157,6 +163,8 @@ public class DashboardNewActivity extends FragmentActivity {
         visibilityTxtTitleright(View.INVISIBLE);
         visibilityimgleft(View.INVISIBLE);
         visibilityTxtTitleleft(View.INVISIBLE);
+        visibilityimgleftback(View.GONE);
+
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

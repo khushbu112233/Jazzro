@@ -15,13 +15,13 @@ import com.google.gson.Gson;
 import com.jlouistechnology.Jazzro.Adapter.NewGroupListAdapter;
 import com.jlouistechnology.Jazzro.Helper.Constants;
 import com.jlouistechnology.Jazzro.Helper.Pref;
+import com.jlouistechnology.Jazzro.Interface.OnClickEditGroupListener;
 import com.jlouistechnology.Jazzro.Jazzro.DashboardNewActivity;
 import com.jlouistechnology.Jazzro.Model.GroupListDataDetailModel;
 import com.jlouistechnology.Jazzro.Model.GroupListServiceModel;
 import com.jlouistechnology.Jazzro.R;
 import com.jlouistechnology.Jazzro.Webservice.WebService;
 import com.jlouistechnology.Jazzro.databinding.GroupListFragmentLayoutBinding;
-import com.jlouistechnology.Jazzro.interfaces.OnClickEditGroupListener;
 import com.jlouistechnology.Jazzro.network.ApiClient;
 import com.jlouistechnology.Jazzro.network.ApiInterface;
 
@@ -39,6 +39,7 @@ import static com.jlouistechnology.Jazzro.Fragment.MyConnectFragment.context;
 public class GropListFragment extends Fragment {
     GroupListFragmentLayoutBinding mBinding;
     View rootView;
+    ArrayList<String> SelectedGroupList = new ArrayList<>();
     ArrayList<GroupListDataDetailModel> griupList = new ArrayList<GroupListDataDetailModel>();
 
     @Override
@@ -100,7 +101,7 @@ public class GropListFragment extends Fragment {
 
                         Pref.setValue(context, "selectedGroud", "");
                         Pref.setValue(context, "selectedGroup_label", "");
-                        NewGroupListAdapter newGroupListAdapter = new NewGroupListAdapter(context, griupList, ((DashboardNewActivity) context).mBinding.header.txtTitleRight, "main");
+                        NewGroupListAdapter newGroupListAdapter = new NewGroupListAdapter(context, griupList, ((DashboardNewActivity) context).mBinding.header.txtTitleRight, "main",SelectedGroupList);
                         newGroupListAdapter.onClickEdit(onClickEditGroupListener);
                         mBinding.listGroup.setAdapter(newGroupListAdapter);
                         // groupChoiceOPenDialog(griupList);

@@ -60,7 +60,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:paddingLeft="10dp"
-                android:textColor="@color/Royal_Blue"
+                android:textColor="@color/new_black"
                 tools:text="abc" />
 
 
@@ -71,7 +71,7 @@
                 android:layout_marginTop="5dp"
                 android:gravity="center_vertical"
                 android:paddingLeft="10dp"
-                android:textColor="@color/Royal_Blue"
+                android:textColor="@color/black_40"
                 android:textSize="12dp"
                 tools:text="1 member" />
 

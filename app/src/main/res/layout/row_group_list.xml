@@ -45,7 +45,7 @@
                 android:gravity="left"
                 android:layout_marginLeft="5dp"
                 android:paddingTop="8dp"
-                android:textColor="@color/Royal_Blue"
+                android:textColor="@color/new_black"
                 android:textSize="@dimen/lablesize"
                 tools:text="ABC" />
 
@@ -56,7 +56,7 @@
                 android:paddingBottom="8dp"
                 android:paddingLeft="10dp"
                 android:visibility="gone"
-                android:textColor="@color/Royal_Blue"
+                android:textColor="@color/black_40"
                 android:textSize="@dimen/lablesize"
                 tools:text="ABC" />
 

@@ -349,12 +349,12 @@ public class ContactFragment extends Fragment {
                 if(mainConatctArrayList.size()>0)
                 {
                     mBinding.llContactList.setVisibility(View.VISIBLE);
-                    mBinding.txtMsg.setVisibility(View.GONE);
+                    mBinding.llNotFound.setVisibility(View.GONE);
 
                 }else
                 {
                     mBinding.llContactList.setVisibility(View.GONE);
-                    mBinding.txtMsg.setVisibility(View.VISIBLE);
+                    mBinding.llNotFound.setVisibility(View.VISIBLE);
                 }
                 if (mainConatctArrayList.size() > 0) {
                     adapter.notifyDataSetChanged();

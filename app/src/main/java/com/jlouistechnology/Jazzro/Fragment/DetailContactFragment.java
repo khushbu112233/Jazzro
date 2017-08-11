@@ -60,11 +60,17 @@ public class DetailContactFragment extends Fragment {
 
             }
         });
+        ((DashboardNewActivity)context).mBinding.header.imgLeftBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((DashboardNewActivity) context).getSupportFragmentManager().popBackStack();
+            }
+        });
         return rootView;
     }
 
     private void preview() {
-        ((DashboardNewActivity)context).visibilityimgleft(View.VISIBLE);
+        ((DashboardNewActivity)context).visibilityimgleftback(View.VISIBLE);
         ((DashboardNewActivity)context).visibilityTxtTitleright(View.VISIBLE);
         ((DashboardNewActivity)context).SettextTxtTitleRight("Edit");
         ((DashboardNewActivity)context).SetimageresourceImgleft(R.mipmap.back_white);

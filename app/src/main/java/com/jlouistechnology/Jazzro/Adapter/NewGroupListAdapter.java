@@ -11,15 +11,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-
 import com.google.gson.Gson;
 import com.jlouistechnology.Jazzro.Helper.Pref;
 import com.jlouistechnology.Jazzro.Helper.Utils;
+import com.jlouistechnology.Jazzro.Interface.OnClickEditGroupListener;
 import com.jlouistechnology.Jazzro.Model.ColorModel;
 import com.jlouistechnology.Jazzro.Model.GroupListDataDetailModel;
 import com.jlouistechnology.Jazzro.R;
 import com.jlouistechnology.Jazzro.databinding.NewGroupListLayoutBinding;
-import com.jlouistechnology.Jazzro.interfaces.OnClickEditGroupListener;
 
 import java.util.ArrayList;
 
@@ -35,16 +34,18 @@ public class NewGroupListAdapter extends BaseAdapter {
     TextView mHeaderRight;
     ArrayList<String> selectedGroud = new ArrayList<>();
     ArrayList<String> selectedGroup_label = new ArrayList<>();
+    ArrayList<String> SelectedGroupList=new ArrayList<>();
     String type;
     OnClickEditGroupListener onClickEditGroupListener;
 
-    public NewGroupListAdapter(Context context, ArrayList<GroupListDataDetailModel> datalist, TextView mHeaderRight, String type) {
+    public NewGroupListAdapter(Context context, ArrayList<GroupListDataDetailModel> datalist, TextView mHeaderRight, String type, ArrayList<String> SelectedGroupList) {
         this.context = context;
         mInflater = (LayoutInflater) context.
                 getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.type = type;
         this.datalist = datalist;
         this.mHeaderRight = mHeaderRight;
+        this.SelectedGroupList=SelectedGroupList;
     }
 
     @Override
@@ -74,6 +75,16 @@ public class NewGroupListAdapter extends BaseAdapter {
         colorList = Utils.colorList();
         final ArrayList<ColorModel> finalColorList = colorList;
 
+
+        for(int i=0;i<SelectedGroupList.size();i++)
+        {
+            for(int j=0;j<datalist.size();j++) {
+
+                if (SelectedGroupList.get(i).equalsIgnoreCase(datalist.get(j).label)) {
+                    datalist.get(j).isClick = "true";
+                }
+            }
+        }
         if (datalist.get(position).isClick.equalsIgnoreCase("false")) {
             binding.ivTick.setVisibility(View.GONE);
         } else {
@@ -147,6 +158,8 @@ public class NewGroupListAdapter extends BaseAdapter {
                 Log.e("Adaper###", "%%% " + selectedGroud.size());
                 // notifyDataSetChanged();
                 ((FragmentActivity) context).getSupportFragmentManager().popBackStack();
+
+                Pref.setValue(context, "SelectedGroupList", "");
             }
         });
 

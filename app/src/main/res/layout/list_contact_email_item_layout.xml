@@ -33,6 +33,7 @@
             <ImageView
                 android:layout_width="20dp"
                 android:layout_height="20dp"
+                android:visibility="gone"
                 android:src="@mipmap/grey_back"
                 />
         </LinearLayout>
@@ -59,7 +60,7 @@
                     android:gravity="left"
                     android:hint=""
                     android:imeOptions="actionNext"
-                    android:inputType="number"
+                    android:inputType="textEmailAddress"
                     android:paddingTop="10dp"
                     android:singleLine="true"
                     android:textColor="@color/new_black"
