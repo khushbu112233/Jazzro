@@ -7,8 +7,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
+import com.jlouistechnology.Jazzro.Model.GroupListDataDetailModel;
+import com.jlouistechnology.Jazzro.Model.PeticularGroupContactModel;
 import com.jlouistechnology.Jazzro.R;
 import com.jlouistechnology.Jazzro.databinding.RowEditGropBinding;
+import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
 
 
 /**
@@ -18,15 +23,17 @@ import com.jlouistechnology.Jazzro.databinding.RowEditGropBinding;
 //brach testing
 public class EditGroupAdapter extends BaseAdapter {
     Context context;
+    ArrayList<PeticularGroupContactModel> groupData;
 
-    public EditGroupAdapter(Context context) {
+    public EditGroupAdapter(Context context, ArrayList<PeticularGroupContactModel> groupData) {
         this.context = context;
+        this.groupData=groupData;
 
     }
 
     @Override
     public int getCount() {
-        return 20;
+        return groupData.size();
     }
 
     @Override
@@ -53,7 +60,8 @@ public class EditGroupAdapter extends BaseAdapter {
         } else {
             binding = (RowEditGropBinding) convertView.getTag();
         }
-
+        binding.txtname.setText(groupData.get(position).fname+" "+groupData.get(position).lname);
+        Picasso.with(context).load(groupData.get(position).image_url).into(binding.imgContactPhoto);
         return convertView;
 
     }

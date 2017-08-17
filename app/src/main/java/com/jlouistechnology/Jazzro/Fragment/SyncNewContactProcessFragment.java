@@ -93,14 +93,7 @@ public class SyncNewContactProcessFragment extends Fragment {
         dh.close();
 
 
-        DashboardActivity.txt_menu.setImageResource(R.mipmap.home);
-        DashboardActivity.txt_menu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AddContactGroupFragment fragment = new AddContactGroupFragment();
-                ((FragmentActivity)context).getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, fragment).addToBackStack(null).commit();
-            }
-        });
+
         ((DashboardActivity) getActivity()).isHideLogout(false);
 
 

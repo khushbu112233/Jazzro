@@ -4,6 +4,7 @@ import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,6 +50,7 @@ public class SelectedGropListFragment extends Fragment {
         rootView = mBinding.getRoot();
         context = getActivity();
         preview();
+
         grouplistTask();
         mBinding.listGroup.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -56,25 +58,28 @@ public class SelectedGropListFragment extends Fragment {
                 Log.e("group_id",""+griupList.get(position).id);
             }
         });
-        ((DashboardNewActivity)context).mBinding.header.imgLeftBack.setOnClickListener(new View.OnClickListener() {
+        ((DashboardNewActivity)context).mBinding.header.imgRight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((DashboardNewActivity) context).getSupportFragmentManager().popBackStack();
+                NewGroupFragment fragment = new NewGroupFragment();
+                ((FragmentActivity) context).getSupportFragmentManager().beginTransaction().replace(R.id.frame_main_container, fragment).addToBackStack(null).commit();
+
             }
         });
         return rootView;
     }
 
     private void preview() {
+        ((DashboardNewActivity)context).Setimagebackgroundresource(R.mipmap.contact_bar);
         ((DashboardNewActivity)context).SettextTxtTitle("Select groups");
-        ((DashboardNewActivity)context).visibilityTxtTitleright(View.VISIBLE);
-        ((DashboardNewActivity)context).SettextTxtTitleRight("Save");
+        ((DashboardNewActivity)context).visibilityimgright(View.VISIBLE);
         ((DashboardNewActivity)context).visibilityimgleftback(View.VISIBLE);
         ((DashboardNewActivity)context).SetimageresourceImgleft(R.mipmap.back_white);
+        ((DashboardNewActivity)context).SetimageresourceImgright(R.mipmap.plus_contact);
     }
     private void grouplistTask() {
 
-
+        WebService.showProgress(context);
         if (WebService.isNetworkAvailable(getActivity())) {
             ApiInterface apiService =
                     ApiClient.getClient().create(ApiInterface.class);
@@ -97,10 +102,11 @@ public class SelectedGropListFragment extends Fragment {
                             mBinding.listGroup.setVisibility(View.GONE);
                             mBinding.txtMsg.setVisibility(View.VISIBLE);
                         }
+                        WebService.dismissProgress();
 
                         Pref.setValue(context, "selectedGroud", "");
                         Pref.setValue(context, "selectedGroup_label", "");
-                        NewGroupListAdapter newGroupListAdapter = new NewGroupListAdapter(context,griupList,((DashboardNewActivity)context).mBinding.header.txtTitleRight,"selected",SelectedGroupList);
+                        NewGroupListAdapter newGroupListAdapter = new NewGroupListAdapter(context,griupList,((DashboardNewActivity)context).mBinding.header.imgLeftBack,"selected",SelectedGroupList);
                         mBinding.listGroup.setAdapter(newGroupListAdapter);
                         // groupChoiceOPenDialog(griupList);
 
@@ -111,6 +117,7 @@ public class SelectedGropListFragment extends Fragment {
                 @Override
                 public void onFailure(Call<GroupListServiceModel> call, Throwable t) {
                     Log.e("VVV", "Failuar : " + t.toString());
+                    WebService.dismissProgress();
                 }
             });
         } else {
@@ -118,16 +125,13 @@ public class SelectedGropListFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-
-        ((DashboardNewActivity) context).Set_header_visibility();
-    }
 
     @Override
     public void onResume() {
         super.onResume();
+        ((DashboardNewActivity) context).Set_header_visibility();
+
+        preview();
         Gson gson = new Gson();
         if (!Pref.getValue(context, "SelectedGroupList", "").equalsIgnoreCase("")) {
             String json = Pref.getValue(context, "SelectedGroupList", "");

@@ -13,6 +13,7 @@ public class PeticularGroupContactModel {
     public String city = "";
     public String state = "";
     public String zipcode = "";
+    public String image_url = "";
 
 
     public String note = "";
@@ -26,11 +27,11 @@ public class PeticularGroupContactModel {
     public String company_title = "";
     public String uniqueId = "";
 
-   // public String birthday = "";
+    // public String birthday = "";
     //public String work_anniversary = "";
     public String created_at_formatted = "";
     public String updated_at_formatted = "";
- //   boolean  image_url = "";
+    //   boolean  image_url = "";
 
 
 }

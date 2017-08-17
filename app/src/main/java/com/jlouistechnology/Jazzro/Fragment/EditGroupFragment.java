@@ -5,7 +5,6 @@ import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.content.res.ResourcesCompat;
 import android.text.TextUtils;
 import android.util.Log;
@@ -28,16 +27,17 @@ import com.jlouistechnology.Jazzro.Helper.Utils;
 import com.jlouistechnology.Jazzro.Jazzro.DashboardNewActivity;
 import com.jlouistechnology.Jazzro.Model.ColorModel;
 import com.jlouistechnology.Jazzro.Model.GroupListDataDetailModel;
+import com.jlouistechnology.Jazzro.Model.PeticularGroupContactModel;
 import com.jlouistechnology.Jazzro.R;
 import com.jlouistechnology.Jazzro.Webservice.WebService;
 import com.jlouistechnology.Jazzro.databinding.FragmentEditGroupBinding;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import static com.jlouistechnology.Jazzro.Fragment.MyConnectFragment.context;
 
 /**
  * Created by aipxperts on 9/8/17.
@@ -54,15 +54,17 @@ public class EditGroupFragment extends BaseFragment {
     View rootView;
     Spinner spinner1;
     int colorPosition = 0;
-    int pageNumber = 1;
     GroupListDataDetailModel groupData;
     boolean isFirstTime = true;
+    private ArrayList<PeticularGroupContactModel> groupList = new ArrayList<>();
+    private ArrayList<PeticularGroupContactModel> myList = new ArrayList<>();
     ArrayList<ColorModel> colorList = new ArrayList<>();
-
-
-    @Nullable
+    EditGroupAdapter adapter1;
+    boolean isHavingData=true;
+    int pageNumber = 1;
+    int limit = 30;
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater,  ViewGroup container, Bundle savedInstanceState) {
 
         mBinding = DataBindingUtil.inflate(
                 inflater, R.layout.fragment_edit_group, container, false);
@@ -78,7 +80,7 @@ public class EditGroupFragment extends BaseFragment {
         Gson gson = new Gson();
         groupData = gson.fromJson((String) args.getSerializable("data"), GroupListDataDetailModel.class);
 
-
+        new ExecuteTasktWO(pageNumber,limit).execute();
         setup(groupData);
     }
 
@@ -207,7 +209,7 @@ public class EditGroupFragment extends BaseFragment {
         });
 
 
-        EditGroupAdapter adapter1 = new EditGroupAdapter(getActivity());
+        adapter1 = new EditGroupAdapter(getActivity(),groupList);
         mBinding.contactListview.setAdapter(adapter1);
 
     }
@@ -312,6 +314,72 @@ public class EditGroupFragment extends BaseFragment {
             }
         }
     }
+    class ExecuteTasktWO extends AsyncTask<String, Integer, String> {
+        int index;
+        int length;
 
+        public ExecuteTasktWO(int index, int length) {
+
+            this.index = index;
+            this.length = length;
+
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            WebService.showProgress(getActivity());
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            String res = "";
+            res = WebService.GetData1(WebService.GROUP + "/" + groupData.id + "/? withContacts=" + 1 + "& page=" + index + "&perpage=" + length + "&sortfield=fname" + "&sortdir=asc", Pref.getValue(getActivity(), Constants.TOKEN, ""));
+            return res;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+
+            Log.e("my_result",result+"----");
+            WebService.dismissProgress();
+            try {
+                JSONObject json2;
+                JSONObject json1 = new JSONObject(result);
+                json2 = json1.optJSONObject("data");
+                JSONObject contectObject = json2.getJSONObject("contacts");
+                JSONArray jsonArray = contectObject.getJSONArray("data");
+                if (jsonArray.length() == 0) {
+                    isHavingData = false;
+
+                }else
+                {
+                    isHavingData=true;
+                }
+                /*if(jsonArray.length()<limit)
+                {
+                    isHavingData=false;
+                }*/
+
+                // groupList.clear();
+                Gson gson = new Gson();
+                // String json = gson.toJson(facebookuserzeebaListModelArrayList);
+                for (int i = 0; i < jsonArray.length(); i++) {
+
+                    JSONObject dataObject = jsonArray.getJSONObject(i);
+
+                    PeticularGroupContactModel facebookuserzeebaListModel = gson.fromJson(dataObject.toString(), PeticularGroupContactModel.class);
+
+                    groupList.add(facebookuserzeebaListModel);
+                    myList.add(facebookuserzeebaListModel);
+                    adapter1.notifyDataSetChanged();
+
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
 }

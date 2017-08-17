@@ -35,6 +35,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.jlouistechnology.Jazzro.Adapter.SelectedGroupDetailListAdapter;
 import com.jlouistechnology.Jazzro.Helper.ConnectionDetector;
 import com.jlouistechnology.Jazzro.Helper.Constants;
 import com.jlouistechnology.Jazzro.Helper.CountryToPhonePrefix;
@@ -82,6 +83,7 @@ public class AddNewContactFragment extends Fragment {
     ArrayList<String> selectedGroud = new ArrayList<>();
 
     ArrayList<String> selectedGroup_label = new ArrayList<>();
+    ArrayList<String> selectedGroup_color = new ArrayList<>();
     String firstName, lastName, email, phone;
     int check_Valid_or_not = 0;
 
@@ -95,8 +97,10 @@ public class AddNewContactFragment extends Fragment {
 
         mBinding = DataBindingUtil.inflate(
                 inflater, R.layout.add_new_contact_layout, container, false);
+
         rootView = mBinding.getRoot();
         context = getActivity();
+
         /*SharedPreferences preferences = context.getSharedPreferences("selectedGroud", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.clear();
@@ -133,7 +137,8 @@ public class AddNewContactFragment extends Fragment {
                 getActivity().getSupportFragmentManager().popBackStack();
             }
         });
-        mBinding.edtGroup.setOnClickListener(new View.OnClickListener() {
+
+        mBinding.llGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Gson gson = new Gson();
@@ -152,6 +157,77 @@ public class AddNewContactFragment extends Fragment {
             public void onClick(View v) {
 
                 ((FragmentActivity) context).getSupportFragmentManager().popBackStack();
+            }
+        });
+        mBinding.txtAddContacts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                check_Valid_or_not = 0;
+                if (mBinding.edtFirstName.getText().toString().equals("") || TextUtils.isEmpty(mBinding.edtFirstName.getText().toString().trim())) {
+                    check_Valid_or_not = 1;
+                    mBinding.edtFirstName.setError(getString(R.string.please_provide_firstname));
+
+                }
+
+                if (mBinding.edtLastName.getText().toString().equals("") || TextUtils.isEmpty(mBinding.edtLastName.getText().toString().trim())) {
+                    check_Valid_or_not = 1;
+                    mBinding.edtLastName.setError(getString(R.string.please_provide_lastname));
+
+                }
+                if (mBinding.edtEmail.getText().toString().length() > 0) {
+                    if (!isEmailValid(mBinding.edtEmail.getText().toString())) {
+                        check_Valid_or_not = 1;
+                        mBinding.edtEmail.setError(getString(R.string.please_provide_valid_email));
+                    }
+                }
+                if (mBinding.edtPhone.getText().toString().length() > 0) {
+                    if ((mBinding.edtPhone.getText().toString().length() < 10) || (mBinding.edtPhone.getText().toString().length() > 15)) {
+                        check_Valid_or_not = 1;
+                        mBinding.edtPhone.setError(getString(R.string.please_provide_valid_phone_number));
+
+                    }
+                }
+
+                /* else {
+                    check_Valid_or_not = 1;
+                    mBinding.edtEmail.setError(getString(R.string.please_provide_email));
+                }
+
+                if (mBinding.edtPhone.getText().toString().length() > 0) {
+                    if ((mBinding.edtPhone.getText().toString().length() < 10) || (mBinding.edtPhone.getText().toString().length() > 15)) {
+                        check_Valid_or_not = 1;
+                        mBinding.edtPhone.setError(getString(R.string.please_provide_valid_phone_number));
+
+                    }
+                } else {
+                    check_Valid_or_not = 1;
+                    mBinding.edtPhone.setError(getString(R.string.please_provide_phone_number));
+
+                }*/
+                int count = 0;
+
+                if (check_Valid_or_not == 0) {
+                    firstName = mBinding.edtFirstName.getText().toString();
+                    lastName = mBinding.edtLastName.getText().toString();
+                    email = mBinding.edtEmail.getText().toString();
+                    phone = mBinding.edtPhone.getText().toString();
+                    /**
+                     * here when update id is empty mean new contact other wise update contact.
+                     */
+                    /*if (TextUtils.isEmpty(updateID)) {
+                        displaySimpleDialog();
+
+                    } else {
+
+                        ArrayList<String> selectedIDS = new ArrayList<String>();
+                        callAddnewContactAPI(selectedIDS);
+                    }
+*/
+                    Pref.setValue(context, "SelectedGroupList", "");
+
+                    callAddnewContactAPI(selectedGroud);
+                }
+
             }
         });
         ((DashboardNewActivity) context).mBinding.header.txtTitleRight.setOnClickListener(new View.OnClickListener() {
@@ -259,6 +335,7 @@ public class AddNewContactFragment extends Fragment {
     }
 
     private void preview() {
+        ((DashboardNewActivity)context).Setimagebackgroundresource(R.mipmap.contact_bar);
         ((DashboardNewActivity) context).visibilityTxtTitleleft(View.VISIBLE);
         ((DashboardNewActivity) context).visibilityTxtTitleright(View.VISIBLE);
         ((DashboardNewActivity) context).SettextTxtTitle("New Contact");
@@ -270,7 +347,11 @@ public class AddNewContactFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+
+        ((DashboardNewActivity) context).Set_header_visibility();
         preview();
+
+        Utils.hideKeyboard(context);
         // SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         // SharedPreferences.Editor editor = sharedPrefs.edit();
         Log.e("Adaper###", "$$$$  " + Pref.getValue(context, "selectedGroud", ""));
@@ -278,11 +359,13 @@ public class AddNewContactFragment extends Fragment {
         if (!Pref.getValue(context, "selectedGroud", "").equalsIgnoreCase("")) {
             String json = Pref.getValue(context, "selectedGroud", "");
             String json1 = Pref.getValue(context, "selectedGroup_label", "");
+            String json2 = Pref.getValue(context,"selectedGroup_color","");
             Type type = new TypeToken<ArrayList<String>>() {
             }.getType();
             selectedGroud = gson.fromJson(json, type);
             selectedGroup_label = gson.fromJson(json1, type);
 
+            selectedGroup_color=gson.fromJson(json2,type);
             // Log.e("Adaper###","^^^  "+ selectedGroud.size());
 
             for (int i = 0; i < selectedGroud.size(); i++) {
@@ -297,8 +380,17 @@ public class AddNewContactFragment extends Fragment {
 
 
             }
-
-            mBinding.edtGroup.setText(group);
+            if(selectedGroud.size()>0)
+            {
+                mBinding.txtGroupTest.setVisibility(View.GONE);
+                mBinding.selectedGroup.setVisibility(View.VISIBLE);
+            }else
+            {
+                mBinding.txtGroupTest.setVisibility(View.VISIBLE);
+                mBinding.selectedGroup.setVisibility(View.GONE);
+            }
+            SelectedGroupDetailListAdapter selectedGroupDetailListAdapter = new SelectedGroupDetailListAdapter(context,selectedGroup_color,selectedGroup_label);
+            mBinding.selectedGroup.setAdapter(selectedGroupDetailListAdapter);
            /* facebookFriendListAdapter = new FacebookFriendListAdapter(getActivity(), facebookuserzeebaListModelArrayList);
             mBinding.lvFacebookFrnd.setAdapter(facebookFriendListAdapter);*/
         }

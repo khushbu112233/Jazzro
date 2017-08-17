@@ -36,9 +36,7 @@ import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.jlouistechnology.Jazzro.Fragment.AddContactGroupFragment;
 import com.jlouistechnology.Jazzro.Fragment.GroupListFragment;
-import com.jlouistechnology.Jazzro.Fragment.MyConnectFragment;
 import com.jlouistechnology.Jazzro.Fragment.SyncNewContactProcessFragment;
 import com.jlouistechnology.Jazzro.Helper.Constants;
 import com.jlouistechnology.Jazzro.Helper.DatabaseHandler;
@@ -196,9 +194,6 @@ public class DashboardActivity extends FragmentActivity {
 
         dh.close();
 
-        AddContactGroupFragment fragment = new AddContactGroupFragment();
-        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, fragment).commit();
-
     }
 
     public void init(){
@@ -325,106 +320,7 @@ public class DashboardActivity extends FragmentActivity {
     }
 
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == RESULT_OK) {
-
-            Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.content_frame);
-            String pos = data.getStringExtra("drawer_position");
-            if (pos.equals("0")) {
-                if (currentFragment instanceof AddContactGroupFragment) {
-                } else {
-                    FragmentManager fm = getSupportFragmentManager();
-                    int count = fm.getBackStackEntryCount();
-                    for (int i = 0; i < count - 1; ++i) {
-                        fm.popBackStackImmediate();
-                    }
-
-                    AddContactGroupFragment fragment9 = new AddContactGroupFragment();
-                    getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, fragment9).addToBackStack(null).commit();
-                }
-            } else if (pos.equals("1")) {
-                if (currentFragment instanceof MyConnectFragment) {
-                } else {
-                    FragmentManager fm = getSupportFragmentManager();
-                    int count = fm.getBackStackEntryCount();
-                    for (int i = 0; i < count - 1; ++i) {
-                        fm.popBackStackImmediate();
-                    }
-
-                    MyConnectFragment fragment = new MyConnectFragment();
-                    getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, fragment).addToBackStack(null).commit();
-                }
-            } else if (pos.equals("2")) {
-                if (currentFragment instanceof GroupListFragment) {
-                } else {
-                    FragmentManager fm = getSupportFragmentManager();
-                    int count = fm.getBackStackEntryCount();
-                    for (int i = 0; i < count - 1; ++i) {
-                        fm.popBackStackImmediate();
-                    }
-
-
-                    GroupListFragment fragment2 = new GroupListFragment();
-                    getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, fragment2).addToBackStack(null).commit();
-                }
-            } /*else if (pos.equals("3")) {
-
-                encodeString = data.getStringExtra("encodeString");
-                Log.e("encodeString", encodeString);
-                if (currentFragment instanceof NewContactFragment) {
-                } else {
-
-                    FragmentManager fm = getSupportFragmentManager();
-                    int count = fm.getBackStackEntryCount();
-                    for (int i = 0; i < count - 1; ++i) {
-                        fm.popBackStackImmediate();
-                    }
-
-                    NewContactFragment fragment1 = new NewContactFragment();
-                    getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, fragment1).addToBackStack(null).commit();
-                }
-                //startActivity(new Intent(DashboardActivity.this, CaptureActivity.class));
-                //finish();
-            }*/ /*else if (pos.equals("4")) {
-                if (currentFragment instanceof NewContactFragment) {
-                } else {
-
-                    FragmentManager fm = getSupportFragmentManager();
-                    int count = fm.getBackStackEntryCount();
-                    for (int i = 0; i < count - 1; ++i) {
-                        fm.popBackStackImmediate();
-                    }
-
-                    NewContactFragment fragment1 = new NewContactFragment();
-                    getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, fragment1).addToBackStack(null).commit();
-
-                   *//* NewCardScannerFragment fragment1 = new NewCardScannerFragment();
-                    getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, fragment1).addToBackStack(null).commit();*//*
-                }
-            } *//*else if (pos.equals("5")) {
-                if (currentFragment instanceof ContactDetailsFragment) {
-                } else {
-                    FragmentManager fm = getSupportFragmentManager();
-                    int count = fm.getBackStackEntryCount();
-                    for (int i = 0; i < count - 1; ++i) {
-                        fm.popBackStackImmediate();
-                    }
-
-                    Pref.setValue(DashboardActivity.this, "is_Profile", "true");
-                    ContactDetailsFragment fragment6 = new ContactDetailsFragment();
-                    getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, fragment6).addToBackStack(null).commit();
-                }
-            }*/ else if (pos.equals("3")) {
-
-                SyncNewContactProcessFragment fragmentS = new SyncNewContactProcessFragment();
-                getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, fragmentS).addToBackStack(null).commit();
-
-            }
-        }
-    }
 
     @Override
     public void setTitle(CharSequence title) {

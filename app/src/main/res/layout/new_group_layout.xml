@@ -11,29 +11,32 @@
         android:layout_height="match_parent"
         android:layout_marginTop="20dp"
         android:orientation="vertical">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:weightSum="1">
+
             <com.jlouistechnology.Jazzro.Widget.TextView_Regular
                 android:id="@+id/txt_name"
                 android:layout_width="0dp"
-                android:layout_weight="0.20"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_weight="0.20"
                 android:gravity="center"
-                android:visibility="visible"
-                android:textColor="@color/black_40"
                 android:text="Name"
-                android:textSize="15sp" />
+                android:textColor="@color/black_40"
+                android:textSize="15sp"
+                android:visibility="visible" />
+
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_weight="0.80"
                 android:layout_height="wrap_content"
+                android:layout_weight="0.80"
                 android:orientation="vertical">
 
-                <com.jlouistechnology.Jazzro.Widget.Edittext_bold
+                <com.jlouistechnology.Jazzro.Widget.Edittext_Regular
                     android:id="@+id/edName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -43,21 +46,20 @@
                     android:layout_marginTop="5dp"
                     android:background="@null"
                     android:gravity="left"
-                    android:hint="Squash mates"
+                    android:hint="Group name"
                     android:imeOptions="actionDone"
                     android:inputType="text"
                     android:paddingTop="10dp"
                     android:singleLine="true"
                     android:textColor="@color/new_black"
-                    android:textColorHint="@color/new_black"
-                    android:textSize="16sp" />
+                    android:textSize="15sp" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginRight="30dp"
                     android:layout_marginLeft="30dp"
-                    android:background="@color/black_10"/>
+                    android:layout_marginRight="30dp"
+                    android:background="@color/black_10" />
             </LinearLayout>
         </LinearLayout>
 
@@ -66,22 +68,25 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:weightSum="1">
+
             <com.jlouistechnology.Jazzro.Widget.TextView_Regular
                 android:id="@+id/txt_color"
                 android:layout_width="0dp"
-                android:layout_weight="0.20"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_weight="0.20"
                 android:gravity="center"
-                android:visibility="visible"
-                android:textColor="@color/black_40"
                 android:text="Color"
-                android:textSize="15sp" />
+                android:textColor="@color/black_40"
+                android:textSize="15sp"
+                android:visibility="visible" />
+
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_weight="0.80"
                 android:layout_height="wrap_content"
+                android:layout_weight="0.80"
                 android:orientation="vertical">
+
                 <FrameLayout
                     android:id="@+id/llSipner"
                     android:layout_width="match_parent"
@@ -98,37 +103,66 @@
                         android:layout_height="20dp"
                         android:layout_gravity="left"
                         android:layout_marginBottom="3dp"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginRight="40dp"
-                        android:visibility="invisible"
-                         />
+                        android:layout_marginLeft="30dp"
+                        android:layout_marginRight="30dp"
+                        android:visibility="invisible" />
 
-                    <TextView
+                    <com.jlouistechnology.Jazzro.Widget.TextView_Regular
                         android:id="@+id/txtBackgruondColor"
                         android:layout_width="match_parent"
                         android:layout_height="20dp"
                         android:layout_marginBottom="3dp"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginRight="40dp"
+                        android:layout_marginLeft="24dp"
+                        android:layout_marginRight="25dp"
                         android:gravity="left"
                         android:text="Choose a color"
-                        android:textColor="#767575"
+                        android:textColor="@color/new_black"
+                        android:textSize="15sp"
                         android:visibility="visible" />
 
 
                 </FrameLayout>
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginRight="30dp"
                     android:layout_marginLeft="30dp"
-                    android:background="@color/black_10"/>
+                    android:layout_marginRight="30dp"
+                    android:background="@color/black_10" />
             </LinearLayout>
         </LinearLayout>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="40dp"
+            android:background="@color/black_40" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#f2f2f2"
+            android:orientation="vertical">
 
+            <com.jlouistechnology.Jazzro.Widget.TextView_Regular
+                android:id="@+id/txt_add_groups"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginLeft="10dp"
+                android:gravity="left"
+                android:padding="10dp"
+                android:text="Save Group"
+                android:textColor="#233566"
+                android:textSize="15sp"
+                android:visibility="visible" />
+        </LinearLayout>
 
+        <View
+
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/black_40" />
     </LinearLayout>
 
 </LinearLayout>

@@ -2,6 +2,7 @@ package com.jlouistechnology.Jazzro.Jazzro;
 
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -33,12 +34,13 @@ import retrofit2.Response;
 public class ForgotPasswordActivity extends BaseActivity {
 
     private ActivityForgotPasswordBinding mBinding;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_forgot_password);
+        Typeface font = Typeface.createFromAsset(getAssets(), "fonts/SF_Light.otf");
+        mBinding.txt12.setTypeface(font);
         mBinding.txtSignin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -58,8 +60,7 @@ public class ForgotPasswordActivity extends BaseActivity {
         mBinding.txtCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(ForgotPasswordActivity.this, LoginInNewScreenActivity.class);
-                startActivity(i);
+
                 finish();
             }
         });

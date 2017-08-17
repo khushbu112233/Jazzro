@@ -6,12 +6,14 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
 import android.databinding.DataBindingUtil;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -43,19 +45,14 @@ public class DashboardNewActivity extends FragmentActivity {
         mBinding = DataBindingUtil.setContentView(this, R.layout.dashboard_new_layout);
 
 
-
+        StatusBar();
 
 
         mBinding.header.progressBarSync.setImageResource(R.mipmap.refresh);
 
         ContactFragment fragment = new ContactFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.frame_main_container, fragment).commit();
-        mBinding.footer.txtContact.setTextColor(getResources().getColor(R.color.new_black));
-        mBinding.footer.txtGroups.setTextColor(getResources().getColor(R.color.black_40));
-        mBinding.footer.txtSettings.setTextColor(getResources().getColor(R.color.black_40));
-        mBinding.footer.imgContacts.setImageResource(R.mipmap.contact_selected);
-        mBinding.footer.imgGroups.setImageResource(R.mipmap.group_unselect);
-        mBinding.footer.imgSettings.setImageResource(R.mipmap.settings_unselect);
+        Contact_footer();
 
 
 
@@ -65,13 +62,7 @@ public class DashboardNewActivity extends FragmentActivity {
 
                 ContactFragment fragment = new ContactFragment();
                 getSupportFragmentManager().beginTransaction().replace(R.id.frame_main_container, fragment).commit();
-                mBinding.footer.txtContact.setTextColor(getResources().getColor(R.color.new_black));
-                mBinding.footer.txtGroups.setTextColor(getResources().getColor(R.color.black_40));
-                mBinding.footer.txtSettings.setTextColor(getResources().getColor(R.color.black_40));
-                mBinding.footer.imgContacts.setImageResource(R.mipmap.contact_selected);
-                mBinding.footer.imgGroups.setImageResource(R.mipmap.group_unselect);
-                mBinding.footer.imgSettings.setImageResource(R.mipmap.settings_unselect);
-
+                Contact_footer();
             }
         });
         mBinding.footer.llGroups.setOnClickListener(new View.OnClickListener() {
@@ -79,31 +70,18 @@ public class DashboardNewActivity extends FragmentActivity {
             public void onClick(View v) {
                 GropListFragment fragment = new GropListFragment();
                 getSupportFragmentManager().beginTransaction().replace(R.id.frame_main_container, fragment).commit();
-
-                mBinding.footer.txtContact.setTextColor(getResources().getColor(R.color.black_40));
-                mBinding.footer.txtGroups.setTextColor(getResources().getColor(R.color.new_black));
-                mBinding.footer.txtSettings.setTextColor(getResources().getColor(R.color.black_40));
-                mBinding.footer.imgContacts.setImageResource(R.mipmap.contact_unselected);
-                mBinding.footer.imgGroups.setImageResource(R.mipmap.group_selected);
-                mBinding.footer.imgSettings.setImageResource(R.mipmap.settings_unselect);
-
+                Group_footer();
 
             }
         });
         mBinding.footer.llSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mBinding.footer.txtContact.setTextColor(getResources().getColor(R.color.black_40));
-                mBinding.footer.txtGroups.setTextColor(getResources().getColor(R.color.black_40));
-                mBinding.footer.txtSettings.setTextColor(getResources().getColor(R.color.new_black));
-                mBinding.footer.imgContacts.setImageResource(R.mipmap.contact_unselected);
-                mBinding.footer.imgGroups.setImageResource(R.mipmap.group_unselect);
-                mBinding.footer.imgSettings.setImageResource(R.mipmap.setting_selected);
 
                 SettingFragment fragment = new SettingFragment();
                 getSupportFragmentManager().beginTransaction().replace(R.id.frame_main_container, fragment).commit();
 
-
+                Setting_footer();
             }
         });
 
@@ -171,7 +149,43 @@ public class DashboardNewActivity extends FragmentActivity {
 
     }
 
+    public void Contact_footer() {
+        mBinding.footer.txtContact.setTextColor(getResources().getColor(R.color.new_black));
+        mBinding.footer.txtGroups.setTextColor(getResources().getColor(R.color.black_40));
+        mBinding.footer.txtSettings.setTextColor(getResources().getColor(R.color.black_40));
+        mBinding.footer.imgContacts.setImageResource(R.mipmap.contact_selected);
+        mBinding.footer.imgGroups.setImageResource(R.mipmap.group_unselect);
+        mBinding.footer.imgSettings.setImageResource(R.mipmap.settings_unselect);
 
+    }
+    public  void Group_footer(){
+
+        mBinding.footer.txtContact.setTextColor(getResources().getColor(R.color.black_40));
+        mBinding.footer.txtGroups.setTextColor(getResources().getColor(R.color.new_black));
+        mBinding.footer.txtSettings.setTextColor(getResources().getColor(R.color.black_40));
+        mBinding.footer.imgContacts.setImageResource(R.mipmap.contact_unselected);
+        mBinding.footer.imgGroups.setImageResource(R.mipmap.group_selected);
+        mBinding.footer.imgSettings.setImageResource(R.mipmap.settings_unselect);
+
+    }
+    public void Setting_footer()
+    {
+        mBinding.footer.txtContact.setTextColor(getResources().getColor(R.color.black_40));
+        mBinding.footer.txtGroups.setTextColor(getResources().getColor(R.color.black_40));
+        mBinding.footer.txtSettings.setTextColor(getResources().getColor(R.color.new_black));
+        mBinding.footer.imgContacts.setImageResource(R.mipmap.contact_unselected);
+        mBinding.footer.imgGroups.setImageResource(R.mipmap.group_unselect);
+        mBinding.footer.imgSettings.setImageResource(R.mipmap.setting_selected);
+
+    }
+    public  void StatusBar() {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            getWindow().setStatusBarColor(getResources().getColor(R.color.colorAccent));
+        }
+
+    }
     @Override
     protected void onPause() {
         super.onPause();
@@ -261,7 +275,7 @@ public class DashboardNewActivity extends FragmentActivity {
         visibilityimgleft(View.INVISIBLE);
         visibilityTxtTitleleft(View.INVISIBLE);
         visibilityimgleftProgress(View.INVISIBLE);
-        visibilityimgleftback(View.GONE);
+        visibilityimgleftback(View.INVISIBLE);
 
     }
     @Override
@@ -295,7 +309,7 @@ public class DashboardNewActivity extends FragmentActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
+        Log.e("current_on_resume",""+getCurrentFragment());
         IntentFilter intentFilter = new IntentFilter(
                 "android.intent.action.MAIN");
 

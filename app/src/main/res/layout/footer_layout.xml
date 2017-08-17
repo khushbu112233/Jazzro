@@ -2,19 +2,20 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-        <View
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/New_white"
+        >
 
+        <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginBottom="5dp"
-            android:background="@color/black_10"/>
-
+            android:background="@color/black_10"
+            />
         <LinearLayout
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="5dp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:weightSum="1">
             <LinearLayout
@@ -35,7 +36,7 @@
                     android:gravity="center"
                     android:layout_gravity="center"
                     android:text="Groups"
-                    android:textSize="15sp"
+                    android:textSize="13sp"
                     android:textColor="@color/new_black"
                     />
             </LinearLayout>
@@ -58,7 +59,7 @@
                     android:gravity="center"
                     android:layout_gravity="center"
                     android:text="Contacts"
-                    android:textSize="15sp"
+                    android:textSize="13sp"
                     android:textColor="@color/new_black"
                     />
             </LinearLayout>
@@ -81,7 +82,7 @@
                     android:gravity="center"
                     android:layout_gravity="center"
                     android:text="Settings"
-                    android:textSize="15sp"
+                    android:textSize="13sp"
                     android:textColor="@color/new_black"
                     />
             </LinearLayout>

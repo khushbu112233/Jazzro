@@ -14,7 +14,7 @@
 
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="20dp"
 
                 >
                 <ImageView
@@ -80,152 +80,217 @@
 
             </LinearLayout>
         </LinearLayout>
-        <LinearLayout
+        <com.jlouistechnology.Jazzro.Helper.VerticalScrollview
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="70dp">
+            android:layout_height="match_parent"
+            android:layout_marginTop="70dp"
+            android:scrollbars="vertical">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="1">
-                <com.jlouistechnology.Jazzro.Widget.TextView_Regular
-                    android:id="@+id/txt_phone"
-                    android:layout_width="0dp"
-                    android:layout_weight="0.25"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:visibility="visible"
-                    android:textColor="@color/black_40"
-                    android:text="Phone"
-                    android:textSize="15sp" />
+                android:orientation="vertical">
                 <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="0.75"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                    <com.jlouistechnology.Jazzro.Widget.Edittext_Regular
-                        android:id="@+id/edt_phone"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+                    <com.jlouistechnology.Jazzro.Widget.TextView_Regular
+                        android:id="@+id/txt_phone"
+                        android:layout_width="0dp"
+                        android:layout_weight="0.25"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="left"
+                        android:layout_marginLeft="20dp"
+                        android:visibility="visible"
+                        android:textColor="@color/black_40"
+                        android:text="Phone"
+                        android:textSize="13sp" />
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="0.75"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <com.jlouistechnology.Jazzro.Widget.Edittext_Regular
+                            android:id="@+id/edt_phone"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="12dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginRight="30dp"
+                            android:background="@null"
+                            android:gravity="left"
+                            android:hint="Tap to add a phone number"
+                            android:imeOptions="actionNext"
+                            android:inputType="number"
+                            android:paddingTop="10dp"
+                            android:singleLine="true"
+                            android:textColor="@color/new_black"
+                            android:textSize="15sp" />
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginRight="30dp"
+                            android:layout_marginLeft="30dp"
+                            android:background="@color/black_10"/>
+                    </LinearLayout>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+                    <com.jlouistechnology.Jazzro.Widget.TextView_Regular
+                        android:id="@+id/txt_email"
+                        android:layout_width="0dp"
+                        android:layout_weight="0.25"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="left"
+                        android:layout_marginLeft="20dp"
+                        android:visibility="visible"
+                        android:textColor="@color/black_40"
+                        android:text="Email"
+                        android:textSize="13sp" />
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="0.75"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <com.jlouistechnology.Jazzro.Widget.Edittext_Regular
+                            android:id="@+id/edt_email"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="12dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginRight="30dp"
+                            android:background="@null"
+                            android:gravity="left"
+                            android:hint="Tap to add an email address"
+                            android:imeOptions="actionDone"
+                            android:inputType="textEmailAddress"
+                            android:paddingTop="10dp"
+                            android:singleLine="true"
+                            android:textColor="@color/new_black"
+                            android:textSize="15sp" />
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginRight="30dp"
+                            android:layout_marginLeft="30dp"
+                            android:background="@color/black_10"/>
+                    </LinearLayout>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+                    <com.jlouistechnology.Jazzro.Widget.TextView_Regular
+                        android:id="@+id/txt_group"
+                        android:layout_width="0dp"
+                        android:layout_weight="0.25"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top"
+                        android:gravity="left"
+                        android:layout_marginLeft="20dp"
+                        android:visibility="visible"
+                        android:textColor="@color/black_40"
+                        android:text="Group"
+                        android:textSize="13sp" />
+                    <LinearLayout
+                        android:id="@+id/ll_group"
+                        android:layout_width="0dp"
+                        android:layout_weight="0.75"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <!--<com.jlouistechnology.Jazzro.Widget.Edittext_Regular
+                            android:id="@+id/edt_group"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="12dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginLeft="30dp"
+                            android:layout_marginRight="30dp"
+                            android:background="@null"
+                            android:gravity="left"
+                            android:hint="Tap to choose a group"
+                            android:editable="false"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
+                            android:imeOptions="actionNext"
+                            android:inputType="text"
+                            android:paddingTop="10dp"
+                            android:textColor="@color/new_black"
+                            android:textSize="15sp" />-->
+                        <com.jlouistechnology.Jazzro.Widget.TextView_Regular
+                            android:id="@+id/txt_group_test"
+                            android:layout_width="match_parent"
+                            android:layout_weight="0.85"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="30dp"
+                            android:layout_marginRight="30dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:gravity="center_vertical"
+                            android:layout_gravity="center"
+                            android:text="Tap to choose group"
+                            android:textColor="@color/black_40"
+                            android:textSize="15sp"
+                            />
+                        <ListView
+                            android:id="@+id/selected_group"
+                            android:layout_width="match_parent"
+                            android:layout_height="70dp"
+                            android:layout_marginLeft="30dp"
+                            android:gravity="center_vertical"
+                            android:layout_marginRight="30dp"
+                            android:nestedScrollingEnabled="true"
+                            android:dividerHeight="0dp"
+                            android:visibility="gone"
+                            android:divider="@null"
+                            >
+
+                        </ListView>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginRight="30dp"
+                            android:layout_marginLeft="30dp"
+                            android:background="@color/black_10"/>
+                    </LinearLayout>
+                </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginTop="50dp"
+                    android:background="@color/black_40"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="#f2f2f2">
+                    <com.jlouistechnology.Jazzro.Widget.TextView_Regular
+                        android:id="@+id/txt_add_contacts"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="12dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginLeft="30dp"
-                        android:layout_marginRight="30dp"
-                        android:background="@null"
+                        android:layout_gravity="left"
                         android:gravity="left"
-                        android:hint="Tap to add a phone number"
-                        android:imeOptions="actionNext"
-                        android:inputType="number"
-                        android:paddingTop="10dp"
-                        android:singleLine="true"
-                        android:textColor="@color/new_black"
-                        android:textSize="@dimen/edittextsize" />
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginRight="30dp"
-                        android:layout_marginLeft="30dp"
-                        android:background="@color/black_10"/>
+                        android:padding="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:visibility="visible"
+                        android:textColor="#233566"
+                        android:text="Save contact"
+                        android:textSize="15sp" />
                 </LinearLayout>
+                <View
+
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@color/black_40"/>
             </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="1">
-                <com.jlouistechnology.Jazzro.Widget.TextView_Regular
-                    android:id="@+id/txt_email"
-                    android:layout_width="0dp"
-                    android:layout_weight="0.25"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:visibility="visible"
-                    android:textColor="@color/black_40"
-                    android:text="Email"
-                    android:textSize="15sp" />
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="0.75"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                    <com.jlouistechnology.Jazzro.Widget.Edittext_Regular
-                        android:id="@+id/edt_email"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="12dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginLeft="30dp"
-                        android:layout_marginRight="30dp"
-                        android:background="@null"
-                        android:gravity="left"
-                        android:hint="Tap to add an email address"
-                        android:imeOptions="actionNext"
-                        android:inputType="textEmailAddress"
-                        android:paddingTop="10dp"
-                        android:singleLine="true"
-                        android:textColor="@color/new_black"
-                        android:textSize="@dimen/edittextsize" />
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginRight="30dp"
-                        android:layout_marginLeft="30dp"
-                        android:background="@color/black_10"/>
-                </LinearLayout>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="1">
-                <com.jlouistechnology.Jazzro.Widget.TextView_Regular
-                    android:id="@+id/txt_group"
-                    android:layout_width="0dp"
-                    android:layout_weight="0.25"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:visibility="visible"
-                    android:textColor="@color/black_40"
-                    android:text="Group"
-                    android:textSize="15sp" />
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="0.75"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                    <com.jlouistechnology.Jazzro.Widget.Edittext_Regular
-                        android:id="@+id/edt_group"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="12dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginLeft="30dp"
-                        android:layout_marginRight="30dp"
-                        android:background="@null"
-                        android:gravity="left"
-                        android:hint="Tap to choose a group"
-                        android:editable="false"
-                        android:focusable="false"
-                        android:focusableInTouchMode="false"
-                        android:imeOptions="actionNext"
-                        android:inputType="text"
-                        android:paddingTop="10dp"
-                        android:singleLine="true"
-                        android:textColor="@color/new_black"
-                        android:textSize="@dimen/edittextsize" />
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginRight="30dp"
-                        android:layout_marginLeft="30dp"
-                        android:background="@color/black_10"/>
-                </LinearLayout>
-            </LinearLayout>
-        </LinearLayout>
+        </com.jlouistechnology.Jazzro.Helper.VerticalScrollview>
     </LinearLayout>
 </layout>

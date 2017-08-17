@@ -9,8 +9,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,7 +69,9 @@ public class NewGroupFragment extends Fragment {
     Spinner spinner1;
     int colorPosition = 0;
     int pageNumber=1;
+    boolean isclick=false;
 
+    int check_Valid_or_not = 0;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(
@@ -74,31 +79,59 @@ public class NewGroupFragment extends Fragment {
         rootView = mBinding.getRoot();
         context = getActivity();
         preview();
+
         ArrayList<ColorModel> colorList = new ArrayList<>();
         colorList = Utils.colorList();
 
         ArrayList<String> colorName = new ArrayList<>();
-        for (int i = 0; i < colorList.size(); i++) {
+        for (int i = 0; i < (colorList.size()); i++) {
+
             colorName.add(colorList.get(i).color);
+
         }
-        mBinding.spinner1.setVisibility(View.GONE);
+        Log.e("colorName",colorName+"");
+        //  mBinding.spinner1.setVisibility(View.GONE);
         mBinding.txtBackgruondColor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mBinding.spinner1.performClick();
 
+
             }
         });
 
         ColorAdapter adapter=new ColorAdapter(context,colorName);
+
         final ArrayList<ColorModel> finalColorList = colorList;
         mBinding.spinner1.setAdapter(adapter);
+        mBinding.edName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.toString().length()>0)
+                {
+                    mBinding.edName.setError(null);
+                }
+            }
+        });
         Log.e("222",""+ ResourcesCompat.getColor(getResources(),R.color.new_black, null));
         mBinding.spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                isclick=true;
 
+                // mBinding.spinner1.setVisibility(View.INVISIBLE);
                 colorPosition = position;
+
                 if(Pref.getValue(getActivity(),"from_group","").equalsIgnoreCase("1"))
                 {
                     if(!Pref.getValue(getActivity(),"Edit_color","").equalsIgnoreCase(""))
@@ -112,7 +145,10 @@ public class NewGroupFragment extends Fragment {
                                 Log.e("edit name",""+finalColorList.get(i).name);
 
                                 Log.e("edit color",""+finalColorList.get(i).color);
-                                if((Pref.getValue(getActivity(),"Edit_color","")).equals(finalColorList.get(i).name))
+                                if(i==0)
+                                {
+                                    isclick=false;
+                                }else if((Pref.getValue(getActivity(),"Edit_color","")).equals(finalColorList.get(i).name))
                                 {
                                     Pref.setValue(getActivity(),"Edit_color",finalColorList.get(i).color);
                                     Log.e("test","compare");
@@ -125,6 +161,7 @@ public class NewGroupFragment extends Fragment {
                         }
                         if(Pref.getValue(getActivity(),"Edit_color","").startsWith("#"))
                         {
+
                             mBinding.txtBackgruondColor.setTextColor(Color.parseColor(Pref.getValue(getActivity(), "Edit_color", "")));
                             Log.e("color","111"+Pref.getValue(getActivity(), "Edit_color", ""));
                         }else {
@@ -139,15 +176,36 @@ public class NewGroupFragment extends Fragment {
                         Pref.setValue(getActivity(),"Edit_label","");
                     }
                     else {
-                        mBinding.txtBackgruondColor.setTextColor(Color.parseColor(finalColorList.get(position).background));
-                        mBinding.txtBackgruondColor.setText(finalColorList.get(position).name);
+                        if(finalColorList.get(position).background.equalsIgnoreCase("Choose a color"))
+                        {
+                            mBinding.txtBackgruondColor.setText(finalColorList.get(position).background);
+
+                        }else {
+                            mBinding.txtBackgruondColor.setTextColor(Color.parseColor(finalColorList.get(position).background));
+                            mBinding.txtBackgruondColor.setText(finalColorList.get(position).name);
+                        }
                         Log.e("color","111"+finalColorList.get(position).background);
 
                     }
                 }else
                 {
-                    mBinding.txtBackgruondColor.setTextColor(Color.parseColor(finalColorList.get(position).background));
-                    mBinding.txtBackgruondColor.setText(finalColorList.get(position).name);
+                    if(position==0) {
+                        isclick=false;
+                        mBinding.txtBackgruondColor.setText(finalColorList.get(position).background);
+                        mBinding.txtBackgruondColor.setTextColor(Color.parseColor("#767575"));
+
+                    }else
+                    {
+                        mBinding.txtBackgruondColor.setError(null);
+                        if (finalColorList.get(position).background.equalsIgnoreCase("Choose a color")) {
+                            mBinding.txtBackgruondColor.setText(finalColorList.get(position).background);
+                            mBinding.txtBackgruondColor.setTextColor(Color.parseColor("#767575"));
+
+                        } else {
+                            mBinding.txtBackgruondColor.setTextColor(Color.parseColor(finalColorList.get(position).background));
+                            mBinding.txtBackgruondColor.setText(finalColorList.get(position).name);
+                        }
+                    }
                     Log.e("color","111"+finalColorList.get(position).background);
 
                 }
@@ -158,20 +216,65 @@ public class NewGroupFragment extends Fragment {
 
             }
         });
-        ((DashboardNewActivity)context).mBinding.header.txtTitleRight.setOnClickListener(new View.OnClickListener() {
+        mBinding.txtAddGroups.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.e("isclick",""+isclick);
+                check_Valid_or_not = 0;
+
                 if (Utils.checkInternetConnection(getActivity())) {
                     if (TextUtils.isEmpty(mBinding.edName.getText().toString().trim())) {
+                        check_Valid_or_not = 1;
+
                         mBinding.edName.setError("Please provide groupname!");
 
-                    } else {
+                    }
+                    if(!isclick)
+                    {
+                        check_Valid_or_not=1;
+                        mBinding.txtBackgruondColor.setError("Please select color");
+                    }
+                    if(check_Valid_or_not==0) {
                         // Log.e("color code add",""+finalColorList.get(colorPosition).background);
                       /*  if(Pref.getValue(getActivity(),"from_group","").equalsIgnoreCase("1")) {
 
                             new updateTask(Pref.getValue(getActivity(),"Edit_id",""), edName.getText().toString(), Pref.getValue(getActivity(),"position",0), finalColorList.get(colorPosition).name).execute();
                         }else {*/
-                            new createGroupTask(mBinding.edName.getText().toString(), finalColorList.get(colorPosition).name).execute();
+                        new createGroupTask(mBinding.edName.getText().toString(), finalColorList.get(colorPosition).name).execute();
+                        //}
+
+                    }
+
+                } else {
+                    Toast.makeText(getActivity(), getResources().getString(R.string.NO_INTERNET_CONNECTION), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        ((DashboardNewActivity)context).mBinding.header.txtTitleRight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.e("isclick",""+isclick);
+                check_Valid_or_not = 0;
+
+                if (Utils.checkInternetConnection(getActivity())) {
+                    if (TextUtils.isEmpty(mBinding.edName.getText().toString().trim())) {
+                        check_Valid_or_not = 1;
+
+                        mBinding.edName.setError("Please provide groupname!");
+
+                    }
+                    if(!isclick)
+                    {
+                        check_Valid_or_not=1;
+                        mBinding.txtBackgruondColor.setError("Please select color");
+                    }
+                    if(check_Valid_or_not==0) {
+                        // Log.e("color code add",""+finalColorList.get(colorPosition).background);
+                      /*  if(Pref.getValue(getActivity(),"from_group","").equalsIgnoreCase("1")) {
+
+                            new updateTask(Pref.getValue(getActivity(),"Edit_id",""), edName.getText().toString(), Pref.getValue(getActivity(),"position",0), finalColorList.get(colorPosition).name).execute();
+                        }else {*/
+                        new createGroupTask(mBinding.edName.getText().toString(), finalColorList.get(colorPosition).name).execute();
                         //}
 
                     }
@@ -192,8 +295,16 @@ public class NewGroupFragment extends Fragment {
         return rootView;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        ((DashboardNewActivity)context).Set_header_visibility();
+        preview();
+    }
 
     private void preview() {
+        ((DashboardNewActivity)context).Setimagebackgroundresource(R.mipmap.contact_bar);
         ((DashboardNewActivity) context).visibilityTxtTitleleft(View.VISIBLE);
         ((DashboardNewActivity) context).visibilityTxtTitleright(View.VISIBLE);
         ((DashboardNewActivity) context).SettextTxtTitle("New Group");

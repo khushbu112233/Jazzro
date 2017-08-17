@@ -343,6 +343,13 @@ public class Utils {
 
         ColorModel model = new ColorModel();
 
+        model = new ColorModel();
+        model.name = "Choose a color";
+        model.background = "Choose a color";
+        model.color = "Choose a color";
+        list.add(model);
+
+        model = new ColorModel();
         model.name = "groupcolor1";
         model.background = "#41cf34";
         model.color = "#41cf34";

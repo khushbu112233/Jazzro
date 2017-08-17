@@ -47,6 +47,7 @@ public class SettingFragment extends BaseFragment {
 
 
         context = getActivity();
+
         dh = new DatabaseHelper(context);
         dh.open();
         Cursor c = dh.get_sync(Pref.getValue(context, Constants.PREF_PROFILE_EMAIL, ""));
@@ -200,6 +201,7 @@ public class SettingFragment extends BaseFragment {
                         for (int i = 0; i < fm.getBackStackEntryCount(); ++i) {
                             fm.popBackStack();
                         }
+                        ((DashboardNewActivity)context).Contact_footer();
                         ContactFragment fragment = new ContactFragment();
                         ((FragmentActivity) context).getSupportFragmentManager().beginTransaction().replace(R.id.frame_main_container, fragment).addToBackStack(null).commit();
                         return true;
@@ -213,6 +215,7 @@ public class SettingFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
 
+        ((DashboardNewActivity)context).Set_header_visibility();
         setupToolbar();
 
 
@@ -220,6 +223,8 @@ public class SettingFragment extends BaseFragment {
     }
 
     private void setupToolbar() {
+
+        ((DashboardNewActivity)context).Setimagebackgroundresource(R.mipmap.contact_bar);
         ((DashboardNewActivity) context).SettextTxtTitle("Settings");
     }
 }

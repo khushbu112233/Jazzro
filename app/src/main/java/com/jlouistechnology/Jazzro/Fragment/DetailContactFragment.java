@@ -3,12 +3,17 @@ package com.jlouistechnology.Jazzro.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.text.SpannableStringBuilder;
+import android.text.TextPaint;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -17,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.jlouistechnology.Jazzro.Adapter.SelectedGroupDetailListAdapter;
 import com.jlouistechnology.Jazzro.Helper.Constants;
 import com.jlouistechnology.Jazzro.Helper.Pref;
 import com.jlouistechnology.Jazzro.Helper.Utils;
@@ -45,6 +51,8 @@ public class DetailContactFragment extends Fragment {
     View rootView;
     ArrayList<Group> arrayList_group = new ArrayList<>();
     ArrayList<Contact> ContactArrayList = new ArrayList<>();
+    ArrayList<String> value_list = new ArrayList<>();
+    ArrayList<String> color_value_list = new ArrayList<>();
     @Override
     public View onCreateView(LayoutInflater inflater,  ViewGroup container,  Bundle savedInstanceState) {
 
@@ -52,8 +60,8 @@ public class DetailContactFragment extends Fragment {
                 inflater, R.layout.detail_contact_layout, container, false);
         rootView = mBinding.getRoot();
         context = getActivity();
-        new ExecuteTask().execute();
         preview();
+
         ((DashboardNewActivity)context).mBinding.header.txtTitleRight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,11 +85,12 @@ public class DetailContactFragment extends Fragment {
         ((DashboardNewActivity)context).visibilityTxtTitleright(View.VISIBLE);
         ((DashboardNewActivity)context).SettextTxtTitleRight("Edit");
         ((DashboardNewActivity)context).SetimageresourceImgleft(R.mipmap.back_white);
+        ((DashboardNewActivity)context).Setimagebackgroundresource(R.mipmap.detail_bar);
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
+    public void onDestroy() {
+        super.onDestroy();
         ((DashboardNewActivity)context).Set_header_visibility();
     }
 
@@ -112,7 +121,10 @@ public class DetailContactFragment extends Fragment {
 
                 }else if(jsonObject1.optJSONObject("data").length()>0)
                 {
-
+                    ContactArrayList.clear();
+                    arrayList_group.clear();
+                    color_value_list.clear();
+                    value_list.clear();
 
                     JSONObject jsonObject;
                     jsonObject = jsonObject1.getJSONObject("data");
@@ -196,24 +208,33 @@ public class DetailContactFragment extends Fragment {
                     {
                         mBinding.llGroups.setVisibility(View.VISIBLE);
                         mBinding.txtGroup.setText("Groups");
+                        final ArrayList<String> color_selected = new ArrayList<>();
                         String group_name="";
+
                         for (int i=0;i<arrayList_group.size();i++)
                         {
+                            value_list.add(arrayList_group.get(i).getLabel());
+                            color_value_list.add(arrayList_group.get(i).getColor1());
 
                             if(i==0)
                             {
+                                color_selected.add(arrayList_group.get(i).getColor1());
                                 group_name=Utils.capitalize(arrayList_group.get(i).getLabel());
                             }  else
                             {
+
+                                color_selected.add(arrayList_group.get(i).getColor1());
                                 group_name=group_name+","+Utils.capitalize(arrayList_group.get(i).getLabel());
                             }
 
                         }
-                        mBinding.txtGroupName.setText(group_name);
+                        //  mBinding.txtGroupName.setText(group_name);
                     }else
                     {
                         mBinding.llGroups.setVisibility(View.GONE);
                     }
+                    SelectedGroupDetailListAdapter selectedGroupDetailListAdapter = new SelectedGroupDetailListAdapter(context,color_value_list,value_list);
+                    mBinding.selectedGroup.setAdapter(selectedGroupDetailListAdapter);
                     /**
                      * set image
                      */
@@ -320,7 +341,13 @@ public class DetailContactFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+
+        ((DashboardNewActivity)context).Set_header_visibility();
+        preview();
+        Utils.hideKeyboard(context);
         Pref.setValue(context, "selectedGroud", "");
+
+        new ExecuteTask().execute();
     }
 
     private void msg_click(String phone) {
@@ -358,7 +385,7 @@ public class DetailContactFragment extends Fragment {
         if(!phone1.equalsIgnoreCase(""))
         {
             mBinding.llCall1.setVisibility(View.VISIBLE);
-            phone(phone1,mBinding.txtPhoneNumber1,mBinding.txtPhone1);
+            phone(phone1,mBinding.txtPhoneNumber1,mBinding.txtPhone1,"Mobile");
         }else
         {
             mBinding.llCall1.setVisibility(View.GONE);
@@ -366,7 +393,7 @@ public class DetailContactFragment extends Fragment {
         if(!phone2.equalsIgnoreCase(""))
         {
             mBinding.llCall2.setVisibility(View.VISIBLE);
-            phone(phone2,mBinding.txtPhoneNumber2, mBinding.txtPhone2);
+            phone(phone2,mBinding.txtPhoneNumber2, mBinding.txtPhone2,"Home");
         }else
         {
             mBinding.llCall2.setVisibility(View.GONE);
@@ -375,7 +402,7 @@ public class DetailContactFragment extends Fragment {
         if(!phone3.equalsIgnoreCase(""))
         {
             mBinding.llCall3.setVisibility(View.VISIBLE);
-            phone(phone3,mBinding.txtPhoneNumber3, mBinding.txtPhone3);
+            phone(phone3,mBinding.txtPhoneNumber3, mBinding.txtPhone3,"Work");
         }else
         {
             mBinding.llCall3.setVisibility(View.GONE);
@@ -383,7 +410,7 @@ public class DetailContactFragment extends Fragment {
         if(!email1.equalsIgnoreCase(""))
         {
             mBinding.llMsg1.setVisibility(View.VISIBLE);
-            Email(email1,mBinding.txtEmailValue1,mBinding.txtMsg1);
+            Email(email1,mBinding.txtEmailValue1,mBinding.txtMsg1,"Primary");
         }else
         {
             mBinding.llMsg1.setVisibility(View.GONE);
@@ -391,7 +418,7 @@ public class DetailContactFragment extends Fragment {
         if(!email2.equalsIgnoreCase(""))
         {
             mBinding.llMsg2.setVisibility(View.VISIBLE);
-            Email(email2,mBinding.txtEmailValue2,mBinding.txtMsg2);
+            Email(email2,mBinding.txtEmailValue2,mBinding.txtMsg2,"Secondary");
         }else
         {
             mBinding.llMsg2.setVisibility(View.GONE);
@@ -399,7 +426,7 @@ public class DetailContactFragment extends Fragment {
         if(!email3.equalsIgnoreCase(""))
         {
             mBinding.llMsg3.setVisibility(View.VISIBLE);
-            Email(email3,mBinding.txtEmailValue3,mBinding.txtMsg3);
+            Email(email3,mBinding.txtEmailValue3,mBinding.txtMsg3,"Tertiary");
         }else
         {
             mBinding.llMsg3.setVisibility(View.GONE);
@@ -409,18 +436,18 @@ public class DetailContactFragment extends Fragment {
     /**
      * set run time value of email
      */
-    private void Email(String email, TextView_Regular txtEmailValue, TextView_Regular txtEmailValue1) {
+    private void Email(String email, TextView_Regular txtEmailValue, TextView_Regular txtEmailValue1,String msg) {
         txtEmailValue.setText(email);
-        txtEmailValue1.setText("Email");
+        txtEmailValue1.setText(msg);
 
     }
 
     /**
      * set run time value of phone
      */
-    private void phone(String phone, TextView_Regular txtPhone, TextView_Regular txtPhone1) {
+    private void phone(String phone, TextView_Regular txtPhone, TextView_Regular txtPhone1,String msg) {
         txtPhone.setText(phone);
-        txtPhone1.setText("Phone");
+        txtPhone1.setText(msg);
     }
 
 

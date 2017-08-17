@@ -3,6 +3,7 @@ package com.jlouistechnology.Jazzro.Adapter;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -10,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -32,15 +34,16 @@ public class NewGroupListAdapter extends BaseAdapter {
     Context context;
     LayoutInflater mInflater;
     ArrayList<GroupListDataDetailModel> datalist;
-    TextView mHeaderRight;
+    ImageView mHeaderRight;
     ArrayList<String> selectedGroud = new ArrayList<>();
     ArrayList<String> selectedGroup_label = new ArrayList<>();
+    ArrayList<String> selectedGroup_color = new ArrayList<>();
     ArrayList<String> SelectedGroupList = new ArrayList<>();
     String type;
     OnClickEditGroupListener onClickEditGroupListener;
     boolean isFirstTime = true;
 
-    public NewGroupListAdapter(Context context, ArrayList<GroupListDataDetailModel> datalist, TextView mHeaderRight, String type, ArrayList<String> SelectedGroupList) {
+    public NewGroupListAdapter(Context context, ArrayList<GroupListDataDetailModel> datalist, ImageView mHeaderRight, String type, ArrayList<String> SelectedGroupList) {
         this.context = context;
         mInflater = (LayoutInflater) context.
                 getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -89,13 +92,26 @@ public class NewGroupListAdapter extends BaseAdapter {
                 }
             }
         }
-
-        if (datalist.get(position).isClick.equalsIgnoreCase("false")) {
+        if(type.equalsIgnoreCase("main"))
+        {
             binding.ivTick.setVisibility(View.GONE);
-        } else {
-            binding.ivTick.setVisibility(View.VISIBLE);
-        }
+            Typeface font = Typeface.createFromAsset(context.getAssets(), "fonts/SFUIDisplay_Semibold.ttf");
+            binding.txtGroupName.setTypeface(font,Typeface.NORMAL);
+        }else
+        {
+            if (datalist.get(position).isClick.equalsIgnoreCase("false")) {
+                binding.ivTick.setVisibility(View.GONE);
 
+                Typeface font = Typeface.createFromAsset(context.getAssets(), "fonts/Sf_Regular.otf");
+                binding.txtGroupName.setTypeface(font,Typeface.NORMAL);
+
+            } else {
+                binding.ivTick.setVisibility(View.VISIBLE);
+                Typeface font = Typeface.createFromAsset(context.getAssets(), "fonts/SFUIDisplay_Semibold.ttf");
+                binding.txtGroupName.setTypeface(font,Typeface.NORMAL);
+
+            }
+        }
         binding.lnMainAlluserContact.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -131,8 +147,15 @@ public class NewGroupListAdapter extends BaseAdapter {
         binding.txtFirstLetter.setText(datalist.get(position).label.charAt(0) + "");
         GradientDrawable drawable = (GradientDrawable) binding.imgGroup.getBackground();
         for (int i = 0; i < finalColorList.size(); i++) {
-            if (datalist.get(position).color.equals(finalColorList.get(i).name)) {
-                drawable.setColor(Color.parseColor(finalColorList.get(i).color));
+            if(!datalist.get(position).color.equalsIgnoreCase("Choose a color")) {
+                if (datalist.get(position).color.equals(finalColorList.get(i).name)) {
+
+                    drawable.setColor(Color.parseColor(finalColorList.get(i).color));
+
+                }
+            }else
+            {
+                binding.imgGroup.setVisibility(View.GONE);
             }
         }
 
@@ -143,6 +166,7 @@ public class NewGroupListAdapter extends BaseAdapter {
                     if (datalist.get(i).isClick.equalsIgnoreCase("true")) {
                         selectedGroud.add(datalist.get(i).id);
                         selectedGroup_label.add(Utils.capitalize(datalist.get(i).label));
+                        selectedGroup_color.add(datalist.get(i).color);
                     }
                 }
                 Gson gson = new Gson();
@@ -153,9 +177,11 @@ public class NewGroupListAdapter extends BaseAdapter {
 
                 String json = gson.toJson(selectedGroud);
                 String json1 = gson.toJson(selectedGroup_label);
+                String json2 = gson.toJson(selectedGroup_color);
 
                 Pref.setValue(context, "selectedGroud", json);
                 Pref.setValue(context, "selectedGroup_label", json1);
+                Pref.setValue(context, "selectedGroup_color", json2);
 
                /* editor.putString("selectedGroud", json);
                 editor.putString("selectedGroup_label",json1);

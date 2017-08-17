@@ -16,7 +16,8 @@
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
-            <ImageView
+            <com.jlouistechnology.Jazzro.Helper.CircularImageView
+                android:id="@+id/img_contact_photo"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:src="@mipmap/group" />
@@ -49,7 +50,7 @@
                 android:layout_width="15dp"
                 android:layout_height="15dp"
                 android:layout_marginRight="16dp"
-                android:src="@mipmap/minus" />
+                android:src="@mipmap/delete" />
 
 
         </LinearLayout>

@@ -54,7 +54,7 @@
                 android:layout_marginRight="30dp"
                 android:background="@null"
                 android:gravity="left"
-                android:hint="Username"
+                android:hint="Email"
                 android:textColorHint="@color/new_black"
                 android:imeOptions="actionNext"
                 android:inputType="text"

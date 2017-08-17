@@ -198,7 +198,7 @@ public class WebService {
             {
                 jsonObject.put("id", value1);
             }
-            for(int i=0;i<group_ids.size();i++)
+          //  for(int i=0;i<group_ids.size();i++)
             /*{
                 String first = group_ids.get(i);
                 first = first.replaceAll("\"","");

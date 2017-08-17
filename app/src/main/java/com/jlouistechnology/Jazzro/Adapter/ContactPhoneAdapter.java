@@ -75,6 +75,16 @@ public class ContactPhoneAdapter extends BaseAdapter {
         rowView = binding.getRoot();
         binding.v1.setVisibility(View.VISIBLE);
         binding.edtPhone1.setText(list.get(position));
+        if(position==0)
+        {
+            binding.txtPhone1.setText("Mobile");
+        }else if(position==1)
+        {
+            binding.txtPhone1.setText("Home");
+        }else if(position==2)
+        {
+            binding.txtPhone1.setText("Work");
+        }
         binding.ivPdelete1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

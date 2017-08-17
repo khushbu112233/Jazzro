@@ -6,188 +6,194 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:weightSum="1">
-
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="20dp"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
+            android:layout_weight="0.90"
+            android:layout_marginTop="40dp"
+            android:scrollbars="vertical">
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:layout_marginLeft="30dp"
-                android:gravity="center_vertical">
-
-                <com.jlouistechnology.Jazzro.Helper.CircularImageView
-                    android:layout_width="50dp"
-                    android:id="@+id/ivProfile"
-                    android:layout_height="50dp"
-                    android:scaleType="centerInside"
-                    android:src="@mipmap/profile_image" />
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:orientation="vertical">
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:gravity="center_vertical">
 
-                    <com.jlouistechnology.Jazzro.Widget.TextView_Bold
-                        android:id="@+id/txtName"
+                    <com.jlouistechnology.Jazzro.Helper.CircularImageView
+                        android:layout_width="50dp"
+                        android:id="@+id/ivProfile"
+                        android:layout_height="50dp"
+                        android:scaleType="centerInside"
+                        android:src="@mipmap/profile_image" />
+
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Florin Gaina"
-                        android:textColor="@color/new_black"
-                        android:textSize="17dp" />
+                        android:layout_marginLeft="10dp"
+                        android:orientation="vertical">
+
+                        <com.jlouistechnology.Jazzro.Widget.TextView_Bold
+                            android:id="@+id/txtName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Florin Gaina"
+                            android:textColor="@color/new_black"
+                            android:textSize="17dp" />
+
+                        <com.jlouistechnology.Jazzro.Widget.TextView_Regular
+                            android:id="@+id/txtPhoneNumber"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="9898502045"
+                            android:textColor="@color/black_40"
+                            android:textSize="14dp" />
+
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.7dp"
+                    android:background="@color/black_40" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#f2f2f2"
+                    android:gravity="center_vertical"
+                    android:padding="10dp">
 
                     <com.jlouistechnology.Jazzro.Widget.TextView_Regular
-                        android:id="@+id/txtPhoneNumber"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:text="9898502045"
-                        android:textColor="@color/black_40"
-                        android:textSize="14dp" />
+                        android:layout_weight="1"
+                        android:text="Auto Sync Contacts on Load"
+                        android:textColor="@color/blue_setting"
+                        android:textSize="17dp" />
+
+                    <Switch
+                        android:id="@+id/ivToggle"
+                        android:layout_width="40dp"
+                        android:layout_height="20dp"
+                        android:layout_alignParentRight="true"
+                        android:background="@mipmap/toggle_off"
+                        android:text=""
+                        android:textOff=""
+                        android:textOn=""
+                        android:thumb="@android:color/transparent"
+                        android:track="@android:color/transparent"></Switch>
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.7dp"
+                    android:background="@color/black_40" />
+
+                <com.jlouistechnology.Jazzro.Widget.TextView_Regular
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="Enabling this feature will automatically sync your phone contacts to Jazzro each time you open the app."
+                    android:textColor="@color/black_40"
+                    android:textSize="13dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.7dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@color/black_40" />
+
+                <LinearLayout
+                    android:id="@+id/ll_refresh"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#f2f2f2"
+                    android:gravity="center_vertical"
+                    android:padding="10dp">
+
+                    <com.jlouistechnology.Jazzro.Widget.TextView_Regular
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Sync Contacts Now"
+                        android:textColor="@color/blue_setting"
+                        android:textSize="17dp" />
+
+                    <ImageView
+                        android:id="@+id/ivRefresh"
+                        android:layout_width="40dp"
+                        android:layout_height="20dp"
+                        android:src="@mipmap/blue_refresh" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.7dp"
+                    android:background="@color/black_40" />
+
+
+                <com.jlouistechnology.Jazzro.Widget.TextView_Regular
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="Syncing your phone contacts to Jazzro may take several minutes. Please be patient and do not close the app while we process your contacts."
+                    android:textColor="@color/black_40"
+                    android:textSize="13dp"></com.jlouistechnology.Jazzro.Widget.TextView_Regular>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.7dp"
+                    android:background="@color/black_40"
+                    android:layout_marginTop="20dp" />
+
+                <LinearLayout
+                    android:id="@+id/ll_logout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#f2f2f2"
+                    android:gravity="center_vertical"
+                    android:padding="10dp">
+
+                    <com.jlouistechnology.Jazzro.Widget.TextView_Regular
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Log out"
+                        android:textColor="@color/red_edit_group"
+                        android:textSize="17dp" />
 
 
                 </LinearLayout>
 
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.7dp"
-                android:background="@color/black_10" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#f2f2f2"
-                android:gravity="center_vertical"
-                android:padding="10dp">
-
-                <com.jlouistechnology.Jazzro.Widget.TextView_Regular
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Auto Sync Contacts on Load"
-                    android:textColor="@color/blue_setting"
-                    android:textSize="17dp" />
-
-                <Switch
-                    android:id="@+id/ivToggle"
-                    android:layout_width="40dp"
-                    android:layout_height="20dp"
-                    android:layout_alignParentRight="true"
-                    android:background="@mipmap/toggle_off"
-                    android:text=""
-                    android:textOff=""
-                    android:textOn=""
-                    android:thumb="@android:color/transparent"
-                    android:track="@android:color/transparent"></Switch>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.7dp"
+                    android:background="@color/black_40"
+                    android:layout_marginBottom="10dp"/>
 
             </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.7dp"
-                android:background="@color/black_10" />
-
-            <com.jlouistechnology.Jazzro.Widget.TextView_Regular
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:text="Enabling this feature will automatically sync your phone contacts to Jazzro each time you open the app"
-                android:textColor="@color/black_40"
-                android:textSize="13dp" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.7dp"
-                android:layout_marginTop="20dp"
-                android:background="@color/black_10" />
-
-            <LinearLayout
-                android:id="@+id/ll_refresh"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#f2f2f2"
-                android:gravity="center_vertical"
-                android:padding="10dp">
-
-                <com.jlouistechnology.Jazzro.Widget.TextView_Regular
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Sync Contacts Now"
-                    android:textColor="@color/blue_setting"
-                    android:textSize="17dp" />
-
-                <ImageView
-                    android:id="@+id/ivRefresh"
-                    android:layout_width="40dp"
-                    android:layout_height="20dp"
-                    android:src="@mipmap/blue_refresh" />
-
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.7dp"
-                android:background="@color/black_10" />
-
-
-            <com.jlouistechnology.Jazzro.Widget.TextView_Regular
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:text="Syncing your phone contacts to Jazzro may take several minutes. Please be patient and do not close the app while we process your contacts."
-                android:textColor="@color/black_40"
-                android:textSize="13dp"></com.jlouistechnology.Jazzro.Widget.TextView_Regular>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.7dp"
-                android:background="@color/black_10" />
-
-            <LinearLayout
-                android:id="@+id/ll_logout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:background="#f2f2f2"
-                android:gravity="center_vertical"
-                android:padding="10dp">
-
-                <com.jlouistechnology.Jazzro.Widget.TextView_Regular
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Log out"
-                    android:textColor="@color/red_edit_group"
-                    android:textSize="17dp" />
-
-
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.7dp"
-                android:background="@color/black_10" />
-
-        </LinearLayout>
-
+        </ScrollView>
         <com.jlouistechnology.Jazzro.Widget.TextView_Regular
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
+            android:layout_height="0dp"
             android:layout_marginLeft="10dp"
-            android:layout_weight="1"
-            android:text=" @2017 jazzro"
+            android:layout_weight="0.10"
+            android:padding="5dp"
+            android:text=" @2017 Jazzro"
+            android:gravity="center"
             android:textColor="@color/black_40"
             android:textSize="13dp" />
 
     </LinearLayout>
+
 </layout>

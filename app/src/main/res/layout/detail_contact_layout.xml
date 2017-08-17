@@ -5,23 +5,23 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:background="@mipmap/edit_contact_header"
+            android:layout_height="100dp"
+            android:background="@mipmap/detail_bg"
             android:orientation="vertical">
 
         </LinearLayout>
-
 
         <com.jlouistechnology.Jazzro.Helper.CircularImageView
             android:id="@+id/contact_photo"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_gravity="center"
-            android:layout_marginTop="-26dp"
+            android:layout_marginTop="-50dp"
              />
-        <ScrollView
+        <com.jlouistechnology.Jazzro.Helper.VerticalScrollview
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scrollbars="vertical">
@@ -34,7 +34,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginTop="30dp"
+                    android:layout_marginTop="20dp"
                     android:gravity="center"
                     android:visibility="gone"
                     android:weightSum="1">
@@ -52,7 +52,7 @@
                             android:layout_marginLeft="10dp"
                             android:textColor="@color/black_40"
                             android:textSize="@dimen/lablesize"
-                            tools:text="Phone" />
+                            tools:text="Mobile" />
 
 
                         <com.jlouistechnology.Jazzro.Widget.TextView_Regular
@@ -66,7 +66,7 @@
                             android:paddingLeft="10dp"
                             android:layout_marginLeft="10dp"
                             android:textColor="@color/new_black"
-                            android:textSize="@dimen/edittextsize"
+                            android:textSize="@dimen/edittextsize1"
                             tools:text="546565466" />
                     </LinearLayout>
                     <LinearLayout
@@ -79,6 +79,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="10dp"
+                            android:padding="5dp"
                             android:src="@mipmap/msg"
                             />
                     </LinearLayout>
@@ -92,6 +93,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="10dp"
+                            android:padding="5dp"
                             android:src="@mipmap/call"
                             />
                     </LinearLayout>
@@ -101,7 +103,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginTop="30dp"
+                    android:layout_marginTop="20dp"
                     android:gravity="center"
                     android:visibility="gone"
                     android:weightSum="1">
@@ -119,7 +121,7 @@
                             android:layout_marginLeft="10dp"
                             android:textColor="@color/black_40"
                             android:textSize="@dimen/lablesize"
-                            tools:text="Phone" />
+                            tools:text="Home Phone" />
 
 
                         <com.jlouistechnology.Jazzro.Widget.TextView_Regular
@@ -133,7 +135,7 @@
                             android:paddingLeft="10dp"
                             android:layout_marginLeft="10dp"
                             android:textColor="@color/new_black"
-                            android:textSize="@dimen/edittextsize"
+                            android:textSize="@dimen/edittextsize1"
                             tools:text="546565466" />
                     </LinearLayout>
                     <LinearLayout
@@ -146,6 +148,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="10dp"
+                            android:padding="5dp"
                             android:src="@mipmap/msg"
                             />
                     </LinearLayout>
@@ -159,6 +162,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="10dp"
+                            android:padding="5dp"
                             android:src="@mipmap/call"
                             />
                     </LinearLayout>
@@ -168,7 +172,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginTop="30dp"
+                    android:layout_marginTop="20dp"
                     android:gravity="center"
                     android:visibility="gone"
                     android:weightSum="1">
@@ -186,7 +190,7 @@
                             android:layout_marginLeft="10dp"
                             android:textColor="@color/black_40"
                             android:textSize="@dimen/lablesize"
-                            tools:text="Phone" />
+                            tools:text="Work Phone" />
 
 
                         <com.jlouistechnology.Jazzro.Widget.TextView_Regular
@@ -200,7 +204,7 @@
                             android:paddingLeft="10dp"
                             android:layout_marginLeft="10dp"
                             android:textColor="@color/new_black"
-                            android:textSize="@dimen/edittextsize"
+                            android:textSize="@dimen/edittextsize1"
                             tools:text="546565466" />
                     </LinearLayout>
                     <LinearLayout
@@ -213,6 +217,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="10dp"
+                            android:padding="5dp"
                             android:src="@mipmap/msg"
                             />
                     </LinearLayout>
@@ -226,6 +231,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="10dp"
+                            android:padding="5dp"
                             android:src="@mipmap/call"
                             />
                     </LinearLayout>
@@ -235,7 +241,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginTop="30dp"
+                    android:layout_marginTop="20dp"
                     android:gravity="center"
                     android:visibility="gone"
                     android:weightSum="1">
@@ -253,7 +259,7 @@
                             android:layout_marginLeft="10dp"
                             android:textColor="@color/black_40"
                             android:textSize="@dimen/lablesize"
-                            tools:text="Email" />
+                            tools:text="Primary Email" />
 
 
                         <com.jlouistechnology.Jazzro.Widget.TextView_Regular
@@ -267,7 +273,7 @@
                             android:paddingLeft="10dp"
                             android:layout_marginLeft="10dp"
                             android:textColor="@color/new_black"
-                            android:textSize="@dimen/edittextsize"
+                            android:textSize="@dimen/edittextsize1"
                             tools:text="aa@gmail.com" />
                     </LinearLayout>
                     <LinearLayout
@@ -280,6 +286,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="10dp"
+                            android:padding="5dp"
                             android:src="@mipmap/msg"
                             />
                     </LinearLayout>
@@ -293,6 +300,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="10dp"
+                            android:padding="5dp"
                             android:src="@mipmap/email"
                             />
                     </LinearLayout>
@@ -302,7 +310,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginTop="30dp"
+                    android:layout_marginTop="20dp"
                     android:gravity="center"
                     android:visibility="gone"
                     android:weightSum="1">
@@ -320,7 +328,7 @@
                             android:layout_marginLeft="10dp"
                             android:textColor="@color/black_40"
                             android:textSize="@dimen/lablesize"
-                            tools:text="Email" />
+                            tools:text="Secondary Email" />
 
 
                         <com.jlouistechnology.Jazzro.Widget.TextView_Regular
@@ -334,7 +342,7 @@
                             android:paddingLeft="10dp"
                             android:layout_marginLeft="10dp"
                             android:textColor="@color/new_black"
-                            android:textSize="@dimen/edittextsize"
+                            android:textSize="@dimen/edittextsize1"
                             tools:text="aa@gmail.com" />
                     </LinearLayout>
                     <LinearLayout
@@ -347,6 +355,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="10dp"
+                            android:padding="5dp"
                             android:src="@mipmap/msg"
                             />
                     </LinearLayout>
@@ -360,6 +369,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="10dp"
+                            android:padding="5dp"
                             android:src="@mipmap/email"
                             />
                     </LinearLayout>
@@ -369,7 +379,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginTop="30dp"
+                    android:layout_marginTop="20dp"
                     android:gravity="center"
                     android:visibility="gone"
                     android:weightSum="1">
@@ -387,7 +397,7 @@
                             android:layout_marginLeft="10dp"
                             android:textColor="@color/black_40"
                             android:textSize="@dimen/lablesize"
-                            tools:text="Email" />
+                            tools:text="Tertiary Email" />
 
 
                         <com.jlouistechnology.Jazzro.Widget.TextView_Regular
@@ -401,7 +411,7 @@
                             android:paddingLeft="10dp"
                             android:layout_marginLeft="10dp"
                             android:textColor="@color/new_black"
-                            android:textSize="@dimen/edittextsize"
+                            android:textSize="@dimen/edittextsize1"
                             tools:text="aa@gmail.com" />
                     </LinearLayout>
                     <LinearLayout
@@ -414,6 +424,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="10dp"
+                            android:padding="5dp"
                             android:src="@mipmap/msg"
                             />
                     </LinearLayout>
@@ -427,6 +438,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="10dp"
+                            android:padding="5dp"
                             android:src="@mipmap/email"
                             />
                     </LinearLayout>
@@ -436,6 +448,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:visibility="gone"
+                    android:layout_marginTop="10dp"
                     android:orientation="vertical">
                     <com.jlouistechnology.Jazzro.Widget.TextView_Regular
                         android:id="@+id/txt_group"
@@ -449,20 +462,20 @@
                         android:textColor="@color/black_40"
                         android:textSize="@dimen/lablesize"
                         tools:text="Groups" />
-                    <com.jlouistechnology.Jazzro.Widget.TextView_Regular
-                        android:id="@+id/txt_group_name"
+                    <ListView
+                        android:id="@+id/selected_group"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="70dp"
                         android:gravity="center_vertical"
-                        android:paddingLeft="10dp"
-                        android:layout_marginLeft="10dp"
-                        android:paddingTop="5dp"
-                        android:paddingBottom="5dp"
-                        android:textColor="@color/colorAccent"
-                        android:textSize="@dimen/lablesize"
-                        tools:text="Customers" />
+                        android:dividerHeight="0dp"
+                        android:clickable="false"
+                        android:divider="@null"
+                      >
+
+                    </ListView>
+
                 </LinearLayout>
             </LinearLayout>
-        </ScrollView>
+        </com.jlouistechnology.Jazzro.Helper.VerticalScrollview>
     </LinearLayout>
 </layout>

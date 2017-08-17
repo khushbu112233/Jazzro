@@ -14,6 +14,7 @@
     <dimen name="desc_padding">40dp</dimen>
 
     <dimen name="edittextsize">14sp</dimen>
+    <dimen name="edittextsize1">15sp</dimen>
 
     <dimen name="lablesize">13sp</dimen>
     <dimen name="lablesize1">11sp</dimen>

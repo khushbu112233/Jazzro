@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,8 +22,10 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.jlouistechnology.Jazzro.Adapter.ContactEmailAdapter;
 import com.jlouistechnology.Jazzro.Adapter.ContactPhoneAdapter;
+import com.jlouistechnology.Jazzro.Adapter.SelectedGroupDetailListAdapter;
 import com.jlouistechnology.Jazzro.Helper.Constants;
 import com.jlouistechnology.Jazzro.Helper.Pref;
+import com.jlouistechnology.Jazzro.Helper.Utils;
 import com.jlouistechnology.Jazzro.Interface.OnClickDeleteListener;
 import com.jlouistechnology.Jazzro.Interface.OnClickEditEmailListener;
 import com.jlouistechnology.Jazzro.Interface.OnClickEditPhoneListener;
@@ -42,6 +45,8 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by aipxperts-ubuntu-01 on 9/8/17.
@@ -52,17 +57,23 @@ public class EditContactFragment extends Fragment {
     EditContactLayoutBinding mBinding;
     View rootView;
     ArrayList<Contact> ContactArrayList = new ArrayList<>();
-    ArrayList<String> phone_arraylist= new ArrayList<>();
-    ArrayList<String> email_arraylist= new ArrayList<>();
+    ArrayList<String> phone_arraylist = new ArrayList<>();
+    ArrayList<String> email_arraylist = new ArrayList<>();
     ContactPhoneAdapter contactPhoneAdapter;
     ContactEmailAdapter contactEmailAdapter;
     ArrayList<String> selectedGroud = new ArrayList<>();
     ArrayList<String> selectedGroup_label = new ArrayList<>();
-    String firstName, lastName, email1="", phone1="",email2="",phone2="",email3="",phone3="";
+    ArrayList<String> selectedGroup_color = new ArrayList<>();
+
+
+    ArrayList<String> selectedGroud1 = new ArrayList<>();
+    ArrayList<String> selectedGroup_label1 = new ArrayList<>();
+    String firstName, lastName, email1 = "", phone1 = "", email2 = "", phone2 = "", email3 = "", phone3 = "";
     int check_Valid_or_not = 0;
     private String countryCode = "";
     private String updateID = "";
     ArrayList<String> group_selected_id = new ArrayList<>();
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -71,10 +82,11 @@ public class EditContactFragment extends Fragment {
         rootView = mBinding.getRoot();
         context = getActivity();
         preview();
+
         /**
          * remove email when click minus image
          */
-        OnClickDeleteListener onClickDeleteListener=new OnClickDeleteListener() {
+        OnClickDeleteListener onClickDeleteListener = new OnClickDeleteListener() {
             @Override
             public void OnClickDeleteListener(int pos) {
                 if (email_arraylist.size() > 0) {
@@ -84,8 +96,7 @@ public class EditContactFragment extends Fragment {
                             email_arraylist.remove(i);
                             break;
                         }
-                        if(email_arraylist.size()<4)
-                        {
+                        if (email_arraylist.size() < 4) {
                             mBinding.llAddEmail.setVisibility(View.VISIBLE);
                         }
                     }
@@ -95,7 +106,7 @@ public class EditContactFragment extends Fragment {
         /**
          * remove phone when click minus image
          */
-        OnClickPhoneDeleteListener onClickPhoneDeleteListener=new OnClickPhoneDeleteListener() {
+        OnClickPhoneDeleteListener onClickPhoneDeleteListener = new OnClickPhoneDeleteListener() {
             @Override
             public void OnClickPhoneDeleteListener(int pos) {
                 if (phone_arraylist.size() > 0) {
@@ -105,8 +116,7 @@ public class EditContactFragment extends Fragment {
                             phone_arraylist.remove(i);
                             break;
                         }
-                        if(phone_arraylist.size()<4)
-                        {
+                        if (phone_arraylist.size() < 4) {
                             mBinding.llAddContact.setVisibility(View.VISIBLE);
                         }
                     }
@@ -114,27 +124,27 @@ public class EditContactFragment extends Fragment {
 
             }
         };
-        OnClickEditPhoneListener onClickEditPhoneListener=new OnClickEditPhoneListener() {
+        OnClickEditPhoneListener onClickEditPhoneListener = new OnClickEditPhoneListener() {
             @Override
             public void OnClickEditPhoneListener(int pos, String value) {
-                phone_arraylist.set(pos,value);
-                Log.e("get value","phone"+phone_arraylist.size());
+                phone_arraylist.set(pos, value);
+                Log.e("get value", "phone" + phone_arraylist.size());
             }
         };
 
-        OnClickEditEmailListener onClickEditEmailListener=new OnClickEditEmailListener() {
+        OnClickEditEmailListener onClickEditEmailListener = new OnClickEditEmailListener() {
             @Override
             public void OnClickEditEmailListener(int pos, String value) {
-                email_arraylist.set(pos,value);
-                Log.e("get value","email"+email_arraylist.size());
+                email_arraylist.set(pos, value);
+                Log.e("get value", "email" + email_arraylist.size());
             }
         };
-        contactPhoneAdapter = new ContactPhoneAdapter(context,phone_arraylist);
+        contactPhoneAdapter = new ContactPhoneAdapter(context, phone_arraylist);
         contactPhoneAdapter.OnClickEditPhoneListener(onClickEditPhoneListener);
         mBinding.listContactPhone.setAdapter(contactPhoneAdapter);
         contactPhoneAdapter.onClickPhoneDeleteListener(onClickPhoneDeleteListener);
 
-        contactEmailAdapter = new ContactEmailAdapter(context,email_arraylist);
+        contactEmailAdapter = new ContactEmailAdapter(context, email_arraylist);
         contactEmailAdapter.onClickEditEmailListener(onClickEditEmailListener);
         mBinding.listContactEmail.setAdapter(contactEmailAdapter);
         contactEmailAdapter.onClickDeleteListener(onClickDeleteListener);
@@ -145,15 +155,16 @@ public class EditContactFragment extends Fragment {
                 openDeleteDialog();
             }
         });
-        ((DashboardNewActivity)context).mBinding.header.txtTitleLeft.setOnClickListener(new View.OnClickListener() {
+        ((DashboardNewActivity) context).mBinding.header.txtTitleLeft.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
                 getActivity().getSupportFragmentManager().popBackStack();
+
+
             }
         });
 
-        if(email_arraylist.size()==3)
-        {
+        if (email_arraylist.size() == 3) {
             mBinding.llAddEmail.setVisibility(View.GONE);
         }
         mBinding.llAddContact.setOnClickListener(new View.OnClickListener() {
@@ -178,13 +189,13 @@ public class EditContactFragment extends Fragment {
             }
         });
 
-        mBinding.txtGroups1.setOnClickListener(new View.OnClickListener() {
+
+        mBinding.llGroupList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ArrayList<String> group_name = new ArrayList<String>();
-                for(int i=0;i<ContactArrayList.get(0).getGroup_list().size();i++)
-                {
-                    if(!selectedGroup_label.contains(ContactArrayList.get(0).getGroup_list().get(i).getLabel())) {
+                for (int i = 0; i < ContactArrayList.get(0).getGroup_list().size(); i++) {
+                    if (!selectedGroup_label.contains(ContactArrayList.get(0).getGroup_list().get(i).getLabel())) {
                         selectedGroup_label.add(ContactArrayList.get(0).getGroup_list().get(i).getLabel());
                     }
                 }
@@ -197,7 +208,7 @@ public class EditContactFragment extends Fragment {
 
             }
         });
-        ((DashboardNewActivity)context).mBinding.header.txtTitleRight.setOnClickListener(new View.OnClickListener() {
+        ((DashboardNewActivity) context).mBinding.header.txtTitleRight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 check_Valid_or_not = 0;
@@ -212,70 +223,157 @@ public class EditContactFragment extends Fragment {
                     mBinding.edtLastName.setError(getString(R.string.please_provide_lastname));
 
                 }
+                if (email_arraylist.size() > 0) {
+                    for (int i = 0; i < email_arraylist.size(); i++) {
+                        if (email_arraylist.size() == 1) {
+                            if (i == 0) {
+                                if (email_arraylist.get(i).toString().length() > 0) {
+                                    if (!isEmailValid(email_arraylist.get(i))) {
+                                        check_Valid_or_not = 1;
+                                        Toast.makeText(context, getResources().getString(R.string.please_provide_valid_email), Toast.LENGTH_LONG).show();
+                                    } else {
+                                        email1 = email_arraylist.get(i);
+                                    }
+                                }
 
-                int count = 0;
+                            }
+                        } else if (email_arraylist.size() == 2) {
+                            if (i == 0) {
+                                if (email_arraylist.get(i).toString().length() > 0) {
+                                    if (!isEmailValid(email_arraylist.get(i))) {
+                                        check_Valid_or_not = 1;
+                                        Toast.makeText(context, getResources().getString(R.string.please_provide_valid_email), Toast.LENGTH_LONG).show();
+                                    } else {
+
+                                        email1 = email_arraylist.get(i);
+                                    }
+                                }
+                            }
+                            if (i == 1) {
+                                if (email_arraylist.get(i).toString().length() > 0) {
+                                    if (!isEmailValid(email_arraylist.get(i))) {
+                                        check_Valid_or_not = 1;
+                                        Toast.makeText(context, getResources().getString(R.string.please_provide_valid_email), Toast.LENGTH_LONG).show();
+                                    } else {
+                                        email2 = email_arraylist.get(i);
+                                    }
+                                }
+                            }
+                        } else if (email_arraylist.size() == 3) {
+                            if (i == 0) {
+                                if (email_arraylist.get(i).toString().length() > 0) {
+                                    if (!isEmailValid(email_arraylist.get(i))) {
+                                        check_Valid_or_not = 1;
+                                        Toast.makeText(context, getResources().getString(R.string.please_provide_valid_email), Toast.LENGTH_LONG).show();
+                                    } else {
+                                        email1 = email_arraylist.get(i);
+                                    }
+                                }
+                            }
+                            if (i == 1) {
+                                if (email_arraylist.get(i).toString().length() > 0) {
+                                    if (!isEmailValid(email_arraylist.get(i))) {
+                                        check_Valid_or_not = 1;
+                                        Toast.makeText(context, getResources().getString(R.string.please_provide_valid_email), Toast.LENGTH_LONG).show();
+                                    } else {
+                                        email2 = email_arraylist.get(i);
+                                    }
+                                }
+                            }
+                            if (i == 2) {
+                                if (email_arraylist.get(i).toString().length() > 0) {
+                                    if (!isEmailValid(email_arraylist.get(i))) {
+                                        check_Valid_or_not = 1;
+                                        Toast.makeText(context, getResources().getString(R.string.please_provide_valid_email), Toast.LENGTH_LONG).show();
+                                    } else {
+                                        email3 = email_arraylist.get(i);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                if (phone_arraylist.size() > 0) {
+                    for (int i = 0; i < phone_arraylist.size(); i++) {
+                        if (phone_arraylist.size() == 1) {
+                            if (i == 0) {
+                                if (phone_arraylist.get(i).toString().length() > 0) {
+                                    if ((phone_arraylist.get(i).toString().length() < 10) || (phone_arraylist.get(i).toString().length() > 15)) {
+
+                                        check_Valid_or_not = 1;
+                                        Toast.makeText(context, getResources().getString(R.string.please_provide_valid_phone_number), Toast.LENGTH_LONG).show();
+                                    } else {
+                                        phone1 = phone_arraylist.get(i);
+                                    }
+                                }
+                            }
+                        } else if (phone_arraylist.size() == 2) {
+                            if (i == 0) {
+                                if (phone_arraylist.get(i).toString().length() > 0) {
+                                    if ((phone_arraylist.get(i).toString().length() < 10) || (phone_arraylist.get(i).toString().length() > 15)) {
+
+                                        check_Valid_or_not = 1;
+                                        Toast.makeText(context, getResources().getString(R.string.please_provide_valid_phone_number), Toast.LENGTH_LONG).show();
+                                    } else {
+                                        phone1 = phone_arraylist.get(i);
+                                    }
+                                }
+                            }
+                            if (i == 1) {
+                                if (phone_arraylist.get(i).toString().length() > 0) {
+                                    if ((phone_arraylist.get(i).toString().length() < 10) || (phone_arraylist.get(i).toString().length() > 15)) {
+
+                                        check_Valid_or_not = 1;
+                                        Toast.makeText(context, getResources().getString(R.string.please_provide_valid_phone_number), Toast.LENGTH_LONG).show();
+                                    } else {
+                                        phone2 = phone_arraylist.get(i);
+                                    }
+                                }
+                            }
+                        } else if (phone_arraylist.size() == 3) {
+                            if (i == 0) {
+                                if (phone_arraylist.get(i).toString().length() > 0) {
+                                    if ((phone_arraylist.get(i).toString().length() < 10) || (phone_arraylist.get(i).toString().length() > 15)) {
+
+                                        check_Valid_or_not = 1;
+                                        Toast.makeText(context, getResources().getString(R.string.please_provide_valid_phone_number), Toast.LENGTH_LONG).show();
+                                    } else {
+                                        phone1 = phone_arraylist.get(i);
+                                    }
+                                }
+                            }
+                            if (i == 1) {
+
+                                if (phone_arraylist.get(i).toString().length() > 0) {
+                                    if ((phone_arraylist.get(i).toString().length() < 10) || (phone_arraylist.get(i).toString().length() > 15)) {
+
+                                        check_Valid_or_not = 1;
+                                        Toast.makeText(context, getResources().getString(R.string.please_provide_valid_phone_number), Toast.LENGTH_LONG).show();
+                                    } else {
+                                        phone2 = phone_arraylist.get(i);
+                                    }
+                                }
+                            }
+                            if (i == 2) {
+
+                                if (phone_arraylist.get(i).toString().length() > 0) {
+                                    if ((phone_arraylist.get(i).toString().length() < 10) || (phone_arraylist.get(i).toString().length() > 15)) {
+
+                                        check_Valid_or_not = 1;
+                                        Toast.makeText(context, getResources().getString(R.string.please_provide_valid_phone_number), Toast.LENGTH_LONG).show();
+                                    } else {
+                                        phone3 = phone_arraylist.get(i);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
 
                 if (check_Valid_or_not == 0) {
                     firstName = mBinding.edtFirstName.getText().toString();
                     lastName = mBinding.edtLastName.getText().toString();
-                    if(email_arraylist.size()>0) {
-                        for(int i=0;i<email_arraylist.size();i++)
-                        {
-                            if(email_arraylist.size()==1) {
-                                if (i == 0) {
-                                    email1 = email_arraylist.get(i);
-                                }
-                            }else if(email_arraylist.size()==2)
-                            {
-                                if (i == 0) {
-                                    email1 = email_arraylist.get(i);
-                                }
-                                if (i == 1) {
-                                    email2 = email_arraylist.get(i);
-                                }
-                            }else if(email_arraylist.size()==3)
-                            {
-                                if (i == 0) {
-                                    email1 = email_arraylist.get(i);
-                                }
-                                if (i == 1) {
-                                    email2 = email_arraylist.get(i);
-                                }
-                                if (i == 2) {
-                                    email3 = email_arraylist.get(i);
-                                }
-                            }
-                        }
-                    }
-                    if(phone_arraylist.size()>0) {
-                        for(int i=0;i<phone_arraylist.size();i++)
-                        {
-                            if(phone_arraylist.size()==1) {
-                                if (i == 0) {
-                                    phone1 = phone_arraylist.get(i);
-                                }
-                            }else if(phone_arraylist.size()==2)
-                            {
-                                if (i == 0) {
-                                    phone1 = phone_arraylist.get(i);
-                                }
-                                if (i == 1) {
-                                    phone2 = phone_arraylist.get(i);
-                                }
-                            }else if(phone_arraylist.size()==3)
-                            {
-                                if (i == 0) {
-                                    phone1 = phone_arraylist.get(i);
-                                }
-                                if (i == 1) {
-                                    phone2 = phone_arraylist.get(i);
-                                }
-                                if (i == 2) {
-                                    phone3 = phone_arraylist.get(i);
-                                }
-                            }
-                        }
-                    }
+
                     /**
                      * here when update id is empty mean new contact other wise update contact.
                      */
@@ -297,6 +395,21 @@ public class EditContactFragment extends Fragment {
 
         return rootView;
     }
+
+    public static boolean isEmailValid(String email) {
+        boolean isValid = false;
+
+        String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
+        CharSequence inputStr = email;
+
+        Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(inputStr);
+        if (matcher.matches()) {
+            isValid = true;
+        }
+        return isValid;
+    }
+
     private void callAddnewContactAPI(ArrayList<String> selectedIDS) {
 
 
@@ -314,12 +427,10 @@ public class EditContactFragment extends Fragment {
 
             Pref.setValue(context, "phone1_add", countryCode + phone1);
         }
-        if(phone2.length()>0)
-        {
+        if (phone2.length() > 0) {
             Pref.setValue(context, "phone2_add", countryCode + phone2);
         }
-        if(phone3.length()>0)
-        {
+        if (phone3.length() > 0) {
             Pref.setValue(context, "phone3_add", countryCode + phone3);
         }
 
@@ -342,54 +453,51 @@ public class EditContactFragment extends Fragment {
             Toast.makeText(getActivity(), getResources().getString(R.string.NO_INTERNET_CONNECTION), Toast.LENGTH_LONG).show();
         }
     }
+
     private void preview() {
-        ((DashboardNewActivity)context).visibilityTxtTitleleft(View.VISIBLE);
-        ((DashboardNewActivity)context).visibilityTxtTitleright(View.VISIBLE);
-        ((DashboardNewActivity)context).SettextTxtTitle("Edit Contact");
-        ((DashboardNewActivity)context).SettextTxtTitleLeft("Cancel");
-        ((DashboardNewActivity)context).SettextTxtTitleRight("Save");
+        ((DashboardNewActivity) context).visibilityTxtTitleleft(View.VISIBLE);
+        ((DashboardNewActivity) context).visibilityTxtTitleright(View.VISIBLE);
+        ((DashboardNewActivity) context).Setimagebackgroundresource(R.mipmap.contact_bar);
+        ((DashboardNewActivity) context).SettextTxtTitle("Edit Contact");
+        ((DashboardNewActivity) context).SettextTxtTitleLeft("Cancel");
+        ((DashboardNewActivity) context).SettextTxtTitleRight("Save");
 
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        ((DashboardNewActivity)context).Set_header_visibility();
+        ((DashboardNewActivity) context).Set_header_visibility();
     }
-    public void email_display()
-    {
-        Log.e("phoneDelete","000  "+email_arraylist.size());
-        if(email_arraylist.size()>=0)
-        {
+
+    public void email_display() {
+        Log.e("phoneDelete", "000  " + email_arraylist.size());
+        if (email_arraylist.size() >= 0) {
             email_arraylist.add("");
             contactEmailAdapter.notifyDataSetChanged();
         }
-        if(email_arraylist.size()==3)
-        {
+        if (email_arraylist.size() == 3) {
             mBinding.llAddEmail.setVisibility(View.GONE);
-        }else if(email_arraylist.size()<3&&email_arraylist.size()>0)
-        {
+        } else if (email_arraylist.size() < 3 && email_arraylist.size() > 0) {
             mBinding.llAddEmail.setVisibility(View.VISIBLE);
         }
     }
-    public void phone_display()
-    {
-        Log.e("phoneDelete","000  "+phone_arraylist.size());
-        if(phone_arraylist.size()>=0)
-        {
+
+    public void phone_display() {
+        Log.e("phoneDelete", "000  " + phone_arraylist.size());
+        if (phone_arraylist.size() >= 0) {
 
             phone_arraylist.add("");
             contactPhoneAdapter.notifyDataSetChanged();
 
         }
-        if(phone_arraylist.size()==3)
-        {
+        if (phone_arraylist.size() == 3) {
             mBinding.llAddContact.setVisibility(View.GONE);
-        }else if(phone_arraylist.size()<3&&phone_arraylist.size()>0)
-        {
+        } else if (phone_arraylist.size() < 3 && phone_arraylist.size() > 0) {
             mBinding.llAddContact.setVisibility(View.VISIBLE);
         }
     }
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -412,107 +520,117 @@ public class EditContactFragment extends Fragment {
             }
         });
     }
+
     @Override
     public void onResume() {
         super.onResume();
-        email_arraylist.clear();
-        phone_arraylist.clear();
-        String group="";
+        ((DashboardNewActivity) context).Set_header_visibility();
+        preview();
+
+        Utils.hideKeyboard(context);
+
+        String group = "";
         Gson gson = new Gson();
-        if (!Pref.getValue(context, "ContactArrayList", "").equalsIgnoreCase("")) {
-            String json = Pref.getValue(context, "ContactArrayList", "");
-            Type type = new TypeToken<ArrayList<Contact>>() {
-            }.getType();
 
-            ContactArrayList = gson.fromJson(json, type);
+        /**
+         * from selected group list
+         *
+         */
+        String group1 = "";
+        if (!Pref.getValue(context, "selectedGroud", "").equalsIgnoreCase("")) {
 
-            if(!ContactArrayList.get(0).getPhone1().equalsIgnoreCase("")) {
-                phone_arraylist.add(ContactArrayList.get(0).getPhone1());
-            }
-            if(!ContactArrayList.get(0).getPhone2().equalsIgnoreCase("")) {
-                phone_arraylist.add(ContactArrayList.get(0).getPhone2());
-            }
-            if(!ContactArrayList.get(0).getPhone3().equalsIgnoreCase("")) {
-                phone_arraylist.add(ContactArrayList.get(0).getPhone3());
-            }
-            if(!ContactArrayList.get(0).getEmail1().equalsIgnoreCase("")) {
-                email_arraylist.add(ContactArrayList.get(0).getEmail1());
-            }
-            if(!ContactArrayList.get(0).getEmail2().equalsIgnoreCase("")) {
-                email_arraylist.add(ContactArrayList.get(0).getEmail2());
-            }
-            if(!ContactArrayList.get(0).getEmail3().equalsIgnoreCase("")) {
-                email_arraylist.add(ContactArrayList.get(0).getEmail3());
-            }
+            Log.e("aaa", "" + phone_arraylist.size());
             contactPhoneAdapter.notifyDataSetChanged();
-            contactEmailAdapter.notifyDataSetChanged();
-            if(email_arraylist.size()==3)
-            {
-                mBinding.llAddEmail.setVisibility(View.GONE);
-            }else if(email_arraylist.size()<3&&email_arraylist.size()>0)
-            {
-                mBinding.llAddEmail.setVisibility(View.VISIBLE);
+
+            String json = Pref.getValue(context, "selectedGroud", "");
+            String json1 = Pref.getValue(context, "selectedGroup_label", "");
+            String json2 = Pref.getValue(context, "selectedGroup_color", "");
+            Type type = new TypeToken<ArrayList<String>>() {
+            }.getType();
+            selectedGroud = gson.fromJson(json, type);
+            selectedGroup_label = gson.fromJson(json1, type);
+            selectedGroup_color = gson.fromJson(json2, type);
+            // Log.e("Adaper###","^^^  "+ selectedGroud.size());
+
+            for (int i = 0; i < selectedGroud.size(); i++) {
+                Log.e("Adaper###", "****  " + selectedGroud.get(i) + " " + selectedGroup_label.get(i));
+                if (i == 0) {
+                    group1 = selectedGroup_label.get(i);
+                } else {
+                    group1 = group1 + "," + selectedGroup_label.get(i);
+                }
             }
-            if(phone_arraylist.size()==3)
-            {
-                mBinding.llAddContact.setVisibility(View.GONE);
-            }else if(phone_arraylist.size()<3&&phone_arraylist.size()>0)
-            {
-                mBinding.llAddContact.setVisibility(View.VISIBLE);
-            }
+            SelectedGroupDetailListAdapter selectedGroupDetailListAdapter = new SelectedGroupDetailListAdapter(context, selectedGroup_color, selectedGroup_label);
+            mBinding.selectedGroup.setAdapter(selectedGroupDetailListAdapter);
+
+        } else {
+            if (!Pref.getValue(context, "ContactArrayList", "").equalsIgnoreCase("")) {
+                String json = Pref.getValue(context, "ContactArrayList", "");
+                email_arraylist.clear();
+                phone_arraylist.clear();
+                Type type = new TypeToken<ArrayList<Contact>>() {
+                }.getType();
+
+                ContactArrayList = gson.fromJson(json, type);
+
+                if (!ContactArrayList.get(0).getPhone1().equalsIgnoreCase("")) {
+                    phone_arraylist.add(ContactArrayList.get(0).getPhone1());
+                }
+                if (!ContactArrayList.get(0).getPhone2().equalsIgnoreCase("")) {
+                    phone_arraylist.add(ContactArrayList.get(0).getPhone2());
+                }
+                if (!ContactArrayList.get(0).getPhone3().equalsIgnoreCase("")) {
+                    phone_arraylist.add(ContactArrayList.get(0).getPhone3());
+                }
+                if (!ContactArrayList.get(0).getEmail1().equalsIgnoreCase("")) {
+                    email_arraylist.add(ContactArrayList.get(0).getEmail1());
+                }
+                if (!ContactArrayList.get(0).getEmail2().equalsIgnoreCase("")) {
+                    email_arraylist.add(ContactArrayList.get(0).getEmail2());
+                }
+                if (!ContactArrayList.get(0).getEmail3().equalsIgnoreCase("")) {
+                    email_arraylist.add(ContactArrayList.get(0).getEmail3());
+                }
+                contactPhoneAdapter.notifyDataSetChanged();
+                contactEmailAdapter.notifyDataSetChanged();
+                if (email_arraylist.size() == 3) {
+                    mBinding.llAddEmail.setVisibility(View.GONE);
+                } else if (email_arraylist.size() < 3 && email_arraylist.size() > 0) {
+                    mBinding.llAddEmail.setVisibility(View.VISIBLE);
+                }
+                if (phone_arraylist.size() == 3) {
+                    mBinding.llAddContact.setVisibility(View.GONE);
+                } else if (phone_arraylist.size() < 3 && phone_arraylist.size() > 0) {
+                    mBinding.llAddContact.setVisibility(View.VISIBLE);
+                }
 /*
             ContactPhoneAdapter contactPhoneAdapter = new ContactPhoneAdapter(context,phone_arraylist);
             mBinding.listContactPhone.setAdapter(contactPhoneAdapter);
             ContactEmailAdapter contactEmailAdapter = new ContactEmailAdapter(context,email_arraylist);
             mBinding.listContactEmail.setAdapter(contactEmailAdapter);*/
-            Log.e("phone_arraylist",""+phone_arraylist.size());
-            mBinding.edtFirstName.setText(ContactArrayList.get(0).getFname());
-            mBinding.edtLastName.setText(ContactArrayList.get(0).getLname());
-            Picasso.with(context).load(ContactArrayList.get(0).getImage_url()).into(mBinding.imgContact);
+                Log.e("phone_arraylist", "" + phone_arraylist.size());
+                mBinding.edtFirstName.setText(ContactArrayList.get(0).getFname());
+                mBinding.edtLastName.setText(ContactArrayList.get(0).getLname());
+                Picasso.with(context).load(ContactArrayList.get(0).getImage_url()).into(mBinding.imgContact);
 
-            updateID=ContactArrayList.get(0).getId();
-            // setRuntimeVisibility(ContactArrayList.get(0).getPhone1(),ContactArrayList.get(0).getPhone2(),ContactArrayList.get(0).getPhone3(),ContactArrayList.get(0).getEmail1(),ContactArrayList.get(0).getEmail2(),ContactArrayList.get(0).getEmail3());
-            ArrayList<Group> group_list = new ArrayList<>();
-            group_list = ContactArrayList.get(0).getGroup_list();
-            for (int i=0;i<group_list.size();i++)
-            {
-                if(i==0)
-                {
-                    group=group_list.get(i).getLabel();
-                }else
-                {
-                    group=group+","+group_list.get(i).getLabel();
+                updateID = ContactArrayList.get(0).getId();
+                // setRuntimeVisibility(ContactArrayList.get(0).getPhone1(),ContactArrayList.get(0).getPhone2(),ContactArrayList.get(0).getPhone3(),ContactArrayList.get(0).getEmail1(),ContactArrayList.get(0).getEmail2(),ContactArrayList.get(0).getEmail3());
+                ArrayList<Group> group_list = new ArrayList<>();
+                group_list = ContactArrayList.get(0).getGroup_list();
+                for (int i = 0; i < group_list.size(); i++) {
+                    selectedGroud1.add(group_list.get(i).getColor1());
+                    selectedGroup_label1.add(group_list.get(i).getLabel());
+                    if (i == 0) {
+                        group = group_list.get(i).getLabel();
+                    } else {
+                        group = group + "," + group_list.get(i).getLabel();
+                    }
                 }
+                SelectedGroupDetailListAdapter selectedGroupDetailListAdapter = new SelectedGroupDetailListAdapter(context, selectedGroud1, selectedGroup_label1);
+                mBinding.selectedGroup.setAdapter(selectedGroupDetailListAdapter);
+
+
             }
-            mBinding.txtGroups1.setText(group);
-
-        }
-        /**
-         * from selected group list
-         *
-         */
-        String group1="";
-        if (!Pref.getValue(context, "selectedGroud", "").equalsIgnoreCase("")) {
-            String json = Pref.getValue(context, "selectedGroud", "");
-            String json1 = Pref.getValue(context, "selectedGroup_label", "");
-            Type type = new TypeToken<ArrayList<String>>() {
-            }.getType();
-            selectedGroud = gson.fromJson(json, type);
-            selectedGroup_label = gson.fromJson(json1, type);
-
-            // Log.e("Adaper###","^^^  "+ selectedGroud.size());
-
-            for (int i = 0; i < selectedGroud.size(); i++) {
-                Log.e("Adaper###", "****  " + selectedGroud.get(i) + " " + selectedGroup_label.get(i));
-                if(i==0)
-                {
-                    group1=selectedGroup_label.get(i);
-                }else
-                {
-                    group1=group1+","+selectedGroup_label.get(i);
-                }
-            }
-            mBinding.txtGroups1.setText(group1);
         }
     }
 
@@ -546,8 +664,6 @@ public class EditContactFragment extends Fragment {
                 ContactFragment fragment = new ContactFragment();
                 ((FragmentActivity) context).getSupportFragmentManager().beginTransaction().replace(R.id.frame_main_container, fragment).addToBackStack(null).commit();
 
-                Toast.makeText(getActivity(),"Contact deleted successfully!", Toast.LENGTH_SHORT).show();
-                getActivity().getSupportFragmentManager().popBackStack();
                 Toast.makeText(getActivity(), "Contact deleted successfully!", Toast.LENGTH_SHORT).show();
 
             } catch (Exception e) {
@@ -555,6 +671,7 @@ public class EditContactFragment extends Fragment {
             }
         }
     }
+
     private void openDeleteDialog() {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -580,6 +697,7 @@ public class EditContactFragment extends Fragment {
         alert.setTitle(getResources().getString(R.string.app_name));
         alert.show();
     }
+
     class ExecuteTask extends AsyncTask<String, Integer, String> {
 
 
@@ -627,7 +745,6 @@ public class EditContactFragment extends Fragment {
 
 
                 Toast.makeText(getActivity(), "Contact updated successfully!", Toast.LENGTH_SHORT).show();
-
 
 
                 getActivity().getSupportFragmentManager().popBackStack();

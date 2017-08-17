@@ -139,15 +139,7 @@ public class ContactDetailsFragment extends Fragment {
             img_right_header.setVisibility(View.GONE);
 
         }
-        DashboardActivity.txt_menu.setImageResource(R.mipmap.home);
-        DashboardActivity.txt_menu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AddContactGroupFragment fragment = new AddContactGroupFragment();
-                ((FragmentActivity)context).getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, fragment).addToBackStack(null).commit();
 
-            }
-        });
         txtCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -385,7 +377,6 @@ public class ContactDetailsFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        MyConnectFragment.pageNumber=1;
         img_right_header.setImageResource(R.mipmap.logout_img);
 
     }

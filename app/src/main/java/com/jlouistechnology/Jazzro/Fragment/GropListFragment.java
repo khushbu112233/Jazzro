@@ -1,5 +1,6 @@
 package com.jlouistechnology.Jazzro.Fragment;
 
+import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -17,6 +18,7 @@ import com.google.gson.Gson;
 import com.jlouistechnology.Jazzro.Adapter.NewGroupListAdapter;
 import com.jlouistechnology.Jazzro.Helper.Constants;
 import com.jlouistechnology.Jazzro.Helper.Pref;
+import com.jlouistechnology.Jazzro.Helper.Utils;
 import com.jlouistechnology.Jazzro.Interface.OnClickEditGroupListener;
 import com.jlouistechnology.Jazzro.Jazzro.DashboardNewActivity;
 import com.jlouistechnology.Jazzro.Model.GroupListDataDetailModel;
@@ -32,7 +34,6 @@ import java.util.ArrayList;
 import retrofit2.Call;
 import retrofit2.Callback;
 
-import static com.jlouistechnology.Jazzro.Fragment.MyConnectFragment.context;
 
 /**
  * Created by aipxperts-ubuntu-01 on 4/8/17.
@@ -41,6 +42,7 @@ import static com.jlouistechnology.Jazzro.Fragment.MyConnectFragment.context;
 public class GropListFragment extends Fragment {
     GroupListFragmentLayoutBinding mBinding;
     View rootView;
+    Context context;
     ArrayList<String> SelectedGroupList = new ArrayList<>();
     ArrayList<GroupListDataDetailModel> griupList = new ArrayList<GroupListDataDetailModel>();
 
@@ -72,6 +74,7 @@ public class GropListFragment extends Fragment {
     }
 
     private void preview() {
+        ((DashboardNewActivity)context).Setimagebackgroundresource(R.mipmap.contact_bar);
         ((DashboardNewActivity) context).SettextTxtTitle("Groups");
         ((DashboardNewActivity) context).visibilityimgright(View.VISIBLE);
         ((DashboardNewActivity) context).SetimageresourceImgright(R.mipmap.plus_contact);
@@ -79,7 +82,7 @@ public class GropListFragment extends Fragment {
 
     private void grouplistTask() {
 
-WebService.showProgress(getActivity());
+        WebService.showProgress(getActivity());
         if (WebService.isNetworkAvailable(getActivity())) {
 
             ApiInterface apiService =
@@ -91,12 +94,17 @@ WebService.showProgress(getActivity());
                 @Override
                 public void onResponse(Call<GroupListServiceModel> call, retrofit2.Response<GroupListServiceModel> response) {
                     Log.e("VVV", "111" + new Gson().toJson(response.body()));
-WebService.dismissProgress();
+                    WebService.dismissProgress();
                     if (response.body().status != 400) {
                         griupList = (response.body().data.data);
                         if (griupList.size() > 0) {
                             mBinding.listGroup.setVisibility(View.VISIBLE);
                             mBinding.txtMsg.setVisibility(View.GONE);
+                            NewGroupListAdapter newGroupListAdapter = new NewGroupListAdapter(context, griupList, ((DashboardNewActivity) context).mBinding.header.imgLeftBack, "main",SelectedGroupList);
+                            mBinding.listGroup.setAdapter(newGroupListAdapter);
+                            // groupChoiceOPenDialog(griupList);
+                            newGroupListAdapter.onClickEdit(onClickEditGroupListener);
+
                         } else {
                             mBinding.listGroup.setVisibility(View.GONE);
                             mBinding.txtMsg.setVisibility(View.VISIBLE);
@@ -104,10 +112,6 @@ WebService.dismissProgress();
 
                         Pref.setValue(context, "selectedGroud", "");
                         Pref.setValue(context, "selectedGroup_label", "");
-                        NewGroupListAdapter newGroupListAdapter = new NewGroupListAdapter(context, griupList, ((DashboardNewActivity) context).mBinding.header.txtTitleRight, "main",SelectedGroupList);
-                        newGroupListAdapter.onClickEdit(onClickEditGroupListener);
-                        mBinding.listGroup.setAdapter(newGroupListAdapter);
-                        // groupChoiceOPenDialog(griupList);
 
                     }
 
@@ -122,6 +126,16 @@ WebService.dismissProgress();
         } else {
             Toast.makeText(getActivity(), getResources().getString(R.string.NO_INTERNET_CONNECTION), Toast.LENGTH_LONG).show();
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        ((DashboardNewActivity) context).Set_header_visibility();
+        preview();
+
+        Utils.hideKeyboard(context);
     }
 
     @Override
@@ -148,6 +162,7 @@ WebService.dismissProgress();
                         for (int i = 0; i < fm.getBackStackEntryCount(); ++i) {
                             fm.popBackStack();
                         }
+                        ((DashboardNewActivity)context).Contact_footer();
                         ContactFragment fragment = new ContactFragment();
                         ((FragmentActivity) context).getSupportFragmentManager().beginTransaction().replace(R.id.frame_main_container, fragment).addToBackStack(null).commit();
                         return true;
@@ -160,13 +175,13 @@ WebService.dismissProgress();
     OnClickEditGroupListener onClickEditGroupListener = new OnClickEditGroupListener() {
         @Override
         public void onClick(int position) {
-            Gson gson = new Gson();
+          /*  Gson gson = new Gson();
             Bundle args = new Bundle();
             EditGroupFragment fragment = new EditGroupFragment();
             args.putSerializable("data", gson.toJson(griupList.get(position)));
             fragment.setArguments(args);
             ((FragmentActivity) context).getSupportFragmentManager().beginTransaction().replace(R.id.frame_main_container, fragment).addToBackStack(null).commit();
-
+*/
         }
     };
 

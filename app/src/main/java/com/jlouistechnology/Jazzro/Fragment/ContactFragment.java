@@ -9,6 +9,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -20,6 +21,7 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.jlouistechnology.Jazzro.Adapter.ListContactAdapter;
@@ -114,8 +116,7 @@ public class ContactFragment extends Fragment {
                 pageNumber = storePageNumber;
                 mainConatctArrayList.clear();
                 mainConatctArrayList.addAll(copyContactlist);
-                e("MMM", "mainConatctArrayList size : " + mainConatctArrayList.size());
-                e("MMM", "copyContactlist size : " + copyContactlist.size());
+
                 adapter.notifyDataSetChanged();
 
 
@@ -137,7 +138,7 @@ public class ContactFragment extends Fragment {
                     int count = mBinding.listContact.getChildCount();
 
 
-                    if (first + count == adapter.getCount() && isHavingData) {
+                if (first + count == adapter.getCount() && isHavingData) {
                         pageNumber++;
 
 
@@ -206,7 +207,8 @@ public class ContactFragment extends Fragment {
                             fm.popBackStack();
                         }
                         ((DashboardNewActivity)context).finish();
-                       return true;
+
+                        return true;
                     }
                 }
                 return false;
@@ -220,6 +222,7 @@ public class ContactFragment extends Fragment {
         ((DashboardNewActivity)context).SettextTxtTitle("Contacts");
         ((DashboardNewActivity)context).visibilityimgright(View.VISIBLE);
         ((DashboardNewActivity)context).visibilityimgleftProgress(View.VISIBLE);
+        ((DashboardNewActivity)context).SetimageresourceImgleftprogress();
         ((DashboardNewActivity)context).SetimageresourceImgright(R.mipmap.plus_contact);
         ((DashboardNewActivity)context).Setimagebackgroundresource(R.mipmap.contact_bar);
 
@@ -303,6 +306,9 @@ public class ContactFragment extends Fragment {
 
                 if (jsonArray.length() == 0) {
                     isHavingData = false;
+                }else
+                {
+                    isHavingData=true;
                 }
 
                 for (int i = 0; i < jsonArray.length(); i++) {
@@ -450,7 +456,12 @@ public class ContactFragment extends Fragment {
                 String from = json2.optString("from");
                 String to = json2.optString("to");
                 JSONArray jsonArray = json2.getJSONArray("data");
-
+                if (jsonArray.length() == 0) {
+                    isHavingData = false;
+                }else
+                {
+                    isHavingData=true;
+                }
                 if (jsonArray.length() > 0) {
 
                     Contact[] contact = new Contact[jsonArray.length()];
@@ -528,6 +539,9 @@ public class ContactFragment extends Fragment {
                         contact[i].setGroup_list(arrayList_group);
 
                     }
+                }else
+                {
+                    Toast.makeText(context,"No result found!",Toast.LENGTH_LONG).show();
                 }
 
                 if (mainConatctArrayList.size() > 0) {
@@ -555,30 +569,12 @@ public class ContactFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+
+        ((DashboardNewActivity)context).Set_header_visibility();
         preview();
+
+        Utils.hideKeyboard(context);
         mBinding.searchContact.setText("");
     }
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        getView().setFocusableInTouchMode(true);
-        getView().requestFocus();
-
-        getView().setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (event.getAction() == KeyEvent.ACTION_DOWN) {
-                    if (keyCode == KeyEvent.KEYCODE_BACK) {
-
-                        getActivity().getSupportFragmentManager().popBackStack();
-
-                        return true;
-                    }
-                }
-                return false;
-            }
-        });
-    }
 }

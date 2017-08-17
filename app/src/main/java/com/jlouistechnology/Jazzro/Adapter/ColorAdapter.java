@@ -63,8 +63,14 @@ public class ColorAdapter extends BaseAdapter {
         } else {
             binding = (RowColorListBinding) convertView.getTag();
         }
-
-        binding.txtcolor.setBackgroundColor(Color.parseColor(datalist.get(position)));
+        if(position==0)
+        {
+            binding.txtcolor.setText(datalist.get(position));
+            binding.txtcolor.setBackgroundColor(Color.parseColor("#ffffff"));
+        }else {
+            binding.txtcolor.setBackgroundColor(Color.parseColor(datalist.get(position)));
+            binding.txtcolor.setText("");
+        }
         return convertView;
 
     }

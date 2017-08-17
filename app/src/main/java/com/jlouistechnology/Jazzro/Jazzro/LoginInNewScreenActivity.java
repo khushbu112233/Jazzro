@@ -3,6 +3,7 @@ package com.jlouistechnology.Jazzro.Jazzro;
 import android.app.Activity;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -81,13 +82,11 @@ public class LoginInNewScreenActivity extends Activity {
     public void Preview() {
          /*edt_email.setText("lgrimsley@gmail.com");
         edt_password.setText("bigbang1");*/
-      mBinding.edtEmail.setText("hadelman@jlouis.com");
-       mBinding.edtPassword.setText("aipx@1234");
-     //   mBinding.edtEmail.setTypeface(FontCustom.setFontOpenSansLight(LoginInNewScreenActivity.this));
-      //  mBinding.edtPassword.setTypeface(FontCustom.setFontOpenSansLight(LoginInNewScreenActivity.this));
-        mBinding.txtSignin.setTypeface(FontCustom.setFontOpenSansLight(LoginInNewScreenActivity.this));
-        mBinding.txtForgotpassword.setTypeface(FontCustom.setFontOpenSansLight(LoginInNewScreenActivity.this));
-        mBinding.txt1.setTypeface(FontCustom.setFontOpenSansRegular(LoginInNewScreenActivity.this));
+        mBinding.edtEmail.setText("hadelman@jlouis.com");
+        mBinding.edtPassword.setText("aipx@1234");
+        //   mBinding.edtEmail.setTypeface(FontCustom.setFontOpenSansLight(LoginInNewScreenActivity.this));
+        Typeface font = Typeface.createFromAsset(getAssets(), "fonts/SF_Light.otf");
+        mBinding.txt1.setTypeface(font);
 
     }
 
@@ -229,7 +228,7 @@ public class LoginInNewScreenActivity extends Activity {
                 LoginInNewScreenActivity.this.overridePendingTransition(R.anim.anim_slide_in_left,
                         R.anim.anim_slide_out_left);
                 Pref.setValue(LoginInNewScreenActivity.this,"first_login","1");
-               // Pref.setValue(LoginInNewScreenActivity.this,"last_sync_contact_id",0);
+                // Pref.setValue(LoginInNewScreenActivity.this,"last_sync_contact_id",0);
                 Intent i = new Intent(LoginInNewScreenActivity.this, DashboardNewActivity.class);
                 startActivity(i);
                 finish();

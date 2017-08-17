@@ -22,7 +22,6 @@ import android.widget.Toast;
 
 import com.jlouistechnology.Jazzro.Fragment.ContactDetailsFragment;
 import com.jlouistechnology.Jazzro.Fragment.GroupDetailListFargment;
-import com.jlouistechnology.Jazzro.Fragment.MyConnectFragment;
 import com.jlouistechnology.Jazzro.Helper.Constants;
 import com.jlouistechnology.Jazzro.Helper.FontCustom;
 import com.jlouistechnology.Jazzro.Helper.Pref;
@@ -40,7 +39,6 @@ import java.util.Locale;
 
 import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 
-import static com.jlouistechnology.Jazzro.Fragment.MyConnectFragment.offset;
 import static com.jlouistechnology.Jazzro.Jazzro.DashboardActivity.edt_search;
 
 /**

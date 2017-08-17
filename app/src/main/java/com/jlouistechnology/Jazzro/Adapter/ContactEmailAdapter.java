@@ -74,6 +74,16 @@ public class ContactEmailAdapter extends BaseAdapter {
         final ListContactEmailItemLayoutBinding binding = DataBindingUtil.inflate(inflater, R.layout.list_contact_email_item_layout, parent, false);
         rowView = binding.getRoot();
         binding.edtEmail1.setText(list.get(position));
+        if(position==0)
+        {
+            binding.txtEmail1.setText("Primary");
+        }else if(position==1)
+        {
+            binding.txtEmail1.setText("Secondary");
+        }else if(position==2)
+        {
+            binding.txtEmail1.setText("Tertiary");
+        }
         binding.ivEdelete1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
