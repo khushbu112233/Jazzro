@@ -1,12 +1,9 @@
 package com.jlouistechnology.Jazzro.Jazzro;
 
 import android.app.Activity;
-import android.content.ContentResolver;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -18,22 +15,12 @@ import com.jlouistechnology.Jazzro.Helper.FieldsValidator;
 import com.jlouistechnology.Jazzro.Helper.FontCustom;
 import com.jlouistechnology.Jazzro.Helper.Pref;
 import com.jlouistechnology.Jazzro.Helper.Utils;
-import com.jlouistechnology.Jazzro.Model.ContactVO;
-import com.jlouistechnology.Jazzro.Model.PhoneContact;
-import com.jlouistechnology.Jazzro.Model.SignupErrorStep1;
 import com.jlouistechnology.Jazzro.R;
 import com.jlouistechnology.Jazzro.Webservice.WebService;
 
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.regex.Pattern;
 
 /**
  * Created by aipxperts-ubuntu-01 on 21/4/17.
@@ -94,8 +81,8 @@ public class LoginInNewScreenActivity extends Activity {
     public void Preview() {
          /*edt_email.setText("lgrimsley@gmail.com");
         edt_password.setText("bigbang1");*/
-      //  edt_email.setText("hadelman@jlouis.com");
-       // edt_password.setText("aipx@1234");
+        edt_email.setText("hadelman@jlouis.com");
+       edt_password.setText("aipx@1234");
         edt_email.setTypeface(FontCustom.setFontOpenSansLight(LoginInNewScreenActivity.this));
         edt_password.setTypeface(FontCustom.setFontOpenSansLight(LoginInNewScreenActivity.this));
         txt_signin.setTypeface(FontCustom.setFontOpenSansLight(LoginInNewScreenActivity.this));
