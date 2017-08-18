@@ -109,16 +109,10 @@ public class ContactFragment extends Fragment {
                 isMainLoad = 1;
                 isHavingData = true;
                 isPagination = true;
-
-                pageNumber = storePageNumber;
+                call_without_search_api();
                 mainConatctArrayList.clear();
-                mainConatctArrayList.addAll(copyContactlist);
-
+               // mainConatctArrayList.addAll(copyContactlist);
                 adapter.notifyDataSetChanged();
-
-
-                isPagination = true;
-
                 mBinding.ivcancelSearch.setVisibility(View.GONE);
             }
         });
@@ -536,9 +530,6 @@ public class ContactFragment extends Fragment {
                         contact[i].setGroup_list(arrayList_group);
 
                     }
-                }else
-                {
-                    Toast.makeText(context,"No result found!",Toast.LENGTH_LONG).show();
                 }
 
                 if (mainConatctArrayList.size() > 0) {
@@ -547,7 +538,7 @@ public class ContactFragment extends Fragment {
                     WebService.dismissProgress();
 
                 } else {
-
+                    Toast.makeText(context,"No result found!",Toast.LENGTH_LONG).show();
                     WebService.dismissProgress();
                 }
 

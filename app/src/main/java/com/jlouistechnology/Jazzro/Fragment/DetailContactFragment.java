@@ -31,6 +31,7 @@ import com.jlouistechnology.Jazzro.Model.Contact;
 import com.jlouistechnology.Jazzro.Model.Group;
 import com.jlouistechnology.Jazzro.R;
 import com.jlouistechnology.Jazzro.Webservice.WebService;
+import com.jlouistechnology.Jazzro.Widget.TextView_Bold;
 import com.jlouistechnology.Jazzro.Widget.TextView_Regular;
 import com.jlouistechnology.Jazzro.databinding.DetailContactLayoutBinding;
 import com.squareup.picasso.Picasso;
@@ -436,7 +437,7 @@ public class DetailContactFragment extends Fragment {
     /**
      * set run time value of email
      */
-    private void Email(String email, TextView_Regular txtEmailValue, TextView_Regular txtEmailValue1,String msg) {
+    private void Email(String email, TextView_Bold txtEmailValue, TextView_Regular txtEmailValue1,String msg) {
         txtEmailValue.setText(email);
         txtEmailValue1.setText(msg);
 
@@ -445,7 +446,7 @@ public class DetailContactFragment extends Fragment {
     /**
      * set run time value of phone
      */
-    private void phone(String phone, TextView_Regular txtPhone, TextView_Regular txtPhone1,String msg) {
+    private void phone(String phone, TextView_Bold txtPhone, TextView_Regular txtPhone1, String msg) {
         txtPhone.setText(phone);
         txtPhone1.setText(msg);
     }

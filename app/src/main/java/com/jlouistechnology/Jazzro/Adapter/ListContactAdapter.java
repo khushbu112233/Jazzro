@@ -119,9 +119,22 @@ public class ListContactAdapter extends BaseAdapter {
         if (fragment == ContactFragment.class) {
             binding.ivPluse.setVisibility(View.GONE);
             binding.llGroupColor.setVisibility(View.VISIBLE);
+            binding.lnMainAlluserContact.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Pref.setValue(context, "Detail_id", list.get(position).getId());
+
+                    DetailContactFragment fragment = new DetailContactFragment();
+                    ((FragmentActivity) context).getSupportFragmentManager().beginTransaction().replace(R.id.frame_main_container, fragment).addToBackStack(null).commit();
+
+
+                }
+            });
+
         } else {
             binding.ivPluse.setVisibility(View.VISIBLE);
             binding.llGroupColor.setVisibility(View.GONE);
+
         }
 
         if (list.get(position).isSelected) {
@@ -193,17 +206,6 @@ public class ListContactAdapter extends BaseAdapter {
         } else {
             binding.txtPhoneNumber.setText(list.get(position).getEmail1());
         }
-        binding.lnMainAlluserContact.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Pref.setValue(context, "Detail_id", list.get(position).getId());
-
-                DetailContactFragment fragment = new DetailContactFragment();
-                ((FragmentActivity) context).getSupportFragmentManager().beginTransaction().replace(R.id.frame_main_container, fragment).addToBackStack(null).commit();
-
-
-            }
-        });
 
 
         return rowView;

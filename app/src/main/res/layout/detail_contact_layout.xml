@@ -20,8 +20,8 @@
             android:layout_height="100dp"
             android:layout_gravity="center"
             android:layout_marginTop="-50dp"
-             />
-        <com.jlouistechnology.Jazzro.Helper.VerticalScrollview
+            />
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scrollbars="vertical">
@@ -51,11 +51,11 @@
                             android:paddingLeft="10dp"
                             android:layout_marginLeft="10dp"
                             android:textColor="@color/black_40"
-                            android:textSize="@dimen/lablesize"
+                            android:textSize="@dimen/edittextsize"
                             tools:text="Mobile" />
 
 
-                        <com.jlouistechnology.Jazzro.Widget.TextView_Regular
+                        <com.jlouistechnology.Jazzro.Widget.TextView_Bold
                             android:id="@+id/txt_phone_number1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -66,7 +66,7 @@
                             android:paddingLeft="10dp"
                             android:layout_marginLeft="10dp"
                             android:textColor="@color/new_black"
-                            android:textSize="@dimen/edittextsize1"
+                            android:textSize="@dimen/edittextsize2"
                             tools:text="546565466" />
                     </LinearLayout>
                     <LinearLayout
@@ -103,7 +103,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="10dp"
                     android:gravity="center"
                     android:visibility="gone"
                     android:weightSum="1">
@@ -120,11 +120,11 @@
                             android:paddingLeft="10dp"
                             android:layout_marginLeft="10dp"
                             android:textColor="@color/black_40"
-                            android:textSize="@dimen/lablesize"
+                            android:textSize="@dimen/edittextsize"
                             tools:text="Home Phone" />
 
 
-                        <com.jlouistechnology.Jazzro.Widget.TextView_Regular
+                        <com.jlouistechnology.Jazzro.Widget.TextView_Bold
                             android:id="@+id/txt_phone_number2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -135,7 +135,7 @@
                             android:paddingLeft="10dp"
                             android:layout_marginLeft="10dp"
                             android:textColor="@color/new_black"
-                            android:textSize="@dimen/edittextsize1"
+                            android:textSize="@dimen/edittextsize2"
                             tools:text="546565466" />
                     </LinearLayout>
                     <LinearLayout
@@ -172,7 +172,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="10dp"
                     android:gravity="center"
                     android:visibility="gone"
                     android:weightSum="1">
@@ -189,11 +189,11 @@
                             android:paddingLeft="10dp"
                             android:layout_marginLeft="10dp"
                             android:textColor="@color/black_40"
-                            android:textSize="@dimen/lablesize"
+                            android:textSize="@dimen/edittextsize"
                             tools:text="Work Phone" />
 
 
-                        <com.jlouistechnology.Jazzro.Widget.TextView_Regular
+                        <com.jlouistechnology.Jazzro.Widget.TextView_Bold
                             android:id="@+id/txt_phone_number3"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -204,7 +204,7 @@
                             android:paddingLeft="10dp"
                             android:layout_marginLeft="10dp"
                             android:textColor="@color/new_black"
-                            android:textSize="@dimen/edittextsize1"
+                            android:textSize="@dimen/edittextsize2"
                             tools:text="546565466" />
                     </LinearLayout>
                     <LinearLayout
@@ -241,7 +241,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="30dp"
                     android:gravity="center"
                     android:visibility="gone"
                     android:weightSum="1">
@@ -258,11 +258,11 @@
                             android:paddingLeft="10dp"
                             android:layout_marginLeft="10dp"
                             android:textColor="@color/black_40"
-                            android:textSize="@dimen/lablesize"
+                            android:textSize="@dimen/edittextsize"
                             tools:text="Primary Email" />
 
 
-                        <com.jlouistechnology.Jazzro.Widget.TextView_Regular
+                        <com.jlouistechnology.Jazzro.Widget.TextView_Bold
                             android:id="@+id/txt_email_value1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -273,7 +273,7 @@
                             android:paddingLeft="10dp"
                             android:layout_marginLeft="10dp"
                             android:textColor="@color/new_black"
-                            android:textSize="@dimen/edittextsize1"
+                            android:textSize="@dimen/edittextsize2"
                             tools:text="aa@gmail.com" />
                     </LinearLayout>
                     <LinearLayout
@@ -310,7 +310,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="10dp"
                     android:gravity="center"
                     android:visibility="gone"
                     android:weightSum="1">
@@ -327,11 +327,11 @@
                             android:paddingLeft="10dp"
                             android:layout_marginLeft="10dp"
                             android:textColor="@color/black_40"
-                            android:textSize="@dimen/lablesize"
+                            android:textSize="@dimen/edittextsize"
                             tools:text="Secondary Email" />
 
 
-                        <com.jlouistechnology.Jazzro.Widget.TextView_Regular
+                        <com.jlouistechnology.Jazzro.Widget.TextView_Bold
                             android:id="@+id/txt_email_value2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -342,7 +342,7 @@
                             android:paddingLeft="10dp"
                             android:layout_marginLeft="10dp"
                             android:textColor="@color/new_black"
-                            android:textSize="@dimen/edittextsize1"
+                            android:textSize="@dimen/edittextsize2"
                             tools:text="aa@gmail.com" />
                     </LinearLayout>
                     <LinearLayout
@@ -379,7 +379,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="10dp"
                     android:gravity="center"
                     android:visibility="gone"
                     android:weightSum="1">
@@ -396,11 +396,11 @@
                             android:paddingLeft="10dp"
                             android:layout_marginLeft="10dp"
                             android:textColor="@color/black_40"
-                            android:textSize="@dimen/lablesize"
+                            android:textSize="@dimen/edittextsize"
                             tools:text="Tertiary Email" />
 
 
-                        <com.jlouistechnology.Jazzro.Widget.TextView_Regular
+                        <com.jlouistechnology.Jazzro.Widget.TextView_Bold
                             android:id="@+id/txt_email_value3"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -411,7 +411,7 @@
                             android:paddingLeft="10dp"
                             android:layout_marginLeft="10dp"
                             android:textColor="@color/new_black"
-                            android:textSize="@dimen/edittextsize1"
+                            android:textSize="@dimen/edittextsize2"
                             tools:text="aa@gmail.com" />
                     </LinearLayout>
                     <LinearLayout
@@ -448,7 +448,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:visibility="gone"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="30dp"
                     android:orientation="vertical">
                     <com.jlouistechnology.Jazzro.Widget.TextView_Regular
                         android:id="@+id/txt_group"
@@ -460,22 +460,24 @@
                         android:paddingBottom="5dp"
                         android:layout_marginLeft="10dp"
                         android:textColor="@color/black_40"
-                        android:textSize="@dimen/lablesize"
+                        android:textSize="@dimen/edittextsize"
                         tools:text="Groups" />
                     <ListView
                         android:id="@+id/selected_group"
                         android:layout_width="match_parent"
                         android:layout_height="70dp"
                         android:gravity="center_vertical"
+                        android:layout_marginLeft="10dp"
+                        android:nestedScrollingEnabled="true"
                         android:dividerHeight="0dp"
                         android:clickable="false"
                         android:divider="@null"
-                      >
+                        >
 
                     </ListView>
 
                 </LinearLayout>
             </LinearLayout>
-        </com.jlouistechnology.Jazzro.Helper.VerticalScrollview>
+        </ScrollView>
     </LinearLayout>
 </layout>

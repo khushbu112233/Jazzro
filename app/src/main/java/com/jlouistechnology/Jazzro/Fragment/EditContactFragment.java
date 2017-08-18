@@ -82,22 +82,63 @@ public class EditContactFragment extends Fragment {
         rootView = mBinding.getRoot();
         context = getActivity();
         preview();
+ /*       if(selectedGroup_label.size()>0) {
+            if (selectedGroup_label.size() == 1) {
+                float height = 1 * (getResources().getDimension(R.dimen.listview_height));
 
+                ViewGroup.LayoutParams lp = (ViewGroup.LayoutParams) mBinding.selectedGroup.getLayoutParams();
+                lp.height = (int) height;
+                mBinding.selectedGroup.setLayoutParams(lp);
+            } else if (selectedGroup_label.size() == 2) {
+
+                float height = 2 * (getResources().getDimension(R.dimen.listview_height));
+
+                ViewGroup.LayoutParams lp = (ViewGroup.LayoutParams) mBinding.selectedGroup.getLayoutParams();
+                lp.height = (int) height;
+                mBinding.selectedGroup.setLayoutParams(lp);
+            } else {
+                float height = 3 * (getResources().getDimension(R.dimen.listview_height));
+
+                ViewGroup.LayoutParams lp = (ViewGroup.LayoutParams) mBinding.selectedGroup.getLayoutParams();
+                lp.height = (int) height;
+                mBinding.selectedGroup.setLayoutParams(lp);
+
+            }
+        }else
+        {
+            float height = 30.0f;
+
+            ViewGroup.LayoutParams lp = (ViewGroup.LayoutParams) mBinding.selectedGroup.getLayoutParams();
+            lp.height = (int) height;
+            mBinding.selectedGroup.setLayoutParams(lp);
+
+
+        }*/
         /**
          * remove email when click minus image
          */
         OnClickDeleteListener onClickDeleteListener = new OnClickDeleteListener() {
             @Override
             public void OnClickDeleteListener(int pos) {
+                Log.e("pos","111"+pos);
                 if (email_arraylist.size() > 0) {
                     for (int i = 0; i < email_arraylist.size(); i++) {
 
                         if (i == pos) {
                             email_arraylist.remove(i);
+                            if (email_arraylist.size() < 3) {
+                                mBinding.llAddEmail.setVisibility(View.VISIBLE);
+                            }else
+                            {
+                                mBinding.llAddEmail.setVisibility(View.GONE);
+                            }
                             break;
                         }
-                        if (email_arraylist.size() < 4) {
+                        if (email_arraylist.size() < 3) {
                             mBinding.llAddEmail.setVisibility(View.VISIBLE);
+                        }else
+                        {
+                            mBinding.llAddEmail.setVisibility(View.GONE);
                         }
                     }
                 }
@@ -114,10 +155,19 @@ public class EditContactFragment extends Fragment {
 
                         if (i == pos) {
                             phone_arraylist.remove(i);
+                            if (phone_arraylist.size() < 3) {
+                                mBinding.llAddContact.setVisibility(View.VISIBLE);
+                            }else
+                            {
+                                mBinding.llAddContact.setVisibility(View.GONE);
+                            }
                             break;
                         }
-                        if (phone_arraylist.size() < 4) {
+                        if (phone_arraylist.size() < 3) {
                             mBinding.llAddContact.setVisibility(View.VISIBLE);
+                        }else
+                        {
+                            mBinding.llAddContact.setVisibility(View.GONE);
                         }
                     }
                 }
@@ -428,7 +478,7 @@ public class EditContactFragment extends Fragment {
             Pref.setValue(context, "phone1_add", countryCode + phone1);
         }
         if (phone2.length() > 0) {
-            Pref.setValue(context, "phone2_add", countryCode + phone2);
+            Pref.setValue(context, "2_add", countryCode + phone2);
         }
         if (phone3.length() > 0) {
             Pref.setValue(context, "phone3_add", countryCode + phone3);
@@ -560,14 +610,57 @@ public class EditContactFragment extends Fragment {
                     group1 = group1 + "," + selectedGroup_label.get(i);
                 }
             }
+            if(selectedGroud.size()>0)
+            {
+                mBinding.txtGroupTest.setVisibility(View.GONE);
+                mBinding.selectedGroup.setVisibility(View.VISIBLE);
+                mBinding.llImg.setVisibility(View.VISIBLE);
+            }else
+            {
+                mBinding.txtGroupTest.setVisibility(View.VISIBLE);
+                mBinding.selectedGroup.setVisibility(View.GONE);
+                mBinding.llImg.setVisibility(View.GONE);
+            }
+            if(selectedGroup_label.size()==1)
+            {
+                float height = 1*(getResources().getDimension(R.dimen.listview_height));
+
+                ViewGroup.LayoutParams lp = (ViewGroup.LayoutParams) mBinding.selectedGroup.getLayoutParams();
+                lp.height = (int)height;
+                mBinding.selectedGroup.setLayoutParams(lp);
+            } else if(selectedGroup_label.size()==2){
+
+                float height = 2*(getResources().getDimension(R.dimen.listview_height));
+
+                ViewGroup.LayoutParams lp = (ViewGroup.LayoutParams) mBinding.selectedGroup.getLayoutParams();
+                lp.height = (int)height;
+                mBinding.selectedGroup.setLayoutParams(lp);
+            }else{
+                float height = 3*(getResources().getDimension(R.dimen.listview_height));
+
+                ViewGroup.LayoutParams lp = (ViewGroup.LayoutParams) mBinding.selectedGroup.getLayoutParams();
+                lp.height = (int)height;
+                mBinding.selectedGroup.setLayoutParams(lp);
+
+            }
             SelectedGroupDetailListAdapter selectedGroupDetailListAdapter = new SelectedGroupDetailListAdapter(context, selectedGroup_color, selectedGroup_label);
             mBinding.selectedGroup.setAdapter(selectedGroupDetailListAdapter);
-
+            contactPhoneAdapter.notifyDataSetChanged();
+            contactEmailAdapter.notifyDataSetChanged();
+            if (email_arraylist.size() >= 3) {
+                mBinding.llAddEmail.setVisibility(View.GONE);
+            } else if (email_arraylist.size() < 3 && email_arraylist.size() > 0) {
+                mBinding.llAddEmail.setVisibility(View.VISIBLE);
+            }
+            if (phone_arraylist.size() >= 3) {
+                mBinding.llAddContact.setVisibility(View.GONE);
+            } else if (phone_arraylist.size() < 3 && phone_arraylist.size() > 0) {
+                mBinding.llAddContact.setVisibility(View.VISIBLE);
+            }
         } else {
             if (!Pref.getValue(context, "ContactArrayList", "").equalsIgnoreCase("")) {
                 String json = Pref.getValue(context, "ContactArrayList", "");
-                email_arraylist.clear();
-                phone_arraylist.clear();
+
                 Type type = new TypeToken<ArrayList<Contact>>() {
                 }.getType();
 
@@ -593,12 +686,12 @@ public class EditContactFragment extends Fragment {
                 }
                 contactPhoneAdapter.notifyDataSetChanged();
                 contactEmailAdapter.notifyDataSetChanged();
-                if (email_arraylist.size() == 3) {
+                if (email_arraylist.size() >= 3) {
                     mBinding.llAddEmail.setVisibility(View.GONE);
                 } else if (email_arraylist.size() < 3 && email_arraylist.size() > 0) {
                     mBinding.llAddEmail.setVisibility(View.VISIBLE);
                 }
-                if (phone_arraylist.size() == 3) {
+                if (phone_arraylist.size() >= 3) {
                     mBinding.llAddContact.setVisibility(View.GONE);
                 } else if (phone_arraylist.size() < 3 && phone_arraylist.size() > 0) {
                     mBinding.llAddContact.setVisibility(View.VISIBLE);
@@ -626,12 +719,46 @@ public class EditContactFragment extends Fragment {
                         group = group + "," + group_list.get(i).getLabel();
                     }
                 }
+                if(selectedGroud1.size()>0)
+                {
+                    mBinding.txtGroupTest.setVisibility(View.GONE);
+                    mBinding.selectedGroup.setVisibility(View.VISIBLE);
+                    mBinding.llImg.setVisibility(View.VISIBLE);
+                }else
+                {
+                    mBinding.txtGroupTest.setVisibility(View.VISIBLE);
+                    mBinding.selectedGroup.setVisibility(View.GONE);
+                    mBinding.llImg.setVisibility(View.GONE);
+                }
+                if(selectedGroup_label1.size()==1)
+                {
+                    float height = 1*(getResources().getDimension(R.dimen.listview_height));
+
+                    ViewGroup.LayoutParams lp = (ViewGroup.LayoutParams) mBinding.selectedGroup.getLayoutParams();
+                    lp.height = (int)height;
+                    mBinding.selectedGroup.setLayoutParams(lp);
+                } else if(selectedGroup_label1.size()==2){
+
+                    float height = 2*(getResources().getDimension(R.dimen.listview_height));
+
+                    ViewGroup.LayoutParams lp = (ViewGroup.LayoutParams) mBinding.selectedGroup.getLayoutParams();
+                    lp.height = (int)height;
+                    mBinding.selectedGroup.setLayoutParams(lp);
+                }else{
+                    float height = 3*(getResources().getDimension(R.dimen.listview_height));
+
+                    ViewGroup.LayoutParams lp = (ViewGroup.LayoutParams) mBinding.selectedGroup.getLayoutParams();
+                    lp.height = (int)height;
+                    mBinding.selectedGroup.setLayoutParams(lp);
+
+                }
                 SelectedGroupDetailListAdapter selectedGroupDetailListAdapter = new SelectedGroupDetailListAdapter(context, selectedGroud1, selectedGroup_label1);
                 mBinding.selectedGroup.setAdapter(selectedGroupDetailListAdapter);
 
 
             }
         }
+
     }
 
 

@@ -112,7 +112,17 @@ public class AddNewContactFragment extends Fragment {
 
 
         preview();
-
+        if(selectedGroud.size()>0)
+        {
+            mBinding.txtGroupTest.setVisibility(View.GONE);
+            mBinding.selectedGroup.setVisibility(View.VISIBLE);
+            mBinding.llImg.setVisibility(View.VISIBLE);
+        }else
+        {
+            mBinding.txtGroupTest.setVisibility(View.VISIBLE);
+            mBinding.selectedGroup.setVisibility(View.GONE);
+            mBinding.llImg.setVisibility(View.GONE);
+        }
         Pref.setValue(context, "SelectedGroupList", "");
         TelephonyManager tm = (TelephonyManager) getActivity()
                 .getSystemService(Context.TELEPHONY_SERVICE);
@@ -138,7 +148,7 @@ public class AddNewContactFragment extends Fragment {
             }
         });
 
-        mBinding.llGroup.setOnClickListener(new View.OnClickListener() {
+        mBinding.llGroups.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Gson gson = new Gson();
@@ -384,11 +394,36 @@ public class AddNewContactFragment extends Fragment {
             {
                 mBinding.txtGroupTest.setVisibility(View.GONE);
                 mBinding.selectedGroup.setVisibility(View.VISIBLE);
+                mBinding.llImg.setVisibility(View.VISIBLE);
             }else
             {
                 mBinding.txtGroupTest.setVisibility(View.VISIBLE);
                 mBinding.selectedGroup.setVisibility(View.GONE);
+                mBinding.llImg.setVisibility(View.GONE);
             }
+            if(selectedGroup_label.size()==1)
+            {
+                float height = 1*(getResources().getDimension(R.dimen.listview_height));
+
+                ViewGroup.LayoutParams lp = (ViewGroup.LayoutParams) mBinding.selectedGroup.getLayoutParams();
+                lp.height = (int)height;
+                mBinding.selectedGroup.setLayoutParams(lp);
+            } else if(selectedGroup_label.size()==2){
+
+                float height = 2*(getResources().getDimension(R.dimen.listview_height));
+
+                ViewGroup.LayoutParams lp = (ViewGroup.LayoutParams) mBinding.selectedGroup.getLayoutParams();
+                lp.height = (int)height;
+                mBinding.selectedGroup.setLayoutParams(lp);
+            }else{
+                float height = 3*(getResources().getDimension(R.dimen.listview_height));
+
+                ViewGroup.LayoutParams lp = (ViewGroup.LayoutParams) mBinding.selectedGroup.getLayoutParams();
+                lp.height = (int)height;
+                mBinding.selectedGroup.setLayoutParams(lp);
+
+            }
+
             SelectedGroupDetailListAdapter selectedGroupDetailListAdapter = new SelectedGroupDetailListAdapter(context,selectedGroup_color,selectedGroup_label);
             mBinding.selectedGroup.setAdapter(selectedGroupDetailListAdapter);
            /* facebookFriendListAdapter = new FacebookFriendListAdapter(getActivity(), facebookuserzeebaListModelArrayList);

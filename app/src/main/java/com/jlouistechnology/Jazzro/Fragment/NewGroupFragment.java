@@ -179,6 +179,7 @@ public class NewGroupFragment extends Fragment {
                         if(finalColorList.get(position).background.equalsIgnoreCase("Choose a color"))
                         {
                             mBinding.txtBackgruondColor.setText(finalColorList.get(position).background);
+                            mBinding.txtBackgruondColor.setTextColor(getResources().getColor(R.color.black_40));
 
                         }else {
                             mBinding.txtBackgruondColor.setTextColor(Color.parseColor(finalColorList.get(position).background));
@@ -192,14 +193,14 @@ public class NewGroupFragment extends Fragment {
                     if(position==0) {
                         isclick=false;
                         mBinding.txtBackgruondColor.setText(finalColorList.get(position).background);
-                        mBinding.txtBackgruondColor.setTextColor(Color.parseColor("#767575"));
+                        mBinding.txtBackgruondColor.setTextColor(getResources().getColor(R.color.black_40));
 
                     }else
                     {
                         mBinding.txtBackgruondColor.setError(null);
                         if (finalColorList.get(position).background.equalsIgnoreCase("Choose a color")) {
                             mBinding.txtBackgruondColor.setText(finalColorList.get(position).background);
-                            mBinding.txtBackgruondColor.setTextColor(Color.parseColor("#767575"));
+                            mBinding.txtBackgruondColor.setTextColor(getResources().getColor(R.color.black_40));
 
                         } else {
                             mBinding.txtBackgruondColor.setTextColor(Color.parseColor(finalColorList.get(position).background));

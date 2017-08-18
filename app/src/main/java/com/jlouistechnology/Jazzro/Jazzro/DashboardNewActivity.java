@@ -309,6 +309,10 @@ public class DashboardNewActivity extends FragmentActivity {
     @Override
     protected void onResume() {
         super.onResume();
+       /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+// getWindow().setStatusBarColor(getResources().getColor(R.color.colorAccent));
+        }*/
         Log.e("current_on_resume",""+getCurrentFragment());
         IntentFilter intentFilter = new IntentFilter(
                 "android.intent.action.MAIN");

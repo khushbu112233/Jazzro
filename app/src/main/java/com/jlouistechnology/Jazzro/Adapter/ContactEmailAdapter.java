@@ -88,22 +88,61 @@ public class ContactEmailAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setMessage("Are you sure you want to remove email?")
-                        .setCancelable(false)
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                onClickDeleteListener.OnClickDeleteListener(position);
-                                notifyDataSetChanged();
+                if(position==0) {
+                    builder.setMessage("Are you sure you want to remove Primary?")
+                            .setCancelable(false)
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    onClickDeleteListener.OnClickDeleteListener(position);
+                                    notifyDataSetChanged();
 
-                            }
-                        })
-                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                //  Action for 'NO' Button
-                                dialog.cancel();
-                            }
-                        });
+                                }
+                            })
+                            .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    //  Action for 'NO' Button
+                                    dialog.cancel();
+                                }
+                            });
+                }else if(position==1)
+                {
 
+                    builder.setMessage("Are you sure you want to remove Secondary?")
+                            .setCancelable(false)
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    onClickDeleteListener.OnClickDeleteListener(position);
+                                    notifyDataSetChanged();
+
+                                }
+                            })
+                            .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    //  Action for 'NO' Button
+                                    dialog.cancel();
+                                }
+                            });
+
+                }else if(position==2)
+                {
+                    builder.setMessage("Are you sure you want to remove Tertiary?")
+                            .setCancelable(false)
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    onClickDeleteListener.OnClickDeleteListener(position);
+                                    notifyDataSetChanged();
+
+                                }
+                            })
+                            .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    //  Action for 'NO' Button
+                                    dialog.cancel();
+                                }
+                            });
+
+
+                }
                 //Creating dialog box
                 AlertDialog alert = builder.create();
                 //Setting the title manually

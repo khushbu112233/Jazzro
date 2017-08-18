@@ -7,6 +7,8 @@
     <dimen name="fashom_fields_width">300dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="dots_height">30dp</dimen>
+    <dimen name="margin">30dp</dimen>
+    <dimen name="listview_height">25dp</dimen>
     <dimen name="dots_margin_bottom">20dp</dimen>
     <dimen name="img_width_height">200dp</dimen>
     <dimen name="slide_title">20dp</dimen>
@@ -15,6 +17,7 @@
 
     <dimen name="edittextsize">14sp</dimen>
     <dimen name="edittextsize1">15sp</dimen>
+    <dimen name="edittextsize2">16sp</dimen>
 
     <dimen name="lablesize">13sp</dimen>
     <dimen name="lablesize1">11sp</dimen>

@@ -89,22 +89,58 @@ public class ContactPhoneAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setMessage("Are you sure you want to remove phone number?")
-                        .setCancelable(false)
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                onClickDeleteListener.OnClickPhoneDeleteListener(position);
-                                notifyDataSetChanged();
+                if(position==0) {
 
-                            }
-                        })
-                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                //  Action for 'NO' Button
-                                dialog.cancel();
-                            }
-                        });
+                    builder.setMessage("Are you sure you want to remove Mobile?")
+                            .setCancelable(false)
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    onClickDeleteListener.OnClickPhoneDeleteListener(position);
+                                    notifyDataSetChanged();
 
+                                }
+                            })
+                            .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    //  Action for 'NO' Button
+                                    dialog.cancel();
+                                }
+                            });
+                }else if(position==1)
+                {
+                    builder.setMessage("Are you sure you want to remove Home?")
+                            .setCancelable(false)
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    onClickDeleteListener.OnClickPhoneDeleteListener(position);
+                                    notifyDataSetChanged();
+
+                                }
+                            })
+                            .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    //  Action for 'NO' Button
+                                    dialog.cancel();
+                                }
+                            });
+                }else if(position==2)
+                {
+                    builder.setMessage("Are you sure you want to remove Work?")
+                            .setCancelable(false)
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    onClickDeleteListener.OnClickPhoneDeleteListener(position);
+                                    notifyDataSetChanged();
+
+                                }
+                            })
+                            .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    //  Action for 'NO' Button
+                                    dialog.cancel();
+                                }
+                            });
+                }
                 //Creating dialog box
                 AlertDialog alert = builder.create();
                 //Setting the title manually
