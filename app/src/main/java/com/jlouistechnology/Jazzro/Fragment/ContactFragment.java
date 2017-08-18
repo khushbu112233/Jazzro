@@ -1,12 +1,9 @@
 package com.jlouistechnology.Jazzro.Fragment;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.databinding.DataBindingUtil;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -18,12 +15,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AbsListView;
-import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
 import com.jlouistechnology.Jazzro.Adapter.ListContactAdapter;
 import com.jlouistechnology.Jazzro.Helper.ConnectionDetector;
 import com.jlouistechnology.Jazzro.Helper.Constants;
@@ -35,8 +30,10 @@ import com.jlouistechnology.Jazzro.Model.Group;
 import com.jlouistechnology.Jazzro.R;
 import com.jlouistechnology.Jazzro.Webservice.WebService;
 import com.jlouistechnology.Jazzro.databinding.ContactFragmentLayoutBinding;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 /**
@@ -235,7 +232,7 @@ public class ContactFragment extends Fragment {
 
     public void setadapterinit()
     {
-        adapter = new ListContactAdapter(context, mainConatctArrayList);
+        adapter = new ListContactAdapter(context, mainConatctArrayList,ContactFragment.class);
         mBinding.listContact.setAdapter(adapter);
 
     }

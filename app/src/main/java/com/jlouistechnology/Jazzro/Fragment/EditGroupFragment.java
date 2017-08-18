@@ -209,7 +209,7 @@ public class EditGroupFragment extends BaseFragment {
         });
 
 
-        adapter1 = new EditGroupAdapter(getActivity(),groupList);
+        adapter1 = new EditGroupAdapter(getActivity(),groupList,EditGroupFragment.class);
         mBinding.contactListview.setAdapter(adapter1);
 
     }

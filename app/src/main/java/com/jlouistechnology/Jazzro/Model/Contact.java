@@ -31,6 +31,7 @@ public class Contact {
     public String created_at_formatted;
     public String updated_at_formatted;
     public ArrayList<Group> group_list;
+    public boolean isSelected = false;
 
     public String getImage_url() {
         return image_url;

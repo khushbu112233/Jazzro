@@ -43,14 +43,14 @@ android {
     dexOptions {
         javaMaxHeapSize "4g"
     }
-  /*  splits {
+    splits {
         abi {
             enable true
             reset()
             include 'x86', 'armeabi-v7a'
             universalApk true
         }
-    }*/
+    }
 }
 repositories {
     maven { url "https://jitpack.io" }

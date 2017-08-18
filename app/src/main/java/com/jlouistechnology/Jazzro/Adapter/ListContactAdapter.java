@@ -13,9 +13,11 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.jlouistechnology.Jazzro.Fragment.ContactFragment;
 import com.jlouistechnology.Jazzro.Fragment.DetailContactFragment;
 import com.jlouistechnology.Jazzro.Helper.Pref;
 import com.jlouistechnology.Jazzro.Helper.Utils;
+import com.jlouistechnology.Jazzro.Interface.OnClickAddContactListener;
 import com.jlouistechnology.Jazzro.Model.ColorModel;
 import com.jlouistechnology.Jazzro.Model.Contact;
 import com.jlouistechnology.Jazzro.R;
@@ -37,11 +39,14 @@ public class ListContactAdapter extends BaseAdapter {
     String acc_no;
     private ArrayList<Contact> myList = new ArrayList<>();
     ArrayList<Contact> copyList = new ArrayList<>();
-    LayoutInflater inflater ;
+    LayoutInflater inflater;
+    Class fragment;
+    OnClickAddContactListener onClickAddContactListener;
 
-    public ListContactAdapter(Context context, ArrayList<Contact> list) {
+    public ListContactAdapter(Context context, ArrayList<Contact> list, Class fragment) {
         this.context = context;
         this.list = list;
+        this.fragment = fragment;
 
         inflater = (LayoutInflater) context.
                 getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -53,6 +58,10 @@ public class ListContactAdapter extends BaseAdapter {
         myList = list2;
         copyList = list2;
 
+    }
+
+    public void setOnClickAddContactListener(OnClickAddContactListener onClickAddContactListener) {
+        this.onClickAddContactListener = onClickAddContactListener;
     }
 
     public void filter(String charText) {
@@ -75,7 +84,6 @@ public class ListContactAdapter extends BaseAdapter {
         }
         notifyDataSetChanged();
     }
-
 
 
     @Override
@@ -108,26 +116,44 @@ public class ListContactAdapter extends BaseAdapter {
 
 
         //ColorAdapter adapter=new ColorAdapter(context,colorName);
+        if (fragment == ContactFragment.class) {
+            binding.ivPluse.setVisibility(View.GONE);
+            binding.llGroupColor.setVisibility(View.VISIBLE);
+        } else {
+            binding.ivPluse.setVisibility(View.VISIBLE);
+            binding.llGroupColor.setVisibility(View.GONE);
+        }
+
+        if (list.get(position).isSelected) {
+            binding.ivPluse.setImageResource(R.mipmap.minus_contact);
+        } else {
+            binding.ivPluse.setImageResource(R.mipmap.add_contact_add);
+        }
+
+        binding.ivPluse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                onClickAddContactListener.onClick(position);
+            }
+        });
+
 
         final ArrayList<ColorModel> finalColorList = colorList;
-
 
 
         if (list.get(position).getGroup_list().size() > 0) {
 
 
-            Log.e("finalColorList",""+finalColorList);
-            for(int i=0;i<list.get(position).getGroup_list().size();i++)
-            {
+            Log.e("finalColorList", "" + finalColorList);
+            for (int i = 0; i < list.get(position).getGroup_list().size(); i++) {
 
-                for(int  j = 0 ; j<finalColorList.size();j++)
-                {
-                    if(list.get(position).getGroup_list().get(i).getColor1().equalsIgnoreCase(finalColorList.get(j).name))
-                    {
-                        Log.e("background",""+finalColorList.get(j).background);
-                        Log.e("edit name",""+finalColorList.get(j).name);
+                for (int j = 0; j < finalColorList.size(); j++) {
+                    if (list.get(position).getGroup_list().get(i).getColor1().equalsIgnoreCase(finalColorList.get(j).name)) {
+                        Log.e("background", "" + finalColorList.get(j).background);
+                        Log.e("edit name", "" + finalColorList.get(j).name);
 
-                        Log.e("edit color",""+finalColorList.get(j).color);
+                        Log.e("edit color", "" + finalColorList.get(j).color);
                         ImageView imageView = new ImageView(context);
                         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(25, 25);
                         lp.setMargins(5, 5, 5, 5);
@@ -141,7 +167,6 @@ public class ListContactAdapter extends BaseAdapter {
                         //}
                     }
                 }
-
 
 
             }
@@ -158,36 +183,31 @@ public class ListContactAdapter extends BaseAdapter {
             }*/
             //}
 
-        }else
-        {
+        } else {
             binding.llGroupColor.setVisibility(View.GONE);
         }
         Picasso.with(context).load(list.get(position).getImage_url()).into(binding.imgContact);
         binding.txtUsernameContact.setText(list.get(position).getFname() + " " + list.get(position).getLname());
-        if(!list.get(position).getPhone1().equalsIgnoreCase("")) {
+        if (!list.get(position).getPhone1().equalsIgnoreCase("")) {
             binding.txtPhoneNumber.setText(list.get(position).getPhone1());
-        }else
-        {
+        } else {
             binding.txtPhoneNumber.setText(list.get(position).getEmail1());
         }
         binding.lnMainAlluserContact.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Pref.setValue(context,"Detail_id",list.get(position).getId());
+                Pref.setValue(context, "Detail_id", list.get(position).getId());
 
                 DetailContactFragment fragment = new DetailContactFragment();
-                ((FragmentActivity)context).getSupportFragmentManager().beginTransaction().replace(R.id.frame_main_container, fragment).addToBackStack(null).commit();
+                ((FragmentActivity) context).getSupportFragmentManager().beginTransaction().replace(R.id.frame_main_container, fragment).addToBackStack(null).commit();
 
 
             }
         });
 
 
-
-
         return rowView;
     }
-
 
 
 }

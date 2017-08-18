@@ -71,6 +71,13 @@
                 android:layout_weight="0.1"
                 android:gravity="center"
                 android:orientation="vertical" />
+
+            <ImageView
+                android:id="@+id/ivPluse"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_marginRight="20dp"
+                android:visibility="gone" />
         </LinearLayout>
 
         <View

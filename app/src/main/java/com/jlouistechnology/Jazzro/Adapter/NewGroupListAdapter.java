@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.jlouistechnology.Jazzro.Helper.Pref;
@@ -92,50 +91,61 @@ public class NewGroupListAdapter extends BaseAdapter {
                 }
             }
         }
-        if(type.equalsIgnoreCase("main"))
-        {
+        if (type.equalsIgnoreCase("main")) {
             binding.ivTick.setVisibility(View.GONE);
             Typeface font = Typeface.createFromAsset(context.getAssets(), "fonts/SFUIDisplay_Semibold.ttf");
-            binding.txtGroupName.setTypeface(font,Typeface.NORMAL);
-        }else
-        {
+            binding.txtGroupName.setTypeface(font, Typeface.NORMAL);
+        } else {
             if (datalist.get(position).isClick.equalsIgnoreCase("false")) {
                 binding.ivTick.setVisibility(View.GONE);
 
                 Typeface font = Typeface.createFromAsset(context.getAssets(), "fonts/Sf_Regular.otf");
-                binding.txtGroupName.setTypeface(font,Typeface.NORMAL);
+                binding.txtGroupName.setTypeface(font, Typeface.NORMAL);
 
             } else {
                 binding.ivTick.setVisibility(View.VISIBLE);
                 Typeface font = Typeface.createFromAsset(context.getAssets(), "fonts/SFUIDisplay_Semibold.ttf");
-                binding.txtGroupName.setTypeface(font,Typeface.NORMAL);
+                binding.txtGroupName.setTypeface(font, Typeface.NORMAL);
 
             }
         }
-        binding.lnMainAlluserContact.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        if (!type.equalsIgnoreCase("main")) {
+            binding.lnMainAlluserContact.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-                if (datalist.get(position).isClick.equalsIgnoreCase("true")) {
-                    datalist.get(position).isClick = "false";
-                } else {
-                    datalist.get(position).isClick = "true";
+
+                    if (datalist.get(position).isClick.equalsIgnoreCase("true"))
+
+                    {
+                        datalist.get(position).isClick = "false";
+                    } else
+
+                    {
+                        datalist.get(position).isClick = "true";
+                    }
+
+                    notifyDataSetChanged();
                 }
-                notifyDataSetChanged();
-            }
-        });
+            });
+        }
+     /*   binding.lnBgColor.setOnClickListener(new View.OnClickListener()
 
-        binding.lnBgColor.setOnClickListener(new View.OnClickListener() {
+        {
             @Override
             public void onClick(View view) {
                 onClickEditGroupListener.onClick(position);
             }
-        });
+        });*/
 
-        if (type.equalsIgnoreCase("main")) {
+        if (type.equalsIgnoreCase("main"))
+
+        {
             mHeaderRight.setVisibility(View.GONE);
             binding.lnMainAlluserContact.setEnabled(false);
-        } else if (type.equalsIgnoreCase("selected")) {
+        } else if (type.equalsIgnoreCase("selected"))
+
+        {
             mHeaderRight.setVisibility(View.VISIBLE);
             binding.lnMainAlluserContact.setEnabled(true);
         }
@@ -146,20 +156,24 @@ public class NewGroupListAdapter extends BaseAdapter {
         binding.imgGroup.setBackgroundResource(R.drawable.circle_group_shape);
         binding.txtFirstLetter.setText(datalist.get(position).label.charAt(0) + "");
         GradientDrawable drawable = (GradientDrawable) binding.imgGroup.getBackground();
-        for (int i = 0; i < finalColorList.size(); i++) {
-            if(!datalist.get(position).color.equalsIgnoreCase("Choose a color")) {
+        for (
+                int i = 0; i < finalColorList.size(); i++)
+
+        {
+            if (!datalist.get(position).color.equalsIgnoreCase("Choose a color")) {
                 if (datalist.get(position).color.equals(finalColorList.get(i).name)) {
 
                     drawable.setColor(Color.parseColor(finalColorList.get(i).color));
 
                 }
-            }else
-            {
+            } else {
                 binding.imgGroup.setVisibility(View.GONE);
             }
         }
 
-        mHeaderRight.setOnClickListener(new View.OnClickListener() {
+        mHeaderRight.setOnClickListener(new View.OnClickListener()
+
+        {
             @Override
             public void onClick(View v) {
                 for (int i = 0; i < datalist.size(); i++) {

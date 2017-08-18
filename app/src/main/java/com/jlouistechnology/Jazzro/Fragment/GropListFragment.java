@@ -66,6 +66,12 @@ public class GropListFragment extends Fragment {
         mBinding.listGroup.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Gson gson = new Gson();
+                Bundle args = new Bundle();
+                FriendsListFragment fragment = new FriendsListFragment();
+                args.putSerializable("data", gson.toJson(griupList.get(i)));
+                fragment.setArguments(args);
+                ((FragmentActivity) context).getSupportFragmentManager().beginTransaction().replace(R.id.frame_main_container, fragment).addToBackStack(null).commit();
 
             }
         });
@@ -74,7 +80,7 @@ public class GropListFragment extends Fragment {
     }
 
     private void preview() {
-        ((DashboardNewActivity)context).Setimagebackgroundresource(R.mipmap.contact_bar);
+        ((DashboardNewActivity) context).Setimagebackgroundresource(R.mipmap.contact_bar);
         ((DashboardNewActivity) context).SettextTxtTitle("Groups");
         ((DashboardNewActivity) context).visibilityimgright(View.VISIBLE);
         ((DashboardNewActivity) context).SetimageresourceImgright(R.mipmap.plus_contact);
@@ -100,7 +106,7 @@ public class GropListFragment extends Fragment {
                         if (griupList.size() > 0) {
                             mBinding.listGroup.setVisibility(View.VISIBLE);
                             mBinding.txtMsg.setVisibility(View.GONE);
-                            NewGroupListAdapter newGroupListAdapter = new NewGroupListAdapter(context, griupList, ((DashboardNewActivity) context).mBinding.header.imgLeftBack, "main",SelectedGroupList);
+                            NewGroupListAdapter newGroupListAdapter = new NewGroupListAdapter(context, griupList, ((DashboardNewActivity) context).mBinding.header.imgLeftBack, "main", SelectedGroupList);
                             mBinding.listGroup.setAdapter(newGroupListAdapter);
                             // groupChoiceOPenDialog(griupList);
                             newGroupListAdapter.onClickEdit(onClickEditGroupListener);
@@ -144,6 +150,7 @@ public class GropListFragment extends Fragment {
 
         ((DashboardNewActivity) context).Set_header_visibility();
     }
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -162,7 +169,7 @@ public class GropListFragment extends Fragment {
                         for (int i = 0; i < fm.getBackStackEntryCount(); ++i) {
                             fm.popBackStack();
                         }
-                        ((DashboardNewActivity)context).Contact_footer();
+                        ((DashboardNewActivity) context).Contact_footer();
                         ContactFragment fragment = new ContactFragment();
                         ((FragmentActivity) context).getSupportFragmentManager().beginTransaction().replace(R.id.frame_main_container, fragment).addToBackStack(null).commit();
                         return true;
@@ -172,16 +179,17 @@ public class GropListFragment extends Fragment {
             }
         });
     }
+
     OnClickEditGroupListener onClickEditGroupListener = new OnClickEditGroupListener() {
         @Override
         public void onClick(int position) {
-          /*  Gson gson = new Gson();
+            Gson gson = new Gson();
             Bundle args = new Bundle();
             EditGroupFragment fragment = new EditGroupFragment();
             args.putSerializable("data", gson.toJson(griupList.get(position)));
             fragment.setArguments(args);
             ((FragmentActivity) context).getSupportFragmentManager().beginTransaction().replace(R.id.frame_main_container, fragment).addToBackStack(null).commit();
-*/
+
         }
     };
 

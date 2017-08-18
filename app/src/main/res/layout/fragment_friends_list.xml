@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/ll_contact_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#f2f2f2"
+                android:orientation="horizontal"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp">
+
+                <LinearLayout
+                    android:id="@+id/llSearch"
+                    android:layout_width="0dp"
+                    android:layout_height="35dp"
+                    android:layout_below="@+id/header"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/round_background_black10"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/ivsearch"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:src="@mipmap/search_contact" />
+
+                    <EditText
+                        android:id="@+id/edSearch"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="0.90"
+                        android:background="@null"
+                        android:gravity="left|center"
+                        android:hint="Search in group..."
+                        android:imeOptions="actionSearch"
+                        android:inputType="text"
+                        android:padding="5dp"
+                        android:textColor="#656565"
+                        android:textColorHint="@color/blue_two"
+                        android:textSize="15sp" />
+
+                    <ImageView
+                        android:id="@+id/ivcancelSearch"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginRight="5dp"
+                        android:layout_weight="0.10"
+                        android:src="@android:drawable/ic_menu_close_clear_cancel"
+                        android:visibility="gone" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/ivPluse"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="14dp"
+                    android:background="@mipmap/add_contact"
+                    android:paddingStart="20dp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:background="@color/black_10" />
+
+            <ListView
+                android:id="@+id/contactListview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:background="#ffffff"
+                android:divider="@null"
+                android:dividerHeight="15dp"
+                android:paddingLeft="12dp"
+                android:scrollbars="vertical"
+                android:visibility="visible" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llNotFound"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="15dp"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.85"
+                    android:orientation="vertical">
+
+                    <com.jlouistechnology.Jazzro.Widget.TextView_Regular
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="30dp"
+                        android:gravity="bottom"
+                        android:paddingTop="10dp"
+                        android:text="Tap the plus icon to add a contact"
+                        android:textColor="#253768"
+                        android:textSize="19sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="20dp"
+                    android:layout_weight="0.15"
+                    android:gravity="right|center">
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@mipmap/tap_right" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <com.jlouistechnology.Jazzro.Widget.TextView_Regular
+                android:id="@+id/txt_msg"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:text="No contacts yet"
+                android:textColor="@color/black_40"
+                android:textSize="35sp"
+                android:visibility="visible" />
+        </LinearLayout>
+
+        <com.jlouistechnology.Jazzro.Widget.TextView_Regular
+            android:id="@+id/txtNoContact"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="No contacts yet"
+            android:textColor="@color/black_40"
+            android:textSize="35sp"
+            android:visibility="gone" />
+
+    </LinearLayout>
+</layout>
