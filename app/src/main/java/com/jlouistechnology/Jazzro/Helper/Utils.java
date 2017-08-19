@@ -51,6 +51,9 @@ public class Utils {
     public static final int CAMERA_PICTURE = 1;
     public static final int GALLERY_PICTURE = 2;
 
+    public static String groupName="";
+    public static String groupColor="";
+
     public boolean isNetworkAvailable(Context context) {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();

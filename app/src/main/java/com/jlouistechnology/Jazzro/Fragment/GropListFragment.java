@@ -3,6 +3,7 @@ package com.jlouistechnology.Jazzro.Fragment;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -52,8 +53,7 @@ public class GropListFragment extends Fragment {
                 inflater, R.layout.group_list_fragment_layout, container, false);
         rootView = mBinding.getRoot();
         context = getActivity();
-        preview();
-        grouplistTask();
+
         ((DashboardNewActivity) context).mBinding.header.imgRight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -79,16 +79,17 @@ public class GropListFragment extends Fragment {
         return rootView;
     }
 
+
     private void preview() {
-        ((DashboardNewActivity)context).Setimagebackgroundresource(R.mipmap.contact_bar);
+        ((DashboardNewActivity) context).Setimagebackgroundresource(R.mipmap.contact_bar);
         ((DashboardNewActivity) context).SettextTxtTitle("Groups");
         ((DashboardNewActivity) context).visibilityimgright(View.VISIBLE);
         ((DashboardNewActivity) context).SetimageresourceImgright(R.mipmap.plus_contact);
     }
 
-    private void grouplistTask() {
 
-        WebService.showProgress(getActivity());
+    private void grouplistTask() {
+        griupList.clear();
         if (WebService.isNetworkAvailable(getActivity())) {
 
             ApiInterface apiService =
@@ -106,7 +107,7 @@ public class GropListFragment extends Fragment {
                         if (griupList.size() > 0) {
                             mBinding.listGroup.setVisibility(View.VISIBLE);
                             mBinding.txtMsg.setVisibility(View.GONE);
-                            NewGroupListAdapter newGroupListAdapter = new NewGroupListAdapter(context, griupList, ((DashboardNewActivity) context).mBinding.header.imgLeftBack, "main",SelectedGroupList);
+                            NewGroupListAdapter newGroupListAdapter = new NewGroupListAdapter(context, griupList, ((DashboardNewActivity) context).mBinding.header.imgLeftBack, "main", SelectedGroupList);
                             mBinding.listGroup.setAdapter(newGroupListAdapter);
                             // groupChoiceOPenDialog(griupList);
                             newGroupListAdapter.onClickEdit(onClickEditGroupListener);
@@ -137,11 +138,27 @@ public class GropListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        WebService.showProgress(getActivity());
 
         ((DashboardNewActivity) context).Set_header_visibility();
         preview();
-
         Utils.hideKeyboard(context);
+
+        new Handler().postDelayed(new Runnable() {
+
+            /*
+             * Showing splash screen with a timer. This will be useful when you
+             * want to show case your app logo / company
+             */
+
+            @Override
+            public void run() {
+                grouplistTask();
+
+
+            }
+        }, 1000);
+
     }
 
     @Override
@@ -169,7 +186,7 @@ public class GropListFragment extends Fragment {
                         for (int i = 0; i < fm.getBackStackEntryCount(); ++i) {
                             fm.popBackStack();
                         }
-                        ((DashboardNewActivity)context).Contact_footer();
+                        ((DashboardNewActivity) context).Contact_footer();
                         ContactFragment fragment = new ContactFragment();
                         ((FragmentActivity) context).getSupportFragmentManager().beginTransaction().replace(R.id.frame_main_container, fragment).addToBackStack(null).commit();
                         return true;
@@ -179,6 +196,7 @@ public class GropListFragment extends Fragment {
             }
         });
     }
+
     OnClickEditGroupListener onClickEditGroupListener = new OnClickEditGroupListener() {
         @Override
         public void onClick(int position) {

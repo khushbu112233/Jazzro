@@ -1,11 +1,13 @@
 package com.jlouistechnology.Jazzro.Fragment;
 
 import android.databinding.DataBindingUtil;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,7 +18,9 @@ import com.google.gson.Gson;
 import com.jlouistechnology.Jazzro.Adapter.EditGroupAdapter;
 import com.jlouistechnology.Jazzro.Helper.Constants;
 import com.jlouistechnology.Jazzro.Helper.Pref;
+import com.jlouistechnology.Jazzro.Helper.Utils;
 import com.jlouistechnology.Jazzro.Jazzro.DashboardNewActivity;
+import com.jlouistechnology.Jazzro.Model.ColorModel;
 import com.jlouistechnology.Jazzro.Model.GroupListDataDetailModel;
 import com.jlouistechnology.Jazzro.Model.PeticularGroupContactModel;
 import com.jlouistechnology.Jazzro.R;
@@ -61,6 +65,28 @@ public class FriendsListFragment extends BaseFragment {
         Gson gson = new Gson();
         groupData = gson.fromJson((String) args.getSerializable("data"), GroupListDataDetailModel.class);
 
+        if (!TextUtils.isEmpty(Utils.groupColor)) {
+            groupData.color = Utils.groupColor;
+        }
+        if (!TextUtils.isEmpty(Utils.groupName)) {
+            groupData.label = Utils.groupName;
+        }
+
+        ArrayList<ColorModel> colorList = new ArrayList<>();
+        colorList = Utils.colorList();
+        final ArrayList<ColorModel> finalColorList = colorList;
+
+        if (!groupData.color.equalsIgnoreCase("Choose a color")) {
+            for (int i = 0; i < finalColorList.size(); i++) {
+
+                if (groupData.color.equalsIgnoreCase(finalColorList.get(i).name)) {
+                    ((DashboardNewActivity) getActivity()).setHeaderColor((Color.parseColor(finalColorList.get(i).background)));
+                    changeStatusbarColor((Color.parseColor(finalColorList.get(i).background)));
+                }
+            }
+        }
+
+
         setuptoolbar();
         setup();
     }
@@ -82,12 +108,12 @@ public class FriendsListFragment extends BaseFragment {
                 Bundle args = new Bundle();
                 AddFriendsFragment fragment = new AddFriendsFragment();
                 args.putString("name", groupData.label);
+                args.putString("color", groupData.color);
                 fragment.setArguments(args);
                 ((FragmentActivity) getActivity()).getSupportFragmentManager().beginTransaction().replace(R.id.frame_main_container, fragment).addToBackStack(null).commit();
 
             }
         });
-
 
 
     }
@@ -142,6 +168,19 @@ public class FriendsListFragment extends BaseFragment {
         super.onPause();
         ((DashboardNewActivity) getActivity()).visibilityTxtTitleright(View.GONE);
         ((DashboardNewActivity) getActivity()).visibilityimgleft(View.GONE);
+        changeStatusbarColor(getResources().getColor(R.color.colorAccent));
+        ((DashboardNewActivity) getActivity()).Setimagebackgroundresource(R.mipmap.contact_bar);
+
+        Utils.groupName = "";
+        Utils.groupColor = "";
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        changeStatusbarColor(getResources().getColor(R.color.colorAccent));
+
     }
 
     private void setuptoolbar() {

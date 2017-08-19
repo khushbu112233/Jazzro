@@ -10,7 +10,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -38,6 +37,7 @@ public class DashboardNewActivity extends FragmentActivity {
     public static ProgressBar progressBar_sync;
 
     private BroadcastReceiver mReceiver;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,7 +53,6 @@ public class DashboardNewActivity extends FragmentActivity {
         ContactFragment fragment = new ContactFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.frame_main_container, fragment).commit();
         Contact_footer();
-
 
 
         mBinding.footer.llContacts.setOnClickListener(new View.OnClickListener() {
@@ -88,7 +87,7 @@ public class DashboardNewActivity extends FragmentActivity {
         mBinding.header.progressBarSync.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(DashboardNewActivity.this, R.string.Sync_starts_in_background,Toast.LENGTH_LONG).show();
+                Toast.makeText(DashboardNewActivity.this, R.string.Sync_starts_in_background, Toast.LENGTH_LONG).show();
                 //   ((DashboardNewActivity)context).mBinding.header.progressBarSync.setVisibility(View.VISIBLE);
 
                 mBinding.header.progressBarSync.setImageResource(R.drawable.my_progress_interminate1);
@@ -96,13 +95,12 @@ public class DashboardNewActivity extends FragmentActivity {
                 if (Pref.getValue(DashboardNewActivity.this, "first_login", "").equals("1")) {
 
 
-                    Intent intent=new Intent(DashboardNewActivity.this,GetallPhoneContact_auto_sync.class);
+                    Intent intent = new Intent(DashboardNewActivity.this, GetallPhoneContact_auto_sync.class);
                     startService(intent);
 
 
-                }
-                else {
-                    Intent intent=new Intent(DashboardNewActivity.this,GetallPhoneContact_auto_sync_from_middle.class);
+                } else {
+                    Intent intent = new Intent(DashboardNewActivity.this, GetallPhoneContact_auto_sync_from_middle.class);
                     startService(intent);
 
                     //((DashboardActivity) getActivity()).getAllContacts(getActivity());
@@ -124,16 +122,14 @@ public class DashboardNewActivity extends FragmentActivity {
                 mBinding.header.progressBarSync.setVisibility(View.VISIBLE);
 
 
-                Toast.makeText(DashboardNewActivity.this, R.string.Sync_starts_in_background,Toast.LENGTH_LONG).show();
+                Toast.makeText(DashboardNewActivity.this, R.string.Sync_starts_in_background, Toast.LENGTH_LONG).show();
                 mBinding.header.progressBarSync.setImageResource(R.drawable.my_progress_interminate1);
 
                 //new LoadData().execute();
-                if(Pref.getValue(DashboardNewActivity.this, "first_login", "").equals("1"))
-                {
+                if (Pref.getValue(DashboardNewActivity.this, "first_login", "").equals("1")) {
 
                     startService(new Intent(DashboardNewActivity.this, GetallPhoneContact_auto_sync.class));
-                }
-                else {
+                } else {
                     startService(new Intent(DashboardNewActivity.this, GetallPhoneContact_auto_sync_from_middle.class));
                     //getAllContacts(DashboardActivity.this);
                 }
@@ -158,7 +154,8 @@ public class DashboardNewActivity extends FragmentActivity {
         mBinding.footer.imgSettings.setImageResource(R.mipmap.settings_unselect);
 
     }
-    public  void Group_footer(){
+
+    public void Group_footer() {
 
         mBinding.footer.txtContact.setTextColor(getResources().getColor(R.color.black_40));
         mBinding.footer.txtGroups.setTextColor(getResources().getColor(R.color.new_black));
@@ -168,8 +165,8 @@ public class DashboardNewActivity extends FragmentActivity {
         mBinding.footer.imgSettings.setImageResource(R.mipmap.settings_unselect);
 
     }
-    public void Setting_footer()
-    {
+
+    public void Setting_footer() {
         mBinding.footer.txtContact.setTextColor(getResources().getColor(R.color.black_40));
         mBinding.footer.txtGroups.setTextColor(getResources().getColor(R.color.black_40));
         mBinding.footer.txtSettings.setTextColor(getResources().getColor(R.color.new_black));
@@ -178,7 +175,8 @@ public class DashboardNewActivity extends FragmentActivity {
         mBinding.footer.imgSettings.setImageResource(R.mipmap.setting_selected);
 
     }
-    public  void StatusBar() {
+
+    public void StatusBar() {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -186,90 +184,92 @@ public class DashboardNewActivity extends FragmentActivity {
         }
 
     }
+
     @Override
     protected void onPause() {
         super.onPause();
-
         this.unregisterReceiver(mReceiver);
     }
 
     /**
      * header visibility function
+     *
      * @param visible
      */
-    public void visibilityTxtTitle(int visible)
-    {
+    public void visibilityTxtTitle(int visible) {
 
         mBinding.header.txtTitle.setVisibility(visible);
     }
-    public void visibilityimgleft(int visible)
-    {
+
+    public void visibilityimgleft(int visible) {
 
         mBinding.header.imgLeftBack.setVisibility(visible);
     }
-    public void visibilityimgleftProgress(int visible)
-    {
+
+    public void visibilityimgleftProgress(int visible) {
 
         mBinding.header.progressBarSync.setVisibility(visible);
     }
-    public void visibilityTxtTitleleft(int visible)
-    {
+
+    public void visibilityTxtTitleleft(int visible) {
         mBinding.header.txtTitleLeft.setVisibility(visible);
     }
 
-    public void visibilityimgright(int visible)
-    {
+    public void visibilityimgright(int visible) {
 
         mBinding.header.imgRight.setVisibility(visible);
     }
-    public void visibilityimgleftback(int visible)
-    {
+
+    public void visibilityimgleftback(int visible) {
         mBinding.header.imgLeftBack.setVisibility(visible);
     }
 
 
-    public void visibilityTxtTitleright(int visible)
-    {
+    public void visibilityTxtTitleright(int visible) {
         mBinding.header.txtTitleRight.setVisibility(visible);
     }
 
     /**
      * set header title and image in all fragment
+     *
      * @param text
      */
-    public void SettextTxtTitle(String text)
-    {
+    public void SettextTxtTitle(String text) {
         mBinding.header.txtTitle.setText(text);
     }
-    public void SettextTxtTitleLeft(String text)
-    {
+
+    public void SettextTxtTitleLeft(String text) {
         mBinding.header.txtTitleLeft.setText(text);
     }
-    public void SettextTxtTitleRight(String text)
-    {
+
+    public void SettextTxtTitleRight(String text) {
         mBinding.header.txtTitleRight.setText(text);
     }
-    public static void SetimageresourceImgleftprogress()
-    {
+
+    public static void SetimageresourceImgleftprogress() {
         mBinding.header.progressBarSync.setImageResource(R.mipmap.refresh);
     }
-    public void SetimageresourceImgleft(int id)
-    {
+
+    public void SetimageresourceImgleft(int id) {
         mBinding.header.progressBarSync.setImageResource(id);
     }
-    public void SetimageresourceImgright(int id)
-    {
+
+    public void SetimageresourceImgright(int id) {
         mBinding.header.imgRight.setImageResource(id);
     }
-    public void Setimagebackgroundresource(int id)
-    {
+
+    public void setHeaderColor(int color) {
+        mBinding.header.llHeader.setBackgroundColor(color);
+    }
+
+    public void Setimagebackgroundresource(int id) {
         mBinding.header.llHeader.setBackgroundResource(id);
     }
+
     /**
      * visibility gone all header when fragment pause call
      */
-    public void Set_header_visibility()
-    {
+    public void Set_header_visibility() {
         visibilityimgright(View.INVISIBLE);
         visibilityTxtTitleright(View.INVISIBLE);
         visibilityimgleft(View.INVISIBLE);
@@ -278,27 +278,26 @@ public class DashboardNewActivity extends FragmentActivity {
         visibilityimgleftback(View.INVISIBLE);
 
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // super.onActivityResult(requestCode, resultCode, data);
 
         Log.e("3333", "" + requestCode);
 
-        if(requestCode==200&&resultCode==RESULT_OK)
-        {
-            if(getCurrentFragment() instanceof AddNewContactFragment)
-            {
+        if (requestCode == 200 && resultCode == RESULT_OK) {
+            if (getCurrentFragment() instanceof AddNewContactFragment) {
                 ((AddNewContactFragment) getCurrentFragment()).onActivity(data);
             }
 
-        }else if(requestCode==201&&resultCode==RESULT_OK)
-        {
-            if(getCurrentFragment() instanceof  AddNewContactFragment) {
+        } else if (requestCode == 201 && resultCode == RESULT_OK) {
+            if (getCurrentFragment() instanceof AddNewContactFragment) {
                 ((AddNewContactFragment) getCurrentFragment()).onActivityGallery(data);
             }
         }
 
     }
+
     public Fragment getCurrentFragment() {
         Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.frame_main_container);
         //    Log.e("currentFragment",""+currentFragment);
@@ -313,7 +312,7 @@ public class DashboardNewActivity extends FragmentActivity {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 // getWindow().setStatusBarColor(getResources().getColor(R.color.colorAccent));
         }*/
-        Log.e("current_on_resume",""+getCurrentFragment());
+        Log.e("current_on_resume", "" + getCurrentFragment());
         IntentFilter intentFilter = new IntentFilter(
                 "android.intent.action.MAIN");
 
@@ -321,9 +320,9 @@ public class DashboardNewActivity extends FragmentActivity {
 
             @Override
             public void onReceive(Context context, Intent intent) {
-                Intent intent1=new Intent(context,GetallPhoneContact_auto_sync.class);
+                Intent intent1 = new Intent(context, GetallPhoneContact_auto_sync.class);
                 context.stopService(intent1);
-                Intent intent2=new Intent(context,GetallPhoneContact_auto_sync_from_middle.class);
+                Intent intent2 = new Intent(context, GetallPhoneContact_auto_sync_from_middle.class);
                 context.stopService(intent2);
                 //extract our message from intent
                 String msg_for_me = intent.getStringExtra("some_msg");

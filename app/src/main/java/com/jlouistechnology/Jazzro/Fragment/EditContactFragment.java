@@ -8,7 +8,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -35,9 +34,6 @@ import com.jlouistechnology.Jazzro.Model.Contact;
 import com.jlouistechnology.Jazzro.Model.Group;
 import com.jlouistechnology.Jazzro.R;
 import com.jlouistechnology.Jazzro.Webservice.WebService;
-import com.jlouistechnology.Jazzro.Widget.Edittext_Regular;
-import com.jlouistechnology.Jazzro.Widget.TextView_Regular;
-import com.jlouistechnology.Jazzro.databinding.DetailContactLayoutBinding;
 import com.jlouistechnology.Jazzro.databinding.EditContactLayoutBinding;
 import com.squareup.picasso.Picasso;
 
@@ -81,7 +77,7 @@ public class EditContactFragment extends Fragment {
                 inflater, R.layout.edit_contact_layout, container, false);
         rootView = mBinding.getRoot();
         context = getActivity();
-        preview();
+        //  preview();
  /*       if(selectedGroup_label.size()>0) {
             if (selectedGroup_label.size() == 1) {
                 float height = 1 * (getResources().getDimension(R.dimen.listview_height));
@@ -120,7 +116,7 @@ public class EditContactFragment extends Fragment {
         OnClickDeleteListener onClickDeleteListener = new OnClickDeleteListener() {
             @Override
             public void OnClickDeleteListener(int pos) {
-                Log.e("pos","111"+pos);
+                Log.e("pos", "111" + pos);
                 if (email_arraylist.size() > 0) {
                     for (int i = 0; i < email_arraylist.size(); i++) {
 
@@ -128,17 +124,19 @@ public class EditContactFragment extends Fragment {
                             email_arraylist.remove(i);
                             if (email_arraylist.size() < 3) {
                                 mBinding.llAddEmail.setVisibility(View.VISIBLE);
-                            }else
-                            {
+                                mBinding.view2.setVisibility(View.VISIBLE);
+                            } else {
                                 mBinding.llAddEmail.setVisibility(View.GONE);
+                                mBinding.view2.setVisibility(View.VISIBLE);
                             }
                             break;
                         }
                         if (email_arraylist.size() < 3) {
                             mBinding.llAddEmail.setVisibility(View.VISIBLE);
-                        }else
-                        {
+                            mBinding.view2.setVisibility(View.VISIBLE);
+                        } else {
                             mBinding.llAddEmail.setVisibility(View.GONE);
+                            mBinding.view2.setVisibility(View.VISIBLE);
                         }
                     }
                 }
@@ -157,17 +155,19 @@ public class EditContactFragment extends Fragment {
                             phone_arraylist.remove(i);
                             if (phone_arraylist.size() < 3) {
                                 mBinding.llAddContact.setVisibility(View.VISIBLE);
-                            }else
-                            {
+                                mBinding.view1.setVisibility(View.VISIBLE);
+                            } else {
                                 mBinding.llAddContact.setVisibility(View.GONE);
+                                mBinding.view1.setVisibility(View.VISIBLE);
                             }
                             break;
                         }
                         if (phone_arraylist.size() < 3) {
                             mBinding.llAddContact.setVisibility(View.VISIBLE);
-                        }else
-                        {
+                            mBinding.view1.setVisibility(View.VISIBLE);
+                        } else {
                             mBinding.llAddContact.setVisibility(View.GONE);
+                            mBinding.view1.setVisibility(View.VISIBLE);
                         }
                     }
                 }
@@ -216,6 +216,7 @@ public class EditContactFragment extends Fragment {
 
         if (email_arraylist.size() == 3) {
             mBinding.llAddEmail.setVisibility(View.GONE);
+            mBinding.view2.setVisibility(View.VISIBLE);
         }
         mBinding.llAddContact.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -528,8 +529,10 @@ public class EditContactFragment extends Fragment {
         }
         if (email_arraylist.size() == 3) {
             mBinding.llAddEmail.setVisibility(View.GONE);
+            mBinding.view2.setVisibility(View.VISIBLE);
         } else if (email_arraylist.size() < 3 && email_arraylist.size() > 0) {
             mBinding.llAddEmail.setVisibility(View.VISIBLE);
+            mBinding.view2.setVisibility(View.VISIBLE);
         }
     }
 
@@ -543,8 +546,10 @@ public class EditContactFragment extends Fragment {
         }
         if (phone_arraylist.size() == 3) {
             mBinding.llAddContact.setVisibility(View.GONE);
+            mBinding.view1.setVisibility(View.VISIBLE);
         } else if (phone_arraylist.size() < 3 && phone_arraylist.size() > 0) {
             mBinding.llAddContact.setVisibility(View.VISIBLE);
+            mBinding.view1.setVisibility(View.VISIBLE);
         }
     }
 
@@ -575,10 +580,10 @@ public class EditContactFragment extends Fragment {
     public void onResume() {
         super.onResume();
         ((DashboardNewActivity) context).Set_header_visibility();
+
+        selectedGroup_label.clear();
         preview();
-
         Utils.hideKeyboard(context);
-
         String group = "";
         Gson gson = new Gson();
 
@@ -610,36 +615,33 @@ public class EditContactFragment extends Fragment {
                     group1 = group1 + "," + selectedGroup_label.get(i);
                 }
             }
-            if(selectedGroud.size()>0)
-            {
+            if (selectedGroud.size() > 0) {
                 mBinding.txtGroupTest.setVisibility(View.GONE);
                 mBinding.selectedGroup.setVisibility(View.VISIBLE);
                 mBinding.llImg.setVisibility(View.VISIBLE);
-            }else
-            {
+            } else {
                 mBinding.txtGroupTest.setVisibility(View.VISIBLE);
                 mBinding.selectedGroup.setVisibility(View.GONE);
                 mBinding.llImg.setVisibility(View.GONE);
             }
-            if(selectedGroup_label.size()==1)
-            {
-                float height = 1*(getResources().getDimension(R.dimen.listview_height));
+            if (selectedGroup_label.size() == 1) {
+                float height = 1 * (getResources().getDimension(R.dimen.listview_height));
 
                 ViewGroup.LayoutParams lp = (ViewGroup.LayoutParams) mBinding.selectedGroup.getLayoutParams();
-                lp.height = (int)height;
+                lp.height = (int) height;
                 mBinding.selectedGroup.setLayoutParams(lp);
-            } else if(selectedGroup_label.size()==2){
+            } else if (selectedGroup_label.size() == 2) {
 
-                float height = 2*(getResources().getDimension(R.dimen.listview_height));
+                float height = 2 * (getResources().getDimension(R.dimen.listview_height));
 
                 ViewGroup.LayoutParams lp = (ViewGroup.LayoutParams) mBinding.selectedGroup.getLayoutParams();
-                lp.height = (int)height;
+                lp.height = (int) height;
                 mBinding.selectedGroup.setLayoutParams(lp);
-            }else{
-                float height = 3*(getResources().getDimension(R.dimen.listview_height));
+            } else {
+                float height = 3 * (getResources().getDimension(R.dimen.listview_height));
 
                 ViewGroup.LayoutParams lp = (ViewGroup.LayoutParams) mBinding.selectedGroup.getLayoutParams();
-                lp.height = (int)height;
+                lp.height = (int) height;
                 mBinding.selectedGroup.setLayoutParams(lp);
 
             }
@@ -649,15 +651,21 @@ public class EditContactFragment extends Fragment {
             contactEmailAdapter.notifyDataSetChanged();
             if (email_arraylist.size() >= 3) {
                 mBinding.llAddEmail.setVisibility(View.GONE);
+                mBinding.view2.setVisibility(View.VISIBLE);
             } else if (email_arraylist.size() < 3 && email_arraylist.size() > 0) {
                 mBinding.llAddEmail.setVisibility(View.VISIBLE);
+                mBinding.view2.setVisibility(View.VISIBLE);
             }
             if (phone_arraylist.size() >= 3) {
                 mBinding.llAddContact.setVisibility(View.GONE);
+                mBinding.view1.setVisibility(View.VISIBLE);
             } else if (phone_arraylist.size() < 3 && phone_arraylist.size() > 0) {
                 mBinding.llAddContact.setVisibility(View.VISIBLE);
+                mBinding.view1.setVisibility(View.VISIBLE);
             }
         } else {
+            // phone_arraylist.clear();
+            //  email_arraylist.clear();
             if (!Pref.getValue(context, "ContactArrayList", "").equalsIgnoreCase("")) {
                 String json = Pref.getValue(context, "ContactArrayList", "");
 
@@ -688,13 +696,17 @@ public class EditContactFragment extends Fragment {
                 contactEmailAdapter.notifyDataSetChanged();
                 if (email_arraylist.size() >= 3) {
                     mBinding.llAddEmail.setVisibility(View.GONE);
+                    mBinding.view2.setVisibility(View.VISIBLE);
                 } else if (email_arraylist.size() < 3 && email_arraylist.size() > 0) {
                     mBinding.llAddEmail.setVisibility(View.VISIBLE);
+                    mBinding.view2.setVisibility(View.VISIBLE);
                 }
                 if (phone_arraylist.size() >= 3) {
                     mBinding.llAddContact.setVisibility(View.GONE);
+                    mBinding.view1.setVisibility(View.VISIBLE);
                 } else if (phone_arraylist.size() < 3 && phone_arraylist.size() > 0) {
                     mBinding.llAddContact.setVisibility(View.VISIBLE);
+                    mBinding.view1.setVisibility(View.VISIBLE);
                 }
 /*
             ContactPhoneAdapter contactPhoneAdapter = new ContactPhoneAdapter(context,phone_arraylist);
@@ -719,36 +731,33 @@ public class EditContactFragment extends Fragment {
                         group = group + "," + group_list.get(i).getLabel();
                     }
                 }
-                if(selectedGroud1.size()>0)
-                {
+                if (selectedGroud1.size() > 0) {
                     mBinding.txtGroupTest.setVisibility(View.GONE);
                     mBinding.selectedGroup.setVisibility(View.VISIBLE);
                     mBinding.llImg.setVisibility(View.VISIBLE);
-                }else
-                {
+                } else {
                     mBinding.txtGroupTest.setVisibility(View.VISIBLE);
                     mBinding.selectedGroup.setVisibility(View.GONE);
                     mBinding.llImg.setVisibility(View.GONE);
                 }
-                if(selectedGroup_label1.size()==1)
-                {
-                    float height = 1*(getResources().getDimension(R.dimen.listview_height));
+                if (selectedGroup_label1.size() == 1) {
+                    float height = 1 * (getResources().getDimension(R.dimen.listview_height));
 
                     ViewGroup.LayoutParams lp = (ViewGroup.LayoutParams) mBinding.selectedGroup.getLayoutParams();
-                    lp.height = (int)height;
+                    lp.height = (int) height;
                     mBinding.selectedGroup.setLayoutParams(lp);
-                } else if(selectedGroup_label1.size()==2){
+                } else if (selectedGroup_label1.size() == 2) {
 
-                    float height = 2*(getResources().getDimension(R.dimen.listview_height));
+                    float height = 2 * (getResources().getDimension(R.dimen.listview_height));
 
                     ViewGroup.LayoutParams lp = (ViewGroup.LayoutParams) mBinding.selectedGroup.getLayoutParams();
-                    lp.height = (int)height;
+                    lp.height = (int) height;
                     mBinding.selectedGroup.setLayoutParams(lp);
-                }else{
-                    float height = 3*(getResources().getDimension(R.dimen.listview_height));
+                } else {
+                    float height = 3 * (getResources().getDimension(R.dimen.listview_height));
 
                     ViewGroup.LayoutParams lp = (ViewGroup.LayoutParams) mBinding.selectedGroup.getLayoutParams();
-                    lp.height = (int)height;
+                    lp.height = (int) height;
                     mBinding.selectedGroup.setLayoutParams(lp);
 
                 }

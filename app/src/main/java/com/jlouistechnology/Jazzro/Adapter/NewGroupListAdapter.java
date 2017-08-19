@@ -5,7 +5,6 @@ import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,10 +12,9 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
-import com.google.gson.Gson;
-import com.jlouistechnology.Jazzro.Helper.Pref;
 import com.jlouistechnology.Jazzro.Helper.Utils;
 import com.jlouistechnology.Jazzro.Interface.OnClickEditGroupListener;
+import com.jlouistechnology.Jazzro.Interface.OnClickGetPosotionListener;
 import com.jlouistechnology.Jazzro.Model.ColorModel;
 import com.jlouistechnology.Jazzro.Model.GroupListDataDetailModel;
 import com.jlouistechnology.Jazzro.R;
@@ -40,6 +38,7 @@ public class NewGroupListAdapter extends BaseAdapter {
     ArrayList<String> SelectedGroupList = new ArrayList<>();
     String type;
     OnClickEditGroupListener onClickEditGroupListener;
+    OnClickGetPosotionListener onClickGetPosotionListener;
     boolean isFirstTime = true;
 
     public NewGroupListAdapter(Context context, ArrayList<GroupListDataDetailModel> datalist, ImageView mHeaderRight, String type, ArrayList<String> SelectedGroupList) {
@@ -176,7 +175,11 @@ public class NewGroupListAdapter extends BaseAdapter {
         {
             @Override
             public void onClick(View v) {
-                for (int i = 0; i < datalist.size(); i++) {
+
+
+                onClickGetPosotionListener.onClick(position);
+
+              /*  for (int i = 0; i < datalist.size(); i++) {
                     if (datalist.get(i).isClick.equalsIgnoreCase("true")) {
                         selectedGroud.add(datalist.get(i).id);
                         selectedGroup_label.add(Utils.capitalize(datalist.get(i).label));
@@ -197,14 +200,14 @@ public class NewGroupListAdapter extends BaseAdapter {
                 Pref.setValue(context, "selectedGroup_label", json1);
                 Pref.setValue(context, "selectedGroup_color", json2);
 
-               /* editor.putString("selectedGroud", json);
+               *//* editor.putString("selectedGroud", json);
                 editor.putString("selectedGroup_label",json1);
-                editor.commit();*/
+                editor.commit();*//*
                 Log.e("Adaper###", "%%% " + selectedGroud.size());
                 // notifyDataSetChanged();
                 ((FragmentActivity) context).getSupportFragmentManager().popBackStack();
 
-                Pref.setValue(context, "SelectedGroupList", "");
+                Pref.setValue(context, "SelectedGroupList", "");*/
             }
         });
 
@@ -213,6 +216,11 @@ public class NewGroupListAdapter extends BaseAdapter {
 
     public void onClickEdit(OnClickEditGroupListener onClickEditGroupListener) {
         this.onClickEditGroupListener = onClickEditGroupListener;
+    }
+
+    public void onClickGetPosotionListener(OnClickGetPosotionListener onClickGetPosotionListener)
+    {
+        this.onClickGetPosotionListener = onClickGetPosotionListener;
     }
 
 

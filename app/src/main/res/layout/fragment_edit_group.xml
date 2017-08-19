@@ -37,7 +37,7 @@
                     android:layout_weight="0.80"
                     android:orientation="vertical">
 
-                    <com.jlouistechnology.Jazzro.Widget.Edittext_Regular
+                    <com.jlouistechnology.Jazzro.Widget.Edittext_Bold
                         android:id="@+id/edName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -47,14 +47,14 @@
                         android:layout_marginTop="5dp"
                         android:background="@null"
                         android:gravity="left"
-                        android:hint="Squash mates"
+                        android:hint="Group name"
                         android:imeOptions="actionDone"
                         android:inputType="text"
                         android:paddingTop="10dp"
                         android:singleLine="true"
                         android:textColor="@color/new_black"
-                        android:textColorHint="@color/new_black"
-                        android:textSize="@dimen/edittextsize" />
+                        android:textColorHint="@color/black_40"
+                        android:textSize="16sp" />
 
                     <View
                         android:layout_width="match_parent"
@@ -110,7 +110,7 @@
                             android:layout_marginRight="40dp"
                             android:visibility="invisible" />
 
-                        <com.jlouistechnology.Jazzro.Widget.TextView_Regular
+                        <com.jlouistechnology.Jazzro.Widget.TextView_Bold
                             android:id="@+id/txtBackgruondColor"
                             android:layout_width="match_parent"
                             android:layout_height="20dp"
@@ -119,7 +119,9 @@
                             android:layout_marginRight="40dp"
                             android:gravity="left"
                             android:text="Choose a color"
-                            android:textColor="#767575"
+                            android:textColor="@color/black_40"
+                            android:textColorHint="@color/black_40"
+                            android:textSize="16sp"
                             android:visibility="visible" />
 
 

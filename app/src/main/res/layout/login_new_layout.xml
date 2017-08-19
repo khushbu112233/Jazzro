@@ -49,54 +49,55 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
-                android:layout_marginTop="25dp"
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
+                android:layout_marginTop="25dp"
                 android:background="@null"
                 android:gravity="left"
                 android:hint="Email"
-                android:textColorHint="@color/new_black"
                 android:imeOptions="actionNext"
                 android:inputType="text"
                 android:paddingTop="10dp"
                 android:singleLine="true"
-                android:textStyle="bold"
                 android:textColor="@color/new_black"
-                android:textSize="@dimen/edittextsize" />
+                android:textColorHint="@color/new_black"
+                android:textSize="@dimen/edittextsize"
+                android:textStyle="bold" />
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginRight="30dp"
                 android:layout_marginLeft="30dp"
-                android:background="@color/black_10"/>
+                android:layout_marginRight="30dp"
+                android:background="@color/black_10" />
 
 
             <com.jlouistechnology.Jazzro.Widget.Edittext_bold
                 android:id="@+id/edt_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
                 android:layout_marginTop="15dp"
                 android:background="@null"
                 android:gravity="left"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
                 android:hint="Password"
                 android:imeOptions="actionDone"
                 android:inputType="textPassword"
-                android:textColorHint="@color/new_black"
                 android:paddingBottom="10dp"
                 android:paddingTop="10dp"
-                android:textStyle="bold"
                 android:singleLine="true"
                 android:textColor="@color/new_black"
-                android:textSize="@dimen/edittextsize" />
+                android:textColorHint="@color/new_black"
+                android:textSize="@dimen/edittextsize"
+                android:textStyle="bold" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginRight="30dp"
                 android:layout_marginLeft="30dp"
-                android:background="@color/black_10"/>
+                android:layout_marginRight="30dp"
+                android:background="@color/black_10" />
 
 
             <com.jlouistechnology.Jazzro.Widget.TextView_Regular
@@ -109,7 +110,7 @@
                 android:background="@drawable/round_background_blue"
                 android:gravity="center"
                 android:padding="15dp"
-                android:text="Sign In"
+                android:text="Sign in"
                 android:textAlignment="center"
                 android:textAllCaps="false"
                 android:textColor="@color/New_white"

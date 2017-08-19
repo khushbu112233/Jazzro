@@ -1,6 +1,7 @@
 package com.jlouistechnology.Jazzro.Fragment;
 
 import android.databinding.DataBindingUtil;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,8 +16,10 @@ import android.widget.AbsListView;
 import com.jlouistechnology.Jazzro.Adapter.ListContactAdapter;
 import com.jlouistechnology.Jazzro.Helper.Constants;
 import com.jlouistechnology.Jazzro.Helper.Pref;
+import com.jlouistechnology.Jazzro.Helper.Utils;
 import com.jlouistechnology.Jazzro.Interface.OnClickAddContactListener;
 import com.jlouistechnology.Jazzro.Jazzro.DashboardNewActivity;
+import com.jlouistechnology.Jazzro.Model.ColorModel;
 import com.jlouistechnology.Jazzro.Model.Contact;
 import com.jlouistechnology.Jazzro.Model.Group;
 import com.jlouistechnology.Jazzro.R;
@@ -43,6 +46,7 @@ public class AddFriendsFragment extends BaseFragment {
     public int pageNumber = 1;
     private int limitpage = 30;
     public String groupName;
+    public String groupColor;
 
     @Nullable
     @Override
@@ -56,6 +60,21 @@ public class AddFriendsFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
+        Bundle args = getArguments();
+        groupName = args.getString("name");
+        groupColor = args.getString("color");
+
+        ArrayList<ColorModel> colorList = new ArrayList<>();
+        colorList = Utils.colorList();
+        final ArrayList<ColorModel> finalColorList = colorList;
+
+        for (int i = 0; i < finalColorList.size(); i++) {
+
+            if (groupColor.equalsIgnoreCase(finalColorList.get(i).name)) {
+                ((DashboardNewActivity) getActivity()).setHeaderColor((Color.parseColor(finalColorList.get(i).background)));
+                changeStatusbarColor((Color.parseColor(finalColorList.get(i).background)));
+            }
+        }
 
         setup();
         setupSearch();
@@ -68,11 +87,8 @@ public class AddFriendsFragment extends BaseFragment {
 
         mainConatctArrayList.clear();
         copyContactlist.clear();
-        pageNumber=0;
+        pageNumber = 0;
 
-
-        Bundle args = getArguments();
-        groupName = args.getString("name");
 
         adapter = new ListContactAdapter(getActivity(), mainConatctArrayList, AddFriendsFragment.class);
         adapter.setOnClickAddContactListener(onClickAddContactListener);
@@ -172,6 +188,13 @@ public class AddFriendsFragment extends BaseFragment {
                 hideKeyboard();
             }
         });
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        changeStatusbarColor(getResources().getColor(R.color.colorAccent));
+        ((DashboardNewActivity) getActivity()).Setimagebackgroundresource(R.mipmap.contact_bar);
     }
 
     class ExecuteTasktWO extends AsyncTask<String, Integer, String> {

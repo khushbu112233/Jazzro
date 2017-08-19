@@ -60,11 +60,12 @@ public class EditGroupFragment extends BaseFragment {
     private ArrayList<PeticularGroupContactModel> myList = new ArrayList<>();
     ArrayList<ColorModel> colorList = new ArrayList<>();
     EditGroupAdapter adapter1;
-    boolean isHavingData=true;
+    boolean isHavingData = true;
     int pageNumber = 1;
     int limit = 30;
+
     @Override
-    public View onCreateView(LayoutInflater inflater,  ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         mBinding = DataBindingUtil.inflate(
                 inflater, R.layout.fragment_edit_group, container, false);
@@ -80,7 +81,7 @@ public class EditGroupFragment extends BaseFragment {
         Gson gson = new Gson();
         groupData = gson.fromJson((String) args.getSerializable("data"), GroupListDataDetailModel.class);
 
-        new ExecuteTasktWO(pageNumber,limit).execute();
+        new ExecuteTasktWO(pageNumber, limit).execute();
         setup(groupData);
     }
 
@@ -209,7 +210,7 @@ public class EditGroupFragment extends BaseFragment {
         });
 
 
-        adapter1 = new EditGroupAdapter(getActivity(),groupList,EditGroupFragment.class);
+        adapter1 = new EditGroupAdapter(getActivity(), groupList, EditGroupFragment.class);
         mBinding.contactListview.setAdapter(adapter1);
 
     }
@@ -223,12 +224,14 @@ public class EditGroupFragment extends BaseFragment {
 
 
     }
+
     @Override
     public void onPause() {
         super.onPause();
 
         ((DashboardNewActivity) context).Set_header_visibility();
     }
+
     public class updateTask extends AsyncTask<String, Integer, String> {
 
         private String res;
@@ -243,7 +246,10 @@ public class EditGroupFragment extends BaseFragment {
 
             edName = mBinding.edName.getText().toString();
             this.id = groupData.id;
-            this.background = colorList.get(mBinding.spinner1.getSelectedItemPosition()).name;
+            this.background = mBinding.txtBackgruondColor.getText().toString();
+
+            Utils.groupName = edName;
+            Utils.groupColor = background;
 
         }
 
@@ -307,6 +313,7 @@ public class EditGroupFragment extends BaseFragment {
 
                     Toast.makeText(getActivity(), "Group deleted successfully!", Toast.LENGTH_SHORT).show();
                     getActivity().getSupportFragmentManager().popBackStack();
+                    getActivity().getSupportFragmentManager().popBackStack();
                 }
 
             } catch (JSONException e) {
@@ -314,6 +321,7 @@ public class EditGroupFragment extends BaseFragment {
             }
         }
     }
+
     class ExecuteTasktWO extends AsyncTask<String, Integer, String> {
         int index;
         int length;
@@ -341,7 +349,7 @@ public class EditGroupFragment extends BaseFragment {
         @Override
         protected void onPostExecute(String result) {
 
-            Log.e("my_result",result+"----");
+            Log.e("my_result", result + "----");
             WebService.dismissProgress();
             try {
                 JSONObject json2;
@@ -352,9 +360,8 @@ public class EditGroupFragment extends BaseFragment {
                 if (jsonArray.length() == 0) {
                     isHavingData = false;
 
-                }else
-                {
-                    isHavingData=true;
+                } else {
+                    isHavingData = true;
                 }
                 /*if(jsonArray.length()<limit)
                 {
