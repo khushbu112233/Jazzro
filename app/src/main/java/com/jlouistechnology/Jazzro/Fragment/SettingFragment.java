@@ -39,9 +39,10 @@ public class SettingFragment extends BaseFragment {
     Context context;
 
     DatabaseHelper dh;
-    int is_exit=0;
+    int is_exit = 0;
+
     @Override
-    public View onCreateView(LayoutInflater inflater,ViewGroup container,Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(
                 inflater, R.layout.fragment_setting, container, false);
 
@@ -62,16 +63,16 @@ public class SettingFragment extends BaseFragment {
 
         dh.close();
 
-        if(Pref.getValue(getActivity(),"auto_sync","").equalsIgnoreCase("1")){
+        if (Pref.getValue(getActivity(), "auto_sync", "").equalsIgnoreCase("1")) {
             mBinding.ivToggle.setChecked(true);
             mBinding.ivToggle.setBackgroundResource(R.mipmap.toggel);
 
-        }else{
+        } else {
             mBinding.ivToggle.setChecked(false);
             mBinding.ivToggle.setBackgroundResource(R.mipmap.toggle_off);
 
         }
-                ;
+        ;
 
         mBinding.txtName.setText(Pref.getValue(getActivity(), "fname", ""));
         mBinding.txtPhoneNumber.setText(Pref.getValue(getActivity(), "phone", ""));
@@ -81,32 +82,29 @@ public class SettingFragment extends BaseFragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
-                if(isChecked){
+                if (isChecked) {
                     mBinding.ivToggle.setBackgroundResource(R.mipmap.toggel);
-                    Pref.setValue(context,"auto_sync","1");
+                    Pref.setValue(context, "auto_sync", "1");
                     DatabaseHelper dh = new DatabaseHelper(context);
                     dh.open();
                     /**
                      * here when first time login then add otherwise update database
                      */
-                    if(is_exit==0) {
+                    if (is_exit == 0) {
                         dh.insert_sync(Pref.getValue(context, Constants.PREF_PROFILE_EMAIL, ""), "1");
-                    }else
-                    {
+                    } else {
                         dh.update_sync(Pref.getValue(context, Constants.PREF_PROFILE_EMAIL, ""), "1");
                     }
                     dh.close();
-                }else{
+                } else {
                     mBinding.ivToggle.setBackgroundResource(R.mipmap.toggle_off);
-                    Pref.setValue(context,"auto_sync","0");
+                    Pref.setValue(context, "auto_sync", "0");
                     DatabaseHelper dh = new DatabaseHelper(context);
                     dh.open();
-                    if(is_exit==0)
-                    {
-                        dh.insert_sync(Pref.getValue(context, Constants.PREF_PROFILE_EMAIL, ""),"0");
-                    }else
-                    {
-                        dh.update_sync(Pref.getValue(context, Constants.PREF_PROFILE_EMAIL, ""),"0");
+                    if (is_exit == 0) {
+                        dh.insert_sync(Pref.getValue(context, Constants.PREF_PROFILE_EMAIL, ""), "0");
+                    } else {
+                        dh.update_sync(Pref.getValue(context, Constants.PREF_PROFILE_EMAIL, ""), "0");
                     }
                     dh.close();
 
@@ -118,21 +116,20 @@ public class SettingFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
 
-                Toast.makeText(context, R.string.Sync_starts_in_background,Toast.LENGTH_LONG).show();
-             //   ((DashboardNewActivity)context).mBinding.header.progressBarSync.setVisibility(View.VISIBLE);
-                ((DashboardNewActivity)context).mBinding.header.progressBarSync.setImageResource(R.drawable.my_progress_interminate1);
+                Toast.makeText(context, R.string.Sync_starts_in_background, Toast.LENGTH_LONG).show();
+                //   ((DashboardNewActivity)context).mBinding.header.progressBarSync.setVisibility(View.VISIBLE);
+                ((DashboardNewActivity) context).mBinding.header.progressBarSync.setImageResource(R.drawable.my_progress_interminate1);
 
                 Log.e("s", "first" + System.currentTimeMillis());
                 if (Pref.getValue(context, "first_login", "").equals("1")) {
 
 
-                    Intent intent=new Intent(context,GetallPhoneContact_auto_sync.class);
+                    Intent intent = new Intent(context, GetallPhoneContact_auto_sync.class);
                     context.startService(intent);
 
 
-                }
-                else {
-                    Intent intent=new Intent(context,GetallPhoneContact_auto_sync_from_middle.class);
+                } else {
+                    Intent intent = new Intent(context, GetallPhoneContact_auto_sync_from_middle.class);
                     context.startService(intent);
 
                     //((DashboardActivity) getActivity()).getAllContacts(getActivity());
@@ -156,7 +153,7 @@ public class SettingFragment extends BaseFragment {
                                 Intent intent = new Intent(context, LoginInNewScreenActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                                 startActivity(intent);
-                                ((FragmentActivity)context).finish();
+                                ((FragmentActivity) context).finish();
                                 Pref.deleteAll(context);
                             }
                         })
@@ -180,7 +177,7 @@ public class SettingFragment extends BaseFragment {
     @Override
     public void onPause() {
         super.onPause();
-        ((DashboardNewActivity)context).Set_header_visibility();
+        ((DashboardNewActivity) context).Set_header_visibility();
     }
 
     @Override
@@ -196,14 +193,22 @@ public class SettingFragment extends BaseFragment {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if (event.getAction() == KeyEvent.ACTION_DOWN) {
                     if (keyCode == KeyEvent.KEYCODE_BACK) {
-// Toast.makeText(getActivity(), "Back Pressed", Toast.LENGTH_SHORT).show();
                         FragmentManager fm = getActivity().getSupportFragmentManager();
+// Toast.makeText(getActivity(), "Back Pressed", Toast.LENGTH_SHORT).show();
+                 /*       FragmentManager fm = getActivity().getSupportFragmentManager();
                         for (int i = 0; i < fm.getBackStackEntryCount(); ++i) {
                             fm.popBackStack();
                         }
-                        ((DashboardNewActivity)context).Contact_footer();
+                        ((DashboardNewActivity) context).Contact_footer();
                         ContactFragment fragment = new ContactFragment();
                         ((FragmentActivity) context).getSupportFragmentManager().beginTransaction().replace(R.id.frame_main_container, fragment).addToBackStack(null).commit();
+                      */
+                        fm.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                        ((DashboardNewActivity) context).Contact_footer();
+                        ContactFragment fragment = new ContactFragment();
+                        ((FragmentActivity) context).getSupportFragmentManager().beginTransaction().replace(R.id.frame_main_container, fragment).addToBackStack(null).commit();
+
+
                         return true;
                     }
                 }
@@ -211,20 +216,20 @@ public class SettingFragment extends BaseFragment {
             }
         });
     }
+
     @Override
     public void onResume() {
         super.onResume();
 
-        ((DashboardNewActivity)context).Set_header_visibility();
+        ((DashboardNewActivity) context).Set_header_visibility();
         setupToolbar();
-
 
 
     }
 
     private void setupToolbar() {
 
-        ((DashboardNewActivity)context).Setimagebackgroundresource(R.mipmap.contact_bar);
+        ((DashboardNewActivity) context).Setimagebackgroundresource(R.mipmap.contact_bar);
         ((DashboardNewActivity) context).SettextTxtTitle("Settings");
     }
 }

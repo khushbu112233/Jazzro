@@ -149,7 +149,7 @@ public class NewGroupListAdapter extends BaseAdapter {
             binding.lnMainAlluserContact.setEnabled(true);
         }
         Log.e("label", "" + datalist.get(position).label);
-        binding.txtGroupName.setText(Utils.capitalize(datalist.get(position).label));
+        binding.txtGroupName.setText((datalist.get(position).label));
         binding.txtMember.setText("1 members");
 
         binding.imgGroup.setBackgroundResource(R.drawable.circle_group_shape);

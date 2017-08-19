@@ -54,7 +54,6 @@ public class ContactFragment extends Fragment {
     int isMainLoad = 1;
     public static int storePageNumber = 1;
     public static ArrayList<Contact> copyContactlist = new ArrayList<>();
-
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
 
@@ -85,7 +84,7 @@ public class ContactFragment extends Fragment {
                         if (actionId == EditorInfo.IME_ACTION_SEARCH || event.getAction() == KeyEvent.ACTION_DOWN) {
                             if (!TextUtils.isEmpty(mBinding.searchContact.getText().toString().trim())) {
                                 isPagination = true;
-                                isHavingData = true;
+                                isHavingData=true;
                                 pageNumber = 1;
                                 isMainLoad = 0;
                                 mBinding.ivcancelSearch.setVisibility(View.VISIBLE);
@@ -112,7 +111,7 @@ public class ContactFragment extends Fragment {
                 isPagination = true;
                 call_without_search_api();
                 mainConatctArrayList.clear();
-                // mainConatctArrayList.addAll(copyContactlist);
+               // mainConatctArrayList.addAll(copyContactlist);
                 adapter.notifyDataSetChanged();
                 mBinding.ivcancelSearch.setVisibility(View.GONE);
             }
@@ -130,22 +129,24 @@ public class ContactFragment extends Fragment {
                     int count = mBinding.listContact.getChildCount();
 
 
-                    if (first + count == adapter.getCount() && isHavingData) {
+                if (scrollState == SCROLL_STATE_IDLE &&first + count == adapter.getCount() && isHavingData) {
                         pageNumber++;
 
 
                         if (isMainLoad == 1) {
 
                             storePageNumber = pageNumber;
-
-                            call_without_search_api();
-
+                            if (mBinding.listContact.getLastVisiblePosition() == (adapter.getCount() - 1)) {
+                                call_without_search_api();
+                            }
 
                         } else {
 
-                            if (adapter.getCount() < limitpage) {
+                            if(adapter.getCount()<limitpage)
+                            {
 
-                            } else {
+                            }
+                            else {
                                 new ExecuteTask((pageNumber), limitpage).execute(mBinding.searchContact.getText().toString().trim());
                             }
                         }
@@ -165,12 +166,12 @@ public class ContactFragment extends Fragment {
          * add new contact
          */
 
-        ((DashboardNewActivity) context).mBinding.header.imgRight.setOnClickListener(new View.OnClickListener() {
+        ((DashboardNewActivity)context).mBinding.header.imgRight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 AddNewContactFragment fragment = new AddNewContactFragment();
-                ((FragmentActivity) context).getSupportFragmentManager().beginTransaction().replace(R.id.frame_main_container, fragment).addToBackStack(null).commit();
+                ((FragmentActivity)context).getSupportFragmentManager().beginTransaction().replace(R.id.frame_main_container, fragment).addToBackStack(null).commit();
 
             }
         });
@@ -178,7 +179,6 @@ public class ContactFragment extends Fragment {
         return rootView;
 
     }
-
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -197,7 +197,7 @@ public class ContactFragment extends Fragment {
                         for (int i = 0; i < fm.getBackStackEntryCount(); ++i) {
                             fm.popBackStack();
                         }
-                        ((DashboardNewActivity) context).finish();
+                        ((DashboardNewActivity)context).finish();
 
                         return true;
                     }
@@ -210,29 +210,31 @@ public class ContactFragment extends Fragment {
 
     private void preview() {
         cd = new ConnectionDetector(context);
-        ((DashboardNewActivity) context).SettextTxtTitle("Contacts");
-        ((DashboardNewActivity) context).visibilityimgright(View.VISIBLE);
-        ((DashboardNewActivity) context).visibilityimgleftProgress(View.VISIBLE);
-        ((DashboardNewActivity) context).SetimageresourceImgleftprogress();
-        ((DashboardNewActivity) context).SetimageresourceImgright(R.mipmap.plus_contact);
-        ((DashboardNewActivity) context).Setimagebackgroundresource(R.mipmap.contact_bar);
+        ((DashboardNewActivity)context).SettextTxtTitle("Contacts");
+        ((DashboardNewActivity)context).visibilityimgright(View.VISIBLE);
+        ((DashboardNewActivity)context).visibilityimgleftProgress(View.VISIBLE);
+        ((DashboardNewActivity)context).SetimageresourceImgleftprogress();
+        ((DashboardNewActivity)context).SetimageresourceImgright(R.mipmap.plus_contact);
+        ((DashboardNewActivity)context).Setimagebackgroundresource(R.mipmap.contact_bar);
 
     }
 
     /**
      * set adapter
+     *
      */
 
-    public void setadapterinit() {
-        adapter = new ListContactAdapter(context, mainConatctArrayList, ContactFragment.class);
+    public void setadapterinit()
+    {
+        adapter = new ListContactAdapter(context, mainConatctArrayList,ContactFragment.class);
         mBinding.listContact.setAdapter(adapter);
 
     }
-
     /**
      * call without search api
      */
-    public void call_without_search_api() {
+    public void call_without_search_api()
+    {
         if (cd.isConnectingToInternet()) {
 
             new ExecuteTasktWO((pageNumber), limitpage).execute();
@@ -272,7 +274,7 @@ public class ContactFragment extends Fragment {
         @Override
         protected void onPostExecute(String result) {
 
-            Log.e("my_result", result + "--");
+            Log.e("my_result",result+"--");
             try {
                 WebService.showProgress(context);
                 JSONObject json2;
@@ -295,8 +297,9 @@ public class ContactFragment extends Fragment {
 
                 if (jsonArray.length() == 0) {
                     isHavingData = false;
-                } else {
-                    isHavingData = true;
+                }else
+                {
+                    isHavingData=true;
                 }
 
                 for (int i = 0; i < jsonArray.length(); i++) {
@@ -373,13 +376,13 @@ public class ContactFragment extends Fragment {
 
                     // }
                 }
-                if (copyContactlist.size() > 0)
-
+                if(mainConatctArrayList.size()>0)
                 {
                     mBinding.llContactList.setVisibility(View.VISIBLE);
                     mBinding.llNotFound.setVisibility(View.GONE);
 
-                } else {
+                }else
+                {
                     mBinding.llContactList.setVisibility(View.GONE);
                     mBinding.llNotFound.setVisibility(View.VISIBLE);
                 }
@@ -430,7 +433,7 @@ public class ContactFragment extends Fragment {
         protected void onPostExecute(String result) {
             try {
 
-                Log.e("my_result", result + "-----");
+                Log.e("my_result",result+"-----");
 
                 JSONObject json2;
                 JSONObject json1 = new JSONObject(result);
@@ -446,8 +449,9 @@ public class ContactFragment extends Fragment {
                 JSONArray jsonArray = json2.getJSONArray("data");
                 if (jsonArray.length() == 0) {
                     isHavingData = false;
-                } else {
-                    isHavingData = true;
+                }else
+                {
+                    isHavingData=true;
                 }
                 if (jsonArray.length() > 0) {
 
@@ -534,7 +538,7 @@ public class ContactFragment extends Fragment {
                     WebService.dismissProgress();
 
                 } else {
-                    Toast.makeText(context, "No result found!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(context,"No result found!",Toast.LENGTH_LONG).show();
                     WebService.dismissProgress();
                 }
 
@@ -544,18 +548,17 @@ public class ContactFragment extends Fragment {
         }
 
     }
-
     @Override
     public void onPause() {
         super.onPause();
-        ((DashboardNewActivity) context).Set_header_visibility();
+        ((DashboardNewActivity)context).Set_header_visibility();
     }
 
     @Override
     public void onResume() {
         super.onResume();
 
-        ((DashboardNewActivity) context).Set_header_visibility();
+        ((DashboardNewActivity)context).Set_header_visibility();
         preview();
 
         Utils.hideKeyboard(context);

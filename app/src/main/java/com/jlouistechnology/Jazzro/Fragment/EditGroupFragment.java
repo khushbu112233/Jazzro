@@ -1,6 +1,8 @@
 package com.jlouistechnology.Jazzro.Fragment;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -101,15 +103,34 @@ public class EditGroupFragment extends BaseFragment {
 
             if (groupData.color.equalsIgnoreCase(colorList.get(i).name)) {
                 mBinding.txtBackgruondColor.setTextColor(Color.parseColor(colorList.get(i).background));
-
-
             }
         }
 
         mBinding.txtDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new deleteGroupTask().execute();
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setMessage("Are you sure you want to delete this group?")
+                        .setCancelable(false)
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                new deleteGroupTask().execute();
+                            }
+                        })
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                //  Action for 'NO' Button
+                                dialog.cancel();
+                            }
+                        });
+
+                //Creating dialog box
+                AlertDialog alert = builder.create();
+                //Setting the title manually
+                alert.setTitle(getResources().getString(R.string.app_name));
+                alert.show();
+
             }
         });
         mBinding.txtBackgruondColor.setOnClickListener(new View.OnClickListener() {
@@ -130,51 +151,58 @@ public class EditGroupFragment extends BaseFragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 if (!isFirstTime) {
+                    if (position == 0) {
+                        mBinding.txtBackgruondColor.setText(finalColorList.get(position).background);
+                        mBinding.txtBackgruondColor.setTextColor(getResources().getColor(R.color.black_40));
 
-                    colorPosition = position;
-                    if (Pref.getValue(getActivity(), "from_group", "").equalsIgnoreCase("1")) {
-                        if (!Pref.getValue(getActivity(), "Edit_color", "").equalsIgnoreCase("")) {
+                    } else {
+                        mBinding.txtBackgruondColor.setError(null);
 
-                            if (!Pref.getValue(getActivity(), "Edit_label", "").equalsIgnoreCase("")) {
-                                for (int i = 0; i < finalColorList.size(); i++) {
-                                    Log.e("background", "" + finalColorList.get(i).background);
-                                    Log.e("edit name", "" + finalColorList.get(i).name);
+                        colorPosition = position;
+                        if (Pref.getValue(getActivity(), "from_group", "").equalsIgnoreCase("1")) {
+                            if (!Pref.getValue(getActivity(), "Edit_color", "").equalsIgnoreCase("")) {
 
-                                    Log.e("edit color", "" + finalColorList.get(i).color);
-                                    if ((Pref.getValue(getActivity(), "Edit_color", "")).equals(finalColorList.get(i).name)) {
-                                        Pref.setValue(getActivity(), "Edit_color", finalColorList.get(i).color);
-                                        Log.e("test", "compare");
-                                        colorPosition = i;
-                                        break;
+                                if (!Pref.getValue(getActivity(), "Edit_label", "").equalsIgnoreCase("")) {
+                                    for (int i = 0; i < finalColorList.size(); i++) {
+                                        Log.e("background", "" + finalColorList.get(i).background);
+                                        Log.e("edit name", "" + finalColorList.get(i).name);
+
+                                        Log.e("edit color", "" + finalColorList.get(i).color);
+                                        if ((Pref.getValue(getActivity(), "Edit_color", "")).equals(finalColorList.get(i).name)) {
+                                            Pref.setValue(getActivity(), "Edit_color", finalColorList.get(i).color);
+                                            Log.e("test", "compare");
+                                            colorPosition = i;
+                                            break;
+                                        }
                                     }
-                                }
 
-                                mBinding.txtBackgruondColor.setText(Pref.getValue(getActivity(), "Edit_label", ""));
-                            }
-                            if (Pref.getValue(getActivity(), "Edit_color", "").startsWith("#")) {
-                                mBinding.txtBackgruondColor.setTextColor(Color.parseColor(Pref.getValue(getActivity(), "Edit_color", "")));
-                                Log.e("color", "111" + Pref.getValue(getActivity(), "Edit_color", ""));
+                                    mBinding.txtBackgruondColor.setText(Pref.getValue(getActivity(), "Edit_label", ""));
+                                }
+                                if (Pref.getValue(getActivity(), "Edit_color", "").startsWith("#")) {
+                                    mBinding.txtBackgruondColor.setTextColor(Color.parseColor(Pref.getValue(getActivity(), "Edit_color", "")));
+                                    Log.e("color", "111" + Pref.getValue(getActivity(), "Edit_color", ""));
+                                } else {
+                                    if (!(Pref.getValue(getActivity(), "Edit_color", "").startsWith("groupcolor")) && !(Pref.getValue(getActivity(), "Edit_color", "").startsWith("level"))) {
+                                        mBinding.txtBackgruondColor.setTextColor(Color.parseColor("#" + Pref.getValue(getActivity(), "Edit_color", "")));
+                                        Log.e("color", "111" + "#" + Pref.getValue(getActivity(), "Edit_color", ""));
+
+                                    }
+
+                                }
+                                Pref.setValue(getActivity(), "Edit_color", "");
+                                Pref.setValue(getActivity(), "Edit_label", "");
                             } else {
-                                if (!(Pref.getValue(getActivity(), "Edit_color", "").startsWith("groupcolor")) && !(Pref.getValue(getActivity(), "Edit_color", "").startsWith("level"))) {
-                                    mBinding.txtBackgruondColor.setTextColor(Color.parseColor("#" + Pref.getValue(getActivity(), "Edit_color", "")));
-                                    Log.e("color", "111" + "#" + Pref.getValue(getActivity(), "Edit_color", ""));
-
-                                }
+                                mBinding.txtBackgruondColor.setTextColor(Color.parseColor(finalColorList.get(position).background));
+                                mBinding.txtBackgruondColor.setText(finalColorList.get(position).name);
+                                Log.e("color", "111" + finalColorList.get(position).background);
 
                             }
-                            Pref.setValue(getActivity(), "Edit_color", "");
-                            Pref.setValue(getActivity(), "Edit_label", "");
                         } else {
                             mBinding.txtBackgruondColor.setTextColor(Color.parseColor(finalColorList.get(position).background));
                             mBinding.txtBackgruondColor.setText(finalColorList.get(position).name);
                             Log.e("color", "111" + finalColorList.get(position).background);
 
                         }
-                    } else {
-                        mBinding.txtBackgruondColor.setTextColor(Color.parseColor(finalColorList.get(position).background));
-                        mBinding.txtBackgruondColor.setText(finalColorList.get(position).name);
-                        Log.e("color", "111" + finalColorList.get(position).background);
-
                     }
                 }
                 isFirstTime = false;
@@ -193,6 +221,8 @@ public class EditGroupFragment extends BaseFragment {
                     if (TextUtils.isEmpty(mBinding.edName.getText().toString().trim())) {
                         mBinding.edName.setError("Please provide groupname!");
 
+                    } else if (mBinding.spinner1.getSelectedItemPosition() == 0) {
+                        mBinding.txtBackgruondColor.setError("Please select color");
                     } else {
                         new updateTask().execute();
                     }

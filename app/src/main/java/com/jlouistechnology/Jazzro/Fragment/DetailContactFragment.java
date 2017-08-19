@@ -3,17 +3,11 @@ package com.jlouistechnology.Jazzro.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.text.SpannableStringBuilder;
-import android.text.TextPaint;
-import android.text.method.LinkMovementMethod;
-import android.text.style.ClickableSpan;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -61,7 +55,7 @@ public class DetailContactFragment extends Fragment {
                 inflater, R.layout.detail_contact_layout, container, false);
         rootView = mBinding.getRoot();
         context = getActivity();
-        preview();
+        //preview();
 
         ((DashboardNewActivity)context).mBinding.header.txtTitleRight.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,7 +101,7 @@ public class DetailContactFragment extends Fragment {
 
             String res = WebService.GetData1(WebService.CONTACT + "/" + Pref.getValue(context,"Detail_id",""), Pref.getValue(context, Constants.TOKEN, ""));
 
-            Log.e("res....", "" + res);
+            Log.e("details res....", "" + res);
 
             return res;
         }
