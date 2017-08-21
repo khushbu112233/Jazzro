@@ -75,7 +75,7 @@ public class SelectedGropListFragment extends Fragment {
 
     private void preview() {
         ((DashboardNewActivity) context).Setimagebackgroundresource(R.mipmap.contact_bar);
-        ((DashboardNewActivity) context).SettextTxtTitle("Select groups");
+        ((DashboardNewActivity) context).SettextTxtTitle("Select Groups");
         ((DashboardNewActivity) context).visibilityimgright(View.VISIBLE);
         ((DashboardNewActivity) context).visibilityimgleftback(View.VISIBLE);
         ((DashboardNewActivity) context).SetimageresourceImgleft(R.mipmap.back_white);

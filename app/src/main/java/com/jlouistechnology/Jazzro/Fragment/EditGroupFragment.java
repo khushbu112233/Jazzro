@@ -221,7 +221,7 @@ public class EditGroupFragment extends BaseFragment {
                     if (TextUtils.isEmpty(mBinding.edName.getText().toString().trim())) {
                         mBinding.edName.setError("Please provide groupname!");
 
-                    } else if (mBinding.spinner1.getSelectedItemPosition() == 0) {
+                    } else if (mBinding.txtBackgruondColor.getText().toString().equalsIgnoreCase("Choose a color")) {
                         mBinding.txtBackgruondColor.setError("Please select color");
                     } else {
                         new updateTask().execute();

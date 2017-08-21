@@ -197,6 +197,8 @@ public class ContactFragment extends Fragment {
                         for (int i = 0; i < fm.getBackStackEntryCount(); ++i) {
                             fm.popBackStack();
                         }
+                        fm.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
                         ((DashboardNewActivity)context).finish();
 
                         return true;

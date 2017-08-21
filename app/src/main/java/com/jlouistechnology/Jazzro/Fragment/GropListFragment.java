@@ -90,7 +90,7 @@ public class GropListFragment extends Fragment {
 
     private void grouplistTask() {
         griupList.clear();
-        if (WebService.isNetworkAvailable(getActivity())) {
+        if (WebService.isNetworkAvailable(context)) {
 
             ApiInterface apiService =
                     ApiClient.getClient().create(ApiInterface.class);
@@ -181,11 +181,13 @@ public class GropListFragment extends Fragment {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if (event.getAction() == KeyEvent.ACTION_DOWN) {
                     if (keyCode == KeyEvent.KEYCODE_BACK) {
-// Toast.makeText(getActivity(), "Back Pressed", Toast.LENGTH_SHORT).show();
                         FragmentManager fm = getActivity().getSupportFragmentManager();
+// Toast.makeText(getActivity(), "Back Pressed", Toast.LENGTH_SHORT).show();
+                       /* FragmentManager fm = getActivity().getSupportFragmentManager();
                         for (int i = 0; i < fm.getBackStackEntryCount(); ++i) {
                             fm.popBackStack();
-                        }
+                        }*/
+                        fm.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
                         ((DashboardNewActivity) context).Contact_footer();
                         ContactFragment fragment = new ContactFragment();
                         ((FragmentActivity) context).getSupportFragmentManager().beginTransaction().replace(R.id.frame_main_container, fragment).addToBackStack(null).commit();

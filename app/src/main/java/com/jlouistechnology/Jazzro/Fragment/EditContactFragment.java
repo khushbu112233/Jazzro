@@ -479,7 +479,7 @@ public class EditContactFragment extends Fragment {
             Pref.setValue(context, "phone1_add", countryCode + phone1);
         }
         if (phone2.length() > 0) {
-            Pref.setValue(context, "2_add", countryCode + phone2);
+            Pref.setValue(context, "phone2_add", countryCode + phone2);
         }
         if (phone3.length() > 0) {
             Pref.setValue(context, "phone3_add", countryCode + phone3);
