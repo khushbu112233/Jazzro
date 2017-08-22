@@ -36,12 +36,13 @@ public class NewGroupListAdapter extends BaseAdapter {
     ArrayList<String> selectedGroup_label = new ArrayList<>();
     ArrayList<String> selectedGroup_color = new ArrayList<>();
     ArrayList<String> SelectedGroupList = new ArrayList<>();
+    ArrayList<String> selectedGroup_id = new ArrayList<>();
     String type;
     OnClickEditGroupListener onClickEditGroupListener;
     OnClickGetPosotionListener onClickGetPosotionListener;
     boolean isFirstTime = true;
 
-    public NewGroupListAdapter(Context context, ArrayList<GroupListDataDetailModel> datalist, ImageView mHeaderRight, String type, ArrayList<String> SelectedGroupList) {
+    public NewGroupListAdapter(Context context, ArrayList<GroupListDataDetailModel> datalist, ImageView mHeaderRight, String type, ArrayList<String> SelectedGroupList,ArrayList<String> selectedGroup_id) {
         this.context = context;
         mInflater = (LayoutInflater) context.
                 getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -49,6 +50,7 @@ public class NewGroupListAdapter extends BaseAdapter {
         this.datalist = datalist;
         this.mHeaderRight = mHeaderRight;
         this.SelectedGroupList = SelectedGroupList;
+        this.selectedGroup_id =selectedGroup_id;
     }
 
     @Override
@@ -84,7 +86,7 @@ public class NewGroupListAdapter extends BaseAdapter {
             for (int i = 0; i < SelectedGroupList.size(); i++) {
                 for (int j = 0; j < datalist.size(); j++) {
 
-                    if (SelectedGroupList.get(i).equalsIgnoreCase(datalist.get(j).label)) {
+                    if (selectedGroup_id.get(i).equalsIgnoreCase(datalist.get(j).id)) {
                         datalist.get(j).isClick = "true";
                     }
                 }

@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 
 import com.google.gson.Gson;
 import com.jlouistechnology.Jazzro.Adapter.EditGroupAdapter;
@@ -39,12 +40,12 @@ import java.util.ArrayList;
 public class FriendsListFragment extends BaseFragment {
     FragmentFriendsListBinding mBinding;
     private GroupListDataDetailModel groupData;
-    boolean isHavingData = true;
     private ArrayList<PeticularGroupContactModel> groupList = new ArrayList<>();
     private ArrayList<PeticularGroupContactModel> copyGroupList = new ArrayList<>();
     EditGroupAdapter adapter1;
     int pageNumber = 1;
-    int limit = 30;
+    int limit = 100;
+    boolean isHavingMoreData = true;
 
     @Nullable
     @Override
@@ -59,11 +60,15 @@ public class FriendsListFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
 
+        pageNumber = 1;
+        isHavingMoreData = true;
+        mBinding.edSearch.setText("");
         groupList.clear();
         copyGroupList.clear();
         Bundle args = getArguments();
         Gson gson = new Gson();
-        groupData = gson.fromJson((String) args.getSerializable("data"), GroupListDataDetailModel.class);
+        if (groupData == null)
+            groupData = gson.fromJson((String) args.getSerializable("data"), GroupListDataDetailModel.class);
 
         if (!TextUtils.isEmpty(Utils.groupColor)) {
             groupData.color = Utils.groupColor;
@@ -89,6 +94,28 @@ public class FriendsListFragment extends BaseFragment {
 
         setuptoolbar();
         setup();
+
+        mBinding.contactListview.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                if (mBinding.contactListview.getLastVisiblePosition() == (adapter1.getCount() - 1)) {
+
+                    int first = mBinding.contactListview.getFirstVisiblePosition();
+                    int count = mBinding.contactListview.getChildCount();
+
+                    if (scrollState == SCROLL_STATE_IDLE && first + count == adapter1.getCount() && isHavingMoreData) {
+                        pageNumber++;
+                        new ExecuteTasktWO(pageNumber, limit).execute();
+                    }
+                }
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
+            }
+        });
+
     }
 
     private void setup() {
@@ -253,16 +280,18 @@ public class FriendsListFragment extends BaseFragment {
                 JSONObject contectObject = json2.getJSONObject("contacts");
                 JSONArray jsonArray = contectObject.getJSONArray("data");
                 if (jsonArray.length() == 0) {
-                    isHavingData = false;
-                    mBinding.contactListview.setVisibility(View.GONE);
-                    mBinding.llNotFound.setVisibility(View.VISIBLE);
+                    isHavingMoreData = false;
+                    if (groupList.size() == 0) {
 
+                        mBinding.contactListview.setVisibility(View.GONE);
+                        mBinding.llNotFound.setVisibility(View.VISIBLE);
+                    }
                 } else {
-                    isHavingData = true;
+
+                    isHavingMoreData = true;
                     mBinding.contactListview.setVisibility(View.VISIBLE);
                     mBinding.llNotFound.setVisibility(View.GONE);
                 }
-
 
                 Gson gson = new Gson();
                 // String json = gson.toJson(facebookuserzeebaListModelArrayList);

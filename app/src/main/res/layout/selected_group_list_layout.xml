@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-<LinearLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    >
-    <com.jlouistechnology.Jazzro.Widget.TextView_Bold
-        android:id="@+id/txt_group_name"
+
+    <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:layout_marginLeft="10dp"
-        android:clickable="false"
-        android:textColor="@color/colorAccent"
-        android:textSize="@dimen/edittextsize2"
-        tools:text="Customers" />
-</LinearLayout>
+        android:layout_height="wrap_content">
+
+        <com.jlouistechnology.Jazzro.Widget.TextView_Bold
+            android:id="@+id/txt_group_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:clickable="false"
+            android:gravity="center_vertical"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/edittextsize2"
+            tools:text="customers" />
+    </LinearLayout>
 </layout>

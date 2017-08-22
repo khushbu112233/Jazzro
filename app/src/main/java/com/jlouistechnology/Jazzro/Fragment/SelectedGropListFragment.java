@@ -18,7 +18,6 @@ import com.google.gson.reflect.TypeToken;
 import com.jlouistechnology.Jazzro.Adapter.NewGroupListAdapter;
 import com.jlouistechnology.Jazzro.Helper.Constants;
 import com.jlouistechnology.Jazzro.Helper.Pref;
-import com.jlouistechnology.Jazzro.Helper.Utils;
 import com.jlouistechnology.Jazzro.Interface.OnClickGetPosotionListener;
 import com.jlouistechnology.Jazzro.Jazzro.DashboardNewActivity;
 import com.jlouistechnology.Jazzro.Model.GroupListDataDetailModel;
@@ -45,6 +44,7 @@ public class SelectedGropListFragment extends Fragment {
     Context context;
     View rootView;
     ArrayList<String> SelectedGroupList = new ArrayList<>();
+    ArrayList<String> selectedGroup_id = new ArrayList<>();
     ArrayList<GroupListDataDetailModel> griupList = new ArrayList<GroupListDataDetailModel>();
 
     @Override
@@ -55,7 +55,7 @@ public class SelectedGropListFragment extends Fragment {
         context = getActivity();
         preview();
 
-        grouplistTask();
+
         mBinding.listGroup.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -109,7 +109,7 @@ public class SelectedGropListFragment extends Fragment {
 
                         Pref.setValue(context, "selectedGroud", "");
                         Pref.setValue(context, "selectedGroup_label", "");
-                        NewGroupListAdapter newGroupListAdapter = new NewGroupListAdapter(context, griupList, ((DashboardNewActivity) context).mBinding.header.imgLeftBack, "selected", SelectedGroupList);
+                        NewGroupListAdapter newGroupListAdapter = new NewGroupListAdapter(context, griupList, ((DashboardNewActivity) context).mBinding.header.imgLeftBack, "selected", SelectedGroupList,selectedGroup_id);
                         newGroupListAdapter.onClickGetPosotionListener(onClickGetPosotionListener);
                         mBinding.listGroup.setAdapter(newGroupListAdapter);
                         // groupChoiceOPenDialog(griupList);
@@ -143,9 +143,13 @@ public class SelectedGropListFragment extends Fragment {
             }.getType();
             SelectedGroupList = gson.fromJson(json, type);
 
+            json = Pref.getValue(context, "SelectedGroupListID", "");
+            selectedGroup_id = gson.fromJson(json, type);
+
             for (int i = 0; i < SelectedGroupList.size(); i++) {
                 Log.e("selected", "****  " + SelectedGroupList.get(i));
             }
+            grouplistTask();
         }
     }
 
@@ -164,12 +168,14 @@ public class SelectedGropListFragment extends Fragment {
         ArrayList<String> selectedGroud = new ArrayList<>();
         ArrayList<String> selectedGroup_label = new ArrayList<>();
         ArrayList<String> selectedGroup_color = new ArrayList<>();
+        ArrayList<String> selectedGroup_id = new ArrayList<>();
 
         for (int i = 0; i < griupList.size(); i++) {
             if (griupList.get(i).isClick.equalsIgnoreCase("true")) {
                 selectedGroud.add(griupList.get(i).id);
-                selectedGroup_label.add(Utils.capitalize(griupList.get(i).label));
+                selectedGroup_label.add((griupList.get(i).label));
                 selectedGroup_color.add(griupList.get(i).color);
+                selectedGroup_id.add(griupList.get(i).id);
             }
         }
         Gson gson = new Gson();
@@ -181,10 +187,12 @@ public class SelectedGropListFragment extends Fragment {
         String json = gson.toJson(selectedGroud);
         String json1 = gson.toJson(selectedGroup_label);
         String json2 = gson.toJson(selectedGroup_color);
+        String json3 = gson.toJson(selectedGroup_id);
 
         Pref.setValue(context, "selectedGroud", json);
         Pref.setValue(context, "selectedGroup_label", json1);
         Pref.setValue(context, "selectedGroup_color", json2);
+        Pref.setValue(context, "SelectedGroupListID",json3);
 
                /* editor.putString("selectedGroud", json);
                 editor.putString("selectedGroup_label",json1);
@@ -194,6 +202,7 @@ public class SelectedGropListFragment extends Fragment {
         ((FragmentActivity) context).getSupportFragmentManager().popBackStack();
 
         Pref.setValue(context, "SelectedGroupList", "");
+
     }
 
     @Override

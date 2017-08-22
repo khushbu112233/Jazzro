@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -64,7 +65,7 @@ public class EditGroupFragment extends BaseFragment {
     EditGroupAdapter adapter1;
     boolean isHavingData = true;
     int pageNumber = 1;
-    int limit = 30;
+    int limit = 100;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -79,6 +80,9 @@ public class EditGroupFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
 
+        groupList.clear();
+        myList.clear();
+        isHavingData = true;
         Bundle args = getArguments();
         Gson gson = new Gson();
         groupData = gson.fromJson((String) args.getSerializable("data"), GroupListDataDetailModel.class);
@@ -242,6 +246,28 @@ public class EditGroupFragment extends BaseFragment {
 
         adapter1 = new EditGroupAdapter(getActivity(), groupList, EditGroupFragment.class);
         mBinding.contactListview.setAdapter(adapter1);
+
+        mBinding.contactListview.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                if (mBinding.contactListview.getLastVisiblePosition() == (adapter1.getCount() - 1)) {
+
+                    int first = mBinding.contactListview.getFirstVisiblePosition();
+                    int count = mBinding.contactListview.getChildCount();
+
+                    if (scrollState == SCROLL_STATE_IDLE && first + count == adapter1.getCount() && isHavingData) {
+                        pageNumber++;
+                        new ExecuteTasktWO(pageNumber, limit).execute();
+                    }
+                }
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
+            }
+        });
+
 
     }
 

@@ -26,7 +26,6 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Locale;
 
 /**
  * Created by aipxperts on 9/12/16.
@@ -64,26 +63,6 @@ public class ListContactAdapter extends BaseAdapter {
         this.onClickAddContactListener = onClickAddContactListener;
     }
 
-    public void filter(String charText) {
-        myList.size();
-        list = new ArrayList<>();
-        charText = charText.toLowerCase(Locale.getDefault());
-        myList.size();
-        copyList.size();
-        if (charText.length() == 0) {
-            list.addAll(myList);
-        } else {
-            /*for (PeticularGroupContactModel wp : myList) {
-
-            }*/
-            for (int i = 0; i < myList.size(); i++) {
-                if (myList.get(i).fname.toLowerCase(Locale.getDefault()).contains(charText) || (myList.get(i).lname.toLowerCase(Locale.getDefault()).contains(charText))) {
-                    list.add(myList.get(i));
-                }
-            }
-        }
-        notifyDataSetChanged();
-    }
 
 
     @Override

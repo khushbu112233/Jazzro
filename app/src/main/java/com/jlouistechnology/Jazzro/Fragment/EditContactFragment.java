@@ -59,7 +59,9 @@ public class EditContactFragment extends Fragment {
     ContactEmailAdapter contactEmailAdapter;
     ArrayList<String> selectedGroud = new ArrayList<>();
     ArrayList<String> selectedGroup_label = new ArrayList<>();
+    ArrayList<String> selectedGroup_id = new ArrayList<>();
     ArrayList<String> selectedGroup_color = new ArrayList<>();
+    boolean isFristTime = true;
 
 
     ArrayList<String> selectedGroud1 = new ArrayList<>();
@@ -124,19 +126,19 @@ public class EditContactFragment extends Fragment {
                             email_arraylist.remove(i);
                             if (email_arraylist.size() < 3) {
                                 mBinding.llAddEmail.setVisibility(View.VISIBLE);
-                                mBinding.view2.setVisibility(View.VISIBLE);
+                                mBinding.view2.setVisibility(View.GONE);
                             } else {
                                 mBinding.llAddEmail.setVisibility(View.GONE);
-                                mBinding.view2.setVisibility(View.VISIBLE);
+                                mBinding.view2.setVisibility(View.GONE);
                             }
                             break;
                         }
                         if (email_arraylist.size() < 3) {
                             mBinding.llAddEmail.setVisibility(View.VISIBLE);
-                            mBinding.view2.setVisibility(View.VISIBLE);
+                            mBinding.view2.setVisibility(View.GONE);
                         } else {
                             mBinding.llAddEmail.setVisibility(View.GONE);
-                            mBinding.view2.setVisibility(View.VISIBLE);
+                            mBinding.view2.setVisibility(View.GONE);
                         }
                     }
                 }
@@ -155,19 +157,19 @@ public class EditContactFragment extends Fragment {
                             phone_arraylist.remove(i);
                             if (phone_arraylist.size() < 3) {
                                 mBinding.llAddContact.setVisibility(View.VISIBLE);
-                                mBinding.view1.setVisibility(View.VISIBLE);
+                                mBinding.view1.setVisibility(View.GONE);
                             } else {
                                 mBinding.llAddContact.setVisibility(View.GONE);
-                                mBinding.view1.setVisibility(View.VISIBLE);
+                                mBinding.view1.setVisibility(View.GONE);
                             }
                             break;
                         }
                         if (phone_arraylist.size() < 3) {
                             mBinding.llAddContact.setVisibility(View.VISIBLE);
-                            mBinding.view1.setVisibility(View.VISIBLE);
+                            mBinding.view1.setVisibility(View.GONE);
                         } else {
                             mBinding.llAddContact.setVisibility(View.GONE);
-                            mBinding.view1.setVisibility(View.VISIBLE);
+                            mBinding.view1.setVisibility(View.GONE);
                         }
                     }
                 }
@@ -216,7 +218,7 @@ public class EditContactFragment extends Fragment {
 
         if (email_arraylist.size() == 3) {
             mBinding.llAddEmail.setVisibility(View.GONE);
-            mBinding.view2.setVisibility(View.VISIBLE);
+            mBinding.view2.setVisibility(View.GONE);
         }
         mBinding.llAddContact.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -245,14 +247,22 @@ public class EditContactFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 ArrayList<String> group_name = new ArrayList<String>();
-                for (int i = 0; i < ContactArrayList.get(0).getGroup_list().size(); i++) {
-                    if (!selectedGroup_label.contains(ContactArrayList.get(0).getGroup_list().get(i).getLabel())) {
-                        selectedGroup_label.add(ContactArrayList.get(0).getGroup_list().get(i).getLabel());
+                if (isFristTime) {
+                    for (int i = 0; i < ContactArrayList.get(0).getGroup_list().size(); i++) {
+                       // if (selectedGroup_id.contains(ContactArrayList.get(0).getGroup_list().get(i).getLabel())) {
+                        if(selectedGroup_id.get(i).equalsIgnoreCase(ContactArrayList.get(0).getGroup_list().get(i).getId1())){
+                            selectedGroup_label.add(ContactArrayList.get(0).getGroup_list().get(i).getLabel());
+                            selectedGroup_id.add(ContactArrayList.get(0).getGroup_list().get(i).getId1());
+                        }
                     }
+                    isFristTime = false;
                 }
                 Gson gson = new Gson();
                 String json = gson.toJson(selectedGroup_label);
                 Pref.setValue(context, "SelectedGroupList", json);
+
+                json = gson.toJson(selectedGroup_id);
+                Pref.setValue(context, "SelectedGroupListID", json);
 
                 SelectedGropListFragment fragment = new SelectedGropListFragment();
                 ((FragmentActivity) context).getSupportFragmentManager().beginTransaction().replace(R.id.frame_main_container, fragment).addToBackStack(null).commit();
@@ -438,6 +448,7 @@ public class EditContactFragment extends Fragment {
                     }
 */
                     Pref.setValue(context, "SelectedGroupList", "");
+                    Pref.setValue(context, "SelectedGroupListID", "");
 
                     callAddnewContactAPI(selectedGroud);
                 }
@@ -529,10 +540,10 @@ public class EditContactFragment extends Fragment {
         }
         if (email_arraylist.size() == 3) {
             mBinding.llAddEmail.setVisibility(View.GONE);
-            mBinding.view2.setVisibility(View.VISIBLE);
+            mBinding.view2.setVisibility(View.GONE);
         } else if (email_arraylist.size() < 3 && email_arraylist.size() > 0) {
             mBinding.llAddEmail.setVisibility(View.VISIBLE);
-            mBinding.view2.setVisibility(View.VISIBLE);
+            mBinding.view2.setVisibility(View.GONE);
         }
     }
 
@@ -546,10 +557,10 @@ public class EditContactFragment extends Fragment {
         }
         if (phone_arraylist.size() == 3) {
             mBinding.llAddContact.setVisibility(View.GONE);
-            mBinding.view1.setVisibility(View.VISIBLE);
+            mBinding.view1.setVisibility(View.GONE);
         } else if (phone_arraylist.size() < 3 && phone_arraylist.size() > 0) {
             mBinding.llAddContact.setVisibility(View.VISIBLE);
-            mBinding.view1.setVisibility(View.VISIBLE);
+            mBinding.view1.setVisibility(View.GONE);
         }
     }
 
@@ -582,6 +593,7 @@ public class EditContactFragment extends Fragment {
         ((DashboardNewActivity) context).Set_header_visibility();
 
         selectedGroup_label.clear();
+        selectedGroup_id.clear();
         preview();
         Utils.hideKeyboard(context);
         String group = "";
@@ -600,11 +612,13 @@ public class EditContactFragment extends Fragment {
             String json = Pref.getValue(context, "selectedGroud", "");
             String json1 = Pref.getValue(context, "selectedGroup_label", "");
             String json2 = Pref.getValue(context, "selectedGroup_color", "");
+            String json3 = Pref.getValue(context, "SelectedGroupListID", "");
             Type type = new TypeToken<ArrayList<String>>() {
             }.getType();
             selectedGroud = gson.fromJson(json, type);
             selectedGroup_label = gson.fromJson(json1, type);
             selectedGroup_color = gson.fromJson(json2, type);
+            selectedGroup_id = gson.fromJson(json3, type);
             // Log.e("Adaper###","^^^  "+ selectedGroud.size());
 
             for (int i = 0; i < selectedGroud.size(); i++) {
@@ -651,17 +665,17 @@ public class EditContactFragment extends Fragment {
             contactEmailAdapter.notifyDataSetChanged();
             if (email_arraylist.size() >= 3) {
                 mBinding.llAddEmail.setVisibility(View.GONE);
-                mBinding.view2.setVisibility(View.VISIBLE);
+                mBinding.view2.setVisibility(View.GONE);
             } else if (email_arraylist.size() < 3 && email_arraylist.size() > 0) {
                 mBinding.llAddEmail.setVisibility(View.VISIBLE);
-                mBinding.view2.setVisibility(View.VISIBLE);
+                mBinding.view2.setVisibility(View.GONE);
             }
             if (phone_arraylist.size() >= 3) {
                 mBinding.llAddContact.setVisibility(View.GONE);
-                mBinding.view1.setVisibility(View.VISIBLE);
+                mBinding.view1.setVisibility(View.GONE);
             } else if (phone_arraylist.size() < 3 && phone_arraylist.size() > 0) {
                 mBinding.llAddContact.setVisibility(View.VISIBLE);
-                mBinding.view1.setVisibility(View.VISIBLE);
+                mBinding.view1.setVisibility(View.GONE);
             }
         } else {
             // phone_arraylist.clear();
@@ -696,17 +710,17 @@ public class EditContactFragment extends Fragment {
                 contactEmailAdapter.notifyDataSetChanged();
                 if (email_arraylist.size() >= 3) {
                     mBinding.llAddEmail.setVisibility(View.GONE);
-                    mBinding.view2.setVisibility(View.VISIBLE);
+                    mBinding.view2.setVisibility(View.GONE);
                 } else if (email_arraylist.size() < 3 && email_arraylist.size() > 0) {
                     mBinding.llAddEmail.setVisibility(View.VISIBLE);
-                    mBinding.view2.setVisibility(View.VISIBLE);
+                    mBinding.view2.setVisibility(View.GONE);
                 }
                 if (phone_arraylist.size() >= 3) {
                     mBinding.llAddContact.setVisibility(View.GONE);
-                    mBinding.view1.setVisibility(View.VISIBLE);
+                    mBinding.view1.setVisibility(View.GONE);
                 } else if (phone_arraylist.size() < 3 && phone_arraylist.size() > 0) {
                     mBinding.llAddContact.setVisibility(View.VISIBLE);
-                    mBinding.view1.setVisibility(View.VISIBLE);
+                    mBinding.view1.setVisibility(View.GONE);
                 }
 /*
             ContactPhoneAdapter contactPhoneAdapter = new ContactPhoneAdapter(context,phone_arraylist);
@@ -725,6 +739,7 @@ public class EditContactFragment extends Fragment {
                 for (int i = 0; i < group_list.size(); i++) {
                     selectedGroud1.add(group_list.get(i).getColor1());
                     selectedGroup_label1.add(group_list.get(i).getLabel());
+                    selectedGroup_id.add(group_list.get(i).getId1());
                     if (i == 0) {
                         group = group_list.get(i).getLabel();
                     } else {

@@ -12,6 +12,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Toast;
 
@@ -45,7 +46,12 @@ public class GropListFragment extends Fragment {
     View rootView;
     Context context;
     ArrayList<String> SelectedGroupList = new ArrayList<>();
+    ArrayList<String> SelectedGroupListID = new ArrayList<>();
     ArrayList<GroupListDataDetailModel> griupList = new ArrayList<GroupListDataDetailModel>();
+    private boolean isHavingMoreData = true;
+    private int limit = 100;
+    private int offset = 0;
+    public NewGroupListAdapter newGroupListAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -89,28 +95,32 @@ public class GropListFragment extends Fragment {
 
 
     private void grouplistTask() {
-        griupList.clear();
+        //
+        WebService.showProgress(getActivity());
         if (WebService.isNetworkAvailable(context)) {
 
             ApiInterface apiService =
                     ApiClient.getClient().create(ApiInterface.class);
 
             Call<GroupListServiceModel> call = apiService.groupList(Pref.getValue(getActivity(), Constants.TOKEN, ""),
-                    "1", Pref.getValue(getActivity(), "total_group", ""), "label", "asc");
+                    "" + offset, "" + limit, "label", "asc");
             call.enqueue(new Callback<GroupListServiceModel>() {
                 @Override
                 public void onResponse(Call<GroupListServiceModel> call, retrofit2.Response<GroupListServiceModel> response) {
                     Log.e("VVV", "111" + new Gson().toJson(response.body()));
                     WebService.dismissProgress();
+                    if (response.body().data.data.size() == 0) {
+                        isHavingMoreData = false;
+                    } else {
+                        isHavingMoreData = true;
+                    }
                     if (response.body().status != 400) {
-                        griupList = (response.body().data.data);
+                        griupList.addAll(response.body().data.data);
                         if (griupList.size() > 0) {
                             mBinding.listGroup.setVisibility(View.VISIBLE);
                             mBinding.txtMsg.setVisibility(View.GONE);
-                            NewGroupListAdapter newGroupListAdapter = new NewGroupListAdapter(context, griupList, ((DashboardNewActivity) context).mBinding.header.imgLeftBack, "main", SelectedGroupList);
-                            mBinding.listGroup.setAdapter(newGroupListAdapter);
+                            newGroupListAdapter.notifyDataSetChanged();
                             // groupChoiceOPenDialog(griupList);
-                            newGroupListAdapter.onClickEdit(onClickEditGroupListener);
 
                         } else {
                             mBinding.listGroup.setVisibility(View.GONE);
@@ -138,12 +148,16 @@ public class GropListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        WebService.showProgress(getActivity());
-
+        griupList.clear();
+        isHavingMoreData = true;
+        offset = 1;
         ((DashboardNewActivity) context).Set_header_visibility();
         preview();
         Utils.hideKeyboard(context);
+        newGroupListAdapter = new NewGroupListAdapter(context, griupList, ((DashboardNewActivity) context).mBinding.header.imgLeftBack, "main", SelectedGroupList, SelectedGroupListID);
+        newGroupListAdapter.onClickEdit(onClickEditGroupListener);
 
+        mBinding.listGroup.setAdapter(newGroupListAdapter);
         new Handler().postDelayed(new Runnable() {
 
             /*
@@ -153,11 +167,34 @@ public class GropListFragment extends Fragment {
 
             @Override
             public void run() {
-                grouplistTask();
+
 
 
             }
         }, 1000);
+        grouplistTask();
+
+        mBinding.listGroup.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                if (mBinding.listGroup.getLastVisiblePosition() == (newGroupListAdapter.getCount() - 1)) {
+
+                    int first = mBinding.listGroup.getFirstVisiblePosition();
+                    int count = mBinding.listGroup.getChildCount();
+
+                    if (scrollState == SCROLL_STATE_IDLE && first + count == newGroupListAdapter.getCount() && isHavingMoreData) {
+                        offset++;
+                        grouplistTask();
+                    }
+                }
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
+            }
+        });
+
 
     }
 

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -19,37 +20,41 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_gravity="center"
-            android:layout_marginTop="-50dp"
-            />
+            android:layout_marginTop="-50dp" />
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scrollbars="vertical">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
                 <LinearLayout
                     android:id="@+id/ll_call1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
                     android:layout_marginTop="20dp"
                     android:gravity="center"
+                    android:orientation="horizontal"
                     android:visibility="gone"
                     android:weightSum="1">
+
                     <LinearLayout
                         android:layout_width="0dp"
-                        android:layout_weight="0.60"
                         android:layout_height="wrap_content"
+                        android:layout_weight="0.60"
                         android:orientation="vertical">
+
                         <com.jlouistechnology.Jazzro.Widget.TextView_Regular
                             android:id="@+id/txt_phone1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
                             android:gravity="center_vertical"
                             android:paddingLeft="10dp"
-                            android:layout_marginLeft="10dp"
                             android:textColor="@color/black_40"
                             android:textSize="@dimen/edittextsize"
                             tools:text="Mobile" />
@@ -59,20 +64,21 @@
                             android:id="@+id/txt_phone_number1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
                             android:layout_marginTop="4dp"
                             android:gravity="center_vertical"
                             android:paddingBottom="4dp"
-                            android:visibility="visible"
                             android:paddingLeft="10dp"
-                            android:layout_marginLeft="10dp"
                             android:textColor="@color/new_black"
                             android:textSize="@dimen/edittextsize2"
+                            android:visibility="visible"
                             tools:text="546565466" />
                     </LinearLayout>
+
                     <LinearLayout
                         android:layout_width="0dp"
-                        android:layout_weight="0.20"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.20">
 
                         <ImageView
                             android:id="@+id/ivmsg1"
@@ -80,13 +86,13 @@
                             android:layout_height="wrap_content"
                             android:layout_marginRight="10dp"
                             android:padding="5dp"
-                            android:src="@mipmap/msg"
-                            />
+                            android:src="@mipmap/msg" />
                     </LinearLayout>
+
                     <LinearLayout
                         android:layout_width="0dp"
-                        android:layout_weight="0.20"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.20">
 
                         <ImageView
                             android:id="@+id/ivcall1"
@@ -94,31 +100,33 @@
                             android:layout_height="wrap_content"
                             android:layout_marginRight="10dp"
                             android:padding="5dp"
-                            android:src="@mipmap/call"
-                            />
+                            android:src="@mipmap/call" />
                     </LinearLayout>
                 </LinearLayout>
+
                 <LinearLayout
                     android:id="@+id/ll_call2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
                     android:layout_marginTop="10dp"
                     android:gravity="center"
+                    android:orientation="horizontal"
                     android:visibility="gone"
                     android:weightSum="1">
+
                     <LinearLayout
                         android:layout_width="0dp"
-                        android:layout_weight="0.60"
                         android:layout_height="wrap_content"
+                        android:layout_weight="0.60"
                         android:orientation="vertical">
+
                         <com.jlouistechnology.Jazzro.Widget.TextView_Regular
                             android:id="@+id/txt_phone2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
                             android:gravity="center_vertical"
                             android:paddingLeft="10dp"
-                            android:layout_marginLeft="10dp"
                             android:textColor="@color/black_40"
                             android:textSize="@dimen/edittextsize"
                             tools:text="Home Phone" />
@@ -128,20 +136,21 @@
                             android:id="@+id/txt_phone_number2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
                             android:layout_marginTop="4dp"
                             android:gravity="center_vertical"
                             android:paddingBottom="4dp"
-                            android:visibility="visible"
                             android:paddingLeft="10dp"
-                            android:layout_marginLeft="10dp"
                             android:textColor="@color/new_black"
                             android:textSize="@dimen/edittextsize2"
+                            android:visibility="visible"
                             tools:text="546565466" />
                     </LinearLayout>
+
                     <LinearLayout
                         android:layout_width="0dp"
-                        android:layout_weight="0.20"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.20">
 
                         <ImageView
                             android:id="@+id/ivmsg2"
@@ -149,13 +158,13 @@
                             android:layout_height="wrap_content"
                             android:layout_marginRight="10dp"
                             android:padding="5dp"
-                            android:src="@mipmap/msg"
-                            />
+                            android:src="@mipmap/msg" />
                     </LinearLayout>
+
                     <LinearLayout
                         android:layout_width="0dp"
-                        android:layout_weight="0.20"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.20">
 
                         <ImageView
                             android:id="@+id/ivcall2"
@@ -163,31 +172,33 @@
                             android:layout_height="wrap_content"
                             android:layout_marginRight="10dp"
                             android:padding="5dp"
-                            android:src="@mipmap/call"
-                            />
+                            android:src="@mipmap/call" />
                     </LinearLayout>
                 </LinearLayout>
+
                 <LinearLayout
                     android:id="@+id/ll_call3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
                     android:layout_marginTop="10dp"
                     android:gravity="center"
+                    android:orientation="horizontal"
                     android:visibility="gone"
                     android:weightSum="1">
+
                     <LinearLayout
                         android:layout_width="0dp"
-                        android:layout_weight="0.60"
                         android:layout_height="wrap_content"
+                        android:layout_weight="0.60"
                         android:orientation="vertical">
+
                         <com.jlouistechnology.Jazzro.Widget.TextView_Regular
                             android:id="@+id/txt_phone3"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
                             android:gravity="center_vertical"
                             android:paddingLeft="10dp"
-                            android:layout_marginLeft="10dp"
                             android:textColor="@color/black_40"
                             android:textSize="@dimen/edittextsize"
                             tools:text="Work Phone" />
@@ -197,20 +208,21 @@
                             android:id="@+id/txt_phone_number3"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
                             android:layout_marginTop="4dp"
                             android:gravity="center_vertical"
                             android:paddingBottom="4dp"
-                            android:visibility="visible"
                             android:paddingLeft="10dp"
-                            android:layout_marginLeft="10dp"
                             android:textColor="@color/new_black"
                             android:textSize="@dimen/edittextsize2"
+                            android:visibility="visible"
                             tools:text="546565466" />
                     </LinearLayout>
+
                     <LinearLayout
                         android:layout_width="0dp"
-                        android:layout_weight="0.20"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.20">
 
                         <ImageView
                             android:id="@+id/ivmsg3"
@@ -218,13 +230,13 @@
                             android:layout_height="wrap_content"
                             android:layout_marginRight="10dp"
                             android:padding="5dp"
-                            android:src="@mipmap/msg"
-                            />
+                            android:src="@mipmap/msg" />
                     </LinearLayout>
+
                     <LinearLayout
                         android:layout_width="0dp"
-                        android:layout_weight="0.20"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.20">
 
                         <ImageView
                             android:id="@+id/ivcall3"
@@ -232,31 +244,33 @@
                             android:layout_height="wrap_content"
                             android:layout_marginRight="10dp"
                             android:padding="5dp"
-                            android:src="@mipmap/call"
-                            />
+                            android:src="@mipmap/call" />
                     </LinearLayout>
                 </LinearLayout>
+
                 <LinearLayout
                     android:id="@+id/ll_msg1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
                     android:layout_marginTop="30dp"
                     android:gravity="center"
+                    android:orientation="horizontal"
                     android:visibility="gone"
                     android:weightSum="1">
+
                     <LinearLayout
                         android:layout_width="0dp"
-                        android:layout_weight="0.60"
                         android:layout_height="wrap_content"
+                        android:layout_weight="0.60"
                         android:orientation="vertical">
+
                         <com.jlouistechnology.Jazzro.Widget.TextView_Regular
                             android:id="@+id/txt_msg1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
                             android:gravity="center_vertical"
                             android:paddingLeft="10dp"
-                            android:layout_marginLeft="10dp"
                             android:textColor="@color/black_40"
                             android:textSize="@dimen/edittextsize"
                             tools:text="Primary Email" />
@@ -266,34 +280,35 @@
                             android:id="@+id/txt_email_value1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
                             android:layout_marginTop="4dp"
                             android:gravity="center_vertical"
                             android:paddingBottom="4dp"
-                            android:visibility="visible"
                             android:paddingLeft="10dp"
-                            android:layout_marginLeft="10dp"
                             android:textColor="@color/new_black"
                             android:textSize="@dimen/edittextsize2"
+                            android:visibility="visible"
                             tools:text="aa@gmail.com" />
                     </LinearLayout>
+
                     <LinearLayout
                         android:layout_width="0dp"
+                        android:layout_height="wrap_content"
                         android:layout_weight="0.20"
-                        android:visibility="invisible"
-                        android:layout_height="wrap_content">
+                        android:visibility="invisible">
 
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="10dp"
                             android:padding="5dp"
-                            android:src="@mipmap/msg"
-                            />
+                            android:src="@mipmap/msg" />
                     </LinearLayout>
+
                     <LinearLayout
                         android:layout_width="0dp"
-                        android:layout_weight="0.20"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.20">
 
                         <ImageView
                             android:id="@+id/ivemail1"
@@ -301,31 +316,33 @@
                             android:layout_height="wrap_content"
                             android:layout_marginRight="10dp"
                             android:padding="5dp"
-                            android:src="@mipmap/email"
-                            />
+                            android:src="@mipmap/email" />
                     </LinearLayout>
                 </LinearLayout>
+
                 <LinearLayout
                     android:id="@+id/ll_msg2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
                     android:layout_marginTop="10dp"
                     android:gravity="center"
+                    android:orientation="horizontal"
                     android:visibility="gone"
                     android:weightSum="1">
+
                     <LinearLayout
                         android:layout_width="0dp"
-                        android:layout_weight="0.60"
                         android:layout_height="wrap_content"
+                        android:layout_weight="0.60"
                         android:orientation="vertical">
+
                         <com.jlouistechnology.Jazzro.Widget.TextView_Regular
                             android:id="@+id/txt_msg2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
                             android:gravity="center_vertical"
                             android:paddingLeft="10dp"
-                            android:layout_marginLeft="10dp"
                             android:textColor="@color/black_40"
                             android:textSize="@dimen/edittextsize"
                             tools:text="Secondary Email" />
@@ -335,34 +352,35 @@
                             android:id="@+id/txt_email_value2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
                             android:layout_marginTop="4dp"
                             android:gravity="center_vertical"
                             android:paddingBottom="4dp"
-                            android:visibility="visible"
                             android:paddingLeft="10dp"
-                            android:layout_marginLeft="10dp"
                             android:textColor="@color/new_black"
                             android:textSize="@dimen/edittextsize2"
+                            android:visibility="visible"
                             tools:text="aa@gmail.com" />
                     </LinearLayout>
+
                     <LinearLayout
                         android:layout_width="0dp"
+                        android:layout_height="wrap_content"
                         android:layout_weight="0.20"
-                        android:visibility="invisible"
-                        android:layout_height="wrap_content">
+                        android:visibility="invisible">
 
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="10dp"
                             android:padding="5dp"
-                            android:src="@mipmap/msg"
-                            />
+                            android:src="@mipmap/msg" />
                     </LinearLayout>
+
                     <LinearLayout
                         android:layout_width="0dp"
-                        android:layout_weight="0.20"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.20">
 
                         <ImageView
                             android:id="@+id/ivemail2"
@@ -370,31 +388,33 @@
                             android:layout_height="wrap_content"
                             android:layout_marginRight="10dp"
                             android:padding="5dp"
-                            android:src="@mipmap/email"
-                            />
+                            android:src="@mipmap/email" />
                     </LinearLayout>
                 </LinearLayout>
+
                 <LinearLayout
                     android:id="@+id/ll_msg3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
                     android:layout_marginTop="10dp"
                     android:gravity="center"
+                    android:orientation="horizontal"
                     android:visibility="gone"
                     android:weightSum="1">
+
                     <LinearLayout
                         android:layout_width="0dp"
-                        android:layout_weight="0.60"
                         android:layout_height="wrap_content"
+                        android:layout_weight="0.60"
                         android:orientation="vertical">
+
                         <com.jlouistechnology.Jazzro.Widget.TextView_Regular
                             android:id="@+id/txt_msg3"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
                             android:gravity="center_vertical"
                             android:paddingLeft="10dp"
-                            android:layout_marginLeft="10dp"
                             android:textColor="@color/black_40"
                             android:textSize="@dimen/edittextsize"
                             tools:text="Tertiary Email" />
@@ -404,34 +424,35 @@
                             android:id="@+id/txt_email_value3"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
                             android:layout_marginTop="4dp"
                             android:gravity="center_vertical"
                             android:paddingBottom="4dp"
-                            android:visibility="visible"
                             android:paddingLeft="10dp"
-                            android:layout_marginLeft="10dp"
                             android:textColor="@color/new_black"
                             android:textSize="@dimen/edittextsize2"
+                            android:visibility="visible"
                             tools:text="aa@gmail.com" />
                     </LinearLayout>
+
                     <LinearLayout
                         android:layout_width="0dp"
+                        android:layout_height="wrap_content"
                         android:layout_weight="0.20"
-                        android:visibility="invisible"
-                        android:layout_height="wrap_content">
+                        android:visibility="invisible">
 
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="10dp"
                             android:padding="5dp"
-                            android:src="@mipmap/msg"
-                            />
+                            android:src="@mipmap/msg" />
                     </LinearLayout>
+
                     <LinearLayout
                         android:layout_width="0dp"
-                        android:layout_weight="0.20"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.20">
 
                         <ImageView
                             android:id="@+id/ivemail3"
@@ -439,42 +460,41 @@
                             android:layout_height="wrap_content"
                             android:layout_marginRight="10dp"
                             android:padding="5dp"
-                            android:src="@mipmap/email"
-                            />
+                            android:src="@mipmap/email" />
                     </LinearLayout>
                 </LinearLayout>
+
                 <LinearLayout
                     android:id="@+id/ll_groups"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
                     android:layout_marginTop="30dp"
-                    android:orientation="vertical">
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
                     <com.jlouistechnology.Jazzro.Widget.TextView_Regular
                         android:id="@+id/txt_group"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
-                        android:paddingLeft="10dp"
-                        android:paddingTop="5dp"
-                        android:paddingBottom="5dp"
-                        android:layout_marginLeft="10dp"
+                        android:paddingLeft="20dp"
                         android:textColor="@color/black_40"
                         android:textSize="@dimen/edittextsize"
                         tools:text="Groups" />
-                    <ListView
+
+                    <com.jlouistechnology.Jazzro.Helper.MyListView
                         android:id="@+id/selected_group"
                         android:layout_width="match_parent"
                         android:layout_height="70dp"
-                        android:gravity="center_vertical"
                         android:layout_marginLeft="10dp"
-                        android:nestedScrollingEnabled="true"
-                        android:dividerHeight="0dp"
                         android:clickable="false"
                         android:divider="@null"
-                        >
+                        android:dividerHeight="0dp"
+                        android:gravity="center_vertical"
+                        android:nestedScrollingEnabled="true"
+                        android:paddingLeft="20dp">
 
-                    </ListView>
+                    </com.jlouistechnology.Jazzro.Helper.MyListView>
 
                 </LinearLayout>
             </LinearLayout>
