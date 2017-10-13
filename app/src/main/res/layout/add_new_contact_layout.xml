@@ -239,7 +239,7 @@
                                 android:textColor="@color/black_40"
                                 android:textSize="@dimen/edittextsize2"
                                 />
-                            <ListView
+                            <com.jlouistechnology.Jazzro.Helper.MyListView
                                 android:id="@+id/selected_group"
                                 android:layout_width="0dp"
                                 android:layout_weight="0.85"
@@ -252,7 +252,7 @@
                                 android:divider="@null"
                                 >
 
-                            </ListView>
+                            </com.jlouistechnology.Jazzro.Helper.MyListView>
 
                             <LinearLayout
                                 android:id="@+id/ll_img"

@@ -5,6 +5,9 @@
     <string name="next">NEXT</string>
     <string name="skip">SKIP</string>
     <string name="start">SUBMIT</string>
+    <string name="txt_network_error">Internet is not available.</string>
+    <string name="txt_title">Jazzro</string>
+    <string name="txt_ok">Ok</string>
 
     <string name="slide_1_title">WE\'RE MAKING IT EASIER THAN EVER TO MANAGE YOUR CONTACTS ON THE GO</string>
     <string name="slide_1_desc">The easiest way to order food from your favourite restaurant!</string>

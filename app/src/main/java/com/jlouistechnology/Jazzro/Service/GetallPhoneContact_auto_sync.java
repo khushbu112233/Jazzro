@@ -15,13 +15,9 @@ import android.util.Log;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.jlouistechnology.Jazzro.Fragment.SyncNewContactProcessFragment;
+import com.jlouistechnology.Jazzro.Helper.CheckInternet;
 import com.jlouistechnology.Jazzro.Helper.Constants;
 import com.jlouistechnology.Jazzro.Helper.Pref;
-import com.jlouistechnology.Jazzro.Helper.Utils;
-import com.jlouistechnology.Jazzro.Jazzro.DashboardActivity;
-import com.jlouistechnology.Jazzro.Jazzro.DashboardNewActivity;
-import com.jlouistechnology.Jazzro.Jazzro.LoginInNewScreenActivity;
 import com.jlouistechnology.Jazzro.Model.PhoneContact;
 import com.jlouistechnology.Jazzro.R;
 import com.jlouistechnology.Jazzro.Webservice.WebService;
@@ -85,10 +81,13 @@ public class GetallPhoneContact_auto_sync extends Service {
                                             //if(cursor.getString(nameIndex).equalsIgnoreCase(" ")) {
 
                                             String display_name = cursor.getString(nameIndex);
+                                            Log.e("my_display",display_name);
                                             if (display_name.contains(" ")) {
                                                 String[] str = display_name.split(" ");
                                                 name = str[0];
                                                 lname = str[1];
+
+
 
 
                                                 if (name.length() > 0 && lname.length() > 0) {
@@ -206,8 +205,7 @@ public class GetallPhoneContact_auto_sync extends Service {
                                 }
 
                                 if (contacArray.length() > 0) {
-
-                                    if (Utils.checkInternetConnection(GetallPhoneContact_auto_sync.this)) {
+                                    if(CheckInternet.isInternetConnected(GetallPhoneContact_auto_sync.this)) {
 
                                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
                                             new ExecuteContactTask(contacArray, GetallPhoneContact_auto_sync.this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);

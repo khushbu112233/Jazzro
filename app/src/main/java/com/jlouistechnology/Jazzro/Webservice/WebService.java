@@ -43,11 +43,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.security.KeyStore;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import cz.msebera.android.httpclient.NameValuePair;
-import cz.msebera.android.httpclient.client.methods.HttpPost;
 import cz.msebera.android.httpclient.entity.ByteArrayEntity;
 
 /**
@@ -60,7 +58,7 @@ public class WebService {
     public static String BASE_URL = "https://dev.jazzro.com/api/v1/";
 
     //live url link
-    //public static  String BASE_URL="https://dashboard.jazzro.com/api/v1/";
+//    public static  String BASE_URL="https://dashboard.jazzro.com/api/v1/";
 
     public static String USER = BASE_URL + "user";
     public static String CONTACT = BASE_URL + "contact";
@@ -70,6 +68,8 @@ public class WebService {
     public static String DELETEGROUP = BASE_URL + "group/delete";
     public static String Login = BASE_URL + "token";
     public static String CONTACT_DELETE = BASE_URL + "contact/delete";
+    public static String ADD_CONTACTS_TO_GROUP = BASE_URL+"add-contacts-to-group";
+    public static String DELETE_CONTACT_FROM_GROUP = BASE_URL + "delete-contacts-from-group";
     public static TextView mProgressTitleTv;
 
 
@@ -183,7 +183,7 @@ public class WebService {
 
     }
 
-    public static String PostData2(ArrayList<String> group_ids,String value1, String value2,String value3,String value4,String value5,String value6,String value7,String value8,String value9,String value10, String url, String value) {
+    public static String PostData2(ArrayList<String> group_ids,String image,String value1, String value2,String value3,String value4,String value5,String value6,String value7,String value8,String value9,String value10, String url, String value) {
 
         String s="";
         try
@@ -198,7 +198,7 @@ public class WebService {
             {
                 jsonObject.put("id", value1);
             }
-          //  for(int i=0;i<group_ids.size();i++)
+            //  for(int i=0;i<group_ids.size();i++)
             /*{
                 String first = group_ids.get(i);
                 first = first.replaceAll("\"","");
@@ -210,7 +210,11 @@ public class WebService {
 
                 jsonObject.put("groups", group_ids);
 
+            }else
+            {
+                jsonObject.put("groups","[]");
             }
+            jsonObject.put("image",image);
             jsonObject.put("fname", value2);
             jsonObject.put("lname", value3);
             jsonObject.put("company_name", value4);
@@ -224,14 +228,18 @@ public class WebService {
             //  list.add(new cz.msebera.android.httpclient.message.BasicNameValuePair(valuse[i],values[i]));
 
             //  }
-            String str = jsonObject.toString().replace("\"[","[");
-            Log.e("jsonObject", "" + str.replace("]\"","]"));
+            String str = jsonObject.toString().replace("\"[","[").replace("]\"","]");
 
+          /*  JSONArray jsonArray = new JSONArray();
+            jsonArray.put(jsonObject);
+            Log.e("jsonObject", "" + jsonArray);*/
+
+            Log.e("jsonObject", "" + str);
             httpPost.setHeader("Content-Type", "application/json");
 
             // String json = jsonObject.toString();
-            //   httpPost.setEntity(new StringEntity(json, "UTF-8"));
-            httpPost.setEntity(new ByteArrayEntity(str.replace("]\"","]").getBytes("UTF8")));
+              //httpPost.setEntity(new StringEntity(jsonArray.toString().replace("\"[","[").replace("]\"","]"), "UTF-8"));
+            httpPost.setEntity(new ByteArrayEntity(str.getBytes("UTF8")));
 
             httpPost.addHeader("Authorization", value);
 
@@ -291,7 +299,49 @@ public class WebService {
 
     }
 
+    public static String Add_contacts_toGroup(ArrayList<String> value, String value1, String url,String val) {
+        String s = "";
+        try {
+            cz.msebera.android.httpclient.client.HttpClient httpClient = new cz.msebera.android.httpclient.impl.client.DefaultHttpClient();
+            cz.msebera.android.httpclient.client.methods.HttpPost httpPost = new cz.msebera.android.httpclient.client.methods.HttpPost(url);
 
+            List<NameValuePair> list = new ArrayList<NameValuePair>();
+            JSONObject jsonObject = new JSONObject();
+            // for (int i =values.length;i>0;i--) {
+
+            jsonObject.put("contact_ids", value);
+            jsonObject.put("group_id","["+ value1+"]");
+            //     list.add(new cz.msebera.android.httpclient.message.BasicNameValuePair(values[i], URLEncoder.encode(valuse[i], "UTF-8")));
+            //  list.add(new cz.msebera.android.httpclient.message.BasicNameValuePair(valuse[i],values[i]));
+
+            //  }
+            Log.e("jsonObject", "" + jsonObject);
+            String str = jsonObject.toString().replace("\"[","[").replace("]\"","]");
+            Log.e("jsonObject", "" + str.replace("]\"","]"));
+
+
+            httpPost.setHeader("Content-Type", "application/json");
+            httpPost.addHeader("Authorization", val);
+
+            // String json = jsonObject.toString();
+            //   httpPost.setEntity(new StringEntity(json, "UTF-8"));
+            httpPost.setEntity(new ByteArrayEntity(str.getBytes("UTF8")));
+
+
+            // httpPost.addHeader("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
+            //   httpPost.addHeader("Authorization","Bearer "+ value);
+            // httpPost.setEntity(new cz.msebera.android.httpclient.client.entity.UrlEncodedFormEntity(list));
+            cz.msebera.android.httpclient.HttpResponse httpResponse = httpClient.execute(httpPost);
+
+            cz.msebera.android.httpclient.HttpEntity httpEntity = httpResponse.getEntity();
+            s = readResponse(httpResponse);
+            Log.e("token", "" + s);
+        } catch (Exception exception) {
+        }
+        return s;
+
+
+    }
     public static String forgotpassword(String email, String url, String token) {
         String s = "";
         try {
@@ -369,7 +419,7 @@ public class WebService {
             //  get.setHeader(new BasicHeader("Content-Type", "application/json"));
             //get.setHeader(new BasicHeader("Authorization",value));
             //  new BasicHeader("Authorization: Token","2hwhdh443hdhfh43j3jdej3j3")
-           // Log.e("get ", "" + get.getAllHeaders().length);
+            // Log.e("get ", "" + get.getAllHeaders().length);
             HttpResponse httpResponse = httpclient.execute(get);
 
 
@@ -584,7 +634,49 @@ public class WebService {
 
 
     }
+    public static String deleteGroupContact(ArrayList<String> value, String value1, String url,String val) {
+        String s = "";
+        try {
+            cz.msebera.android.httpclient.client.HttpClient httpClient = new cz.msebera.android.httpclient.impl.client.DefaultHttpClient();
+            cz.msebera.android.httpclient.client.methods.HttpPost httpPost = new cz.msebera.android.httpclient.client.methods.HttpPost(url);
 
+            List<NameValuePair> list = new ArrayList<NameValuePair>();
+            JSONObject jsonObject = new JSONObject();
+            // for (int i =values.length;i>0;i--) {
+
+            jsonObject.put("contact_ids", value);
+            jsonObject.put("group_id","["+ value1+"]");
+            //     list.add(new cz.msebera.android.httpclient.message.BasicNameValuePair(values[i], URLEncoder.encode(valuse[i], "UTF-8")));
+            //  list.add(new cz.msebera.android.httpclient.message.BasicNameValuePair(valuse[i],values[i]));
+
+            //  }
+            Log.e("jsonObject", "" + jsonObject);
+            String str = jsonObject.toString().replace("\"[","[").replace("]\"","]");
+            Log.e("jsonObject", "" + str.replace("]\"","]"));
+
+
+            httpPost.setHeader("Content-Type", "application/json");
+            httpPost.addHeader("Authorization", val);
+
+            // String json = jsonObject.toString();
+            //   httpPost.setEntity(new StringEntity(json, "UTF-8"));
+            httpPost.setEntity(new ByteArrayEntity(str.getBytes("UTF8")));
+
+
+            // httpPost.addHeader("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
+            //   httpPost.addHeader("Authorization","Bearer "+ value);
+            // httpPost.setEntity(new cz.msebera.android.httpclient.client.entity.UrlEncodedFormEntity(list));
+            cz.msebera.android.httpclient.HttpResponse httpResponse = httpClient.execute(httpPost);
+
+            cz.msebera.android.httpclient.HttpEntity httpEntity = httpResponse.getEntity();
+            s = readResponse(httpResponse);
+            Log.e("token", "" + s);
+        } catch (Exception exception) {
+        }
+        return s;
+
+
+    }
     public static String updateFGroup(String url, String id, String label, String color, String token) {
         String s = "";
         try {

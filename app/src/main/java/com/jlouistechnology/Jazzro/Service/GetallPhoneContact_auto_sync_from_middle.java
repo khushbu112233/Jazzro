@@ -15,11 +15,9 @@ import android.util.Log;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.jlouistechnology.Jazzro.Helper.CheckInternet;
 import com.jlouistechnology.Jazzro.Helper.Constants;
 import com.jlouistechnology.Jazzro.Helper.Pref;
-import com.jlouistechnology.Jazzro.Helper.Utils;
-import com.jlouistechnology.Jazzro.Jazzro.DashboardActivity;
-import com.jlouistechnology.Jazzro.Jazzro.DashboardNewActivity;
 import com.jlouistechnology.Jazzro.Model.PhoneContact;
 import com.jlouistechnology.Jazzro.R;
 import com.jlouistechnology.Jazzro.Webservice.WebService;
@@ -76,6 +74,7 @@ public class GetallPhoneContact_auto_sync_from_middle extends Service {
                     if (cursor != null) {
                         try {
                             int nameIndex = cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME);
+
                             int idIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.CONTACT_ID);
                             int numberIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
                             // int emailIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.ADDRESS);
@@ -84,6 +83,7 @@ public class GetallPhoneContact_auto_sync_from_middle extends Service {
                                 //if(cursor.getString(nameIndex).equalsIgnoreCase(" ")) {
 
                                 String display_name = cursor.getString(nameIndex);
+                                Log.e("my_display",cursor.getString(nameIndex)+"");
                                 if (display_name.contains(" ")) {
                                     String[] str = display_name.split(" ");
                                     name = str[0];
@@ -148,7 +148,6 @@ public class GetallPhoneContact_auto_sync_from_middle extends Service {
 
                         }
                     });
-
                     for (int i = 0; i < phoneContactArrayList.size(); i++) {
                         if (i == 0) {
                             PhoneContact[] phoneContact = new PhoneContact[1];
@@ -173,7 +172,7 @@ public class GetallPhoneContact_auto_sync_from_middle extends Service {
                             }
                         }
                     }
-                    Log.e("last_sync_contact_id", "------------middle" + Pref.getValue(getApplicationContext(), "last_sync_contact_id", 0));
+                     Log.e("last_sync_contact_id", "------------middle" + Pref.getValue(getApplicationContext(), "last_sync_contact_id", 0));
 
                     Pref.setValue(getApplicationContext(), "total_rec", phoneContactArrayList_remove_duplicate.size());
                     ArrayList<PhoneContact> phoneContactArrayList_new = new ArrayList<>();
@@ -220,7 +219,7 @@ public class GetallPhoneContact_auto_sync_from_middle extends Service {
 
                         if (contacArray.length() > 0) {
 
-                            if (Utils.checkInternetConnection(GetallPhoneContact_auto_sync_from_middle.this)) {
+                            if(CheckInternet.isInternetConnected(GetallPhoneContact_auto_sync_from_middle.this)) {
 
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
                                     new ExecuteContactTask(contacArray, GetallPhoneContact_auto_sync_from_middle.this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);

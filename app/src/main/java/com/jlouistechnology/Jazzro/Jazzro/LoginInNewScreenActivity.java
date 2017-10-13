@@ -10,11 +10,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.jlouistechnology.Jazzro.Helper.CheckInternet;
+import com.jlouistechnology.Jazzro.Helper.ConnectionDetector;
 import com.jlouistechnology.Jazzro.Helper.Constants;
 import com.jlouistechnology.Jazzro.Helper.FieldsValidator;
-import com.jlouistechnology.Jazzro.Helper.FontCustom;
 import com.jlouistechnology.Jazzro.Helper.Pref;
-import com.jlouistechnology.Jazzro.Helper.Utils;
 import com.jlouistechnology.Jazzro.R;
 import com.jlouistechnology.Jazzro.Webservice.WebService;
 import com.jlouistechnology.Jazzro.databinding.LoginNewLayoutBinding;
@@ -33,6 +33,7 @@ public class LoginInNewScreenActivity extends Activity {
     FieldsValidator mValidator;
     String token;
     LoginNewLayoutBinding mBinding;
+    ConnectionDetector connectionDetector;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,9 +83,9 @@ public class LoginInNewScreenActivity extends Activity {
     public void Preview() {
          /*edt_email.setText("lgrimsley@gmail.com");
         edt_password.setText("bigbang1");*/
-        mBinding.edtEmail.setText("hadelman@jlouis.com");
+       /* mBinding.edtEmail.setText("hadelman@jlouis.com");
         mBinding.edtPassword.setText("aipx@1234");
-        //   mBinding.edtEmail.setTypeface(FontCustom.setFontOpenSansLight(LoginInNewScreenActivity.this));
+      */  //   mBinding.edtEmail.setTypeface(FontCustom.setFontOpenSansLight(LoginInNewScreenActivity.this));
         Typeface font = Typeface.createFromAsset(getAssets(), "fonts/SF_Light.otf");
         mBinding.txt1.setTypeface(font);
 
@@ -93,6 +94,7 @@ public class LoginInNewScreenActivity extends Activity {
     public void init() {
         constants = new Constants(LoginInNewScreenActivity.this);
         mValidator = new FieldsValidator(LoginInNewScreenActivity.this);
+        connectionDetector = new ConnectionDetector(LoginInNewScreenActivity.this);
 
     }
 
@@ -130,10 +132,11 @@ public class LoginInNewScreenActivity extends Activity {
         value = mBinding.edtEmail.getText().toString();
         value1 = mBinding.edtPassword.getText().toString();
 
-        if (Utils.checkInternetConnection(LoginInNewScreenActivity.this)) {
+        if(CheckInternet.isInternetConnected(LoginInNewScreenActivity.this)) {
             new ExecuteTask_Login().execute();
         } else {
-            Toast.makeText(LoginInNewScreenActivity.this, getResources().getString(R.string.NO_INTERNET_CONNECTION), Toast.LENGTH_SHORT).show();
+            connectionDetector.showToast(LoginInNewScreenActivity.this, R.string.NO_INTERNET_CONNECTION);
+
         }
 
     }

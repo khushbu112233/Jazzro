@@ -5,15 +5,24 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AbsListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.jlouistechnology.Jazzro.Adapter.ListContactAdapter;
+import com.jlouistechnology.Jazzro.Helper.CheckInternet;
+import com.jlouistechnology.Jazzro.Helper.ConnectionDetector;
 import com.jlouistechnology.Jazzro.Helper.Constants;
 import com.jlouistechnology.Jazzro.Helper.Pref;
 import com.jlouistechnology.Jazzro.Helper.Utils;
@@ -29,6 +38,7 @@ import com.jlouistechnology.Jazzro.databinding.FragmentAddFriendsBinding;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 
@@ -43,10 +53,18 @@ public class AddFriendsFragment extends BaseFragment {
     public ArrayList<Contact> mainConatctArrayList = new ArrayList<>();
     public ArrayList<Contact> copyContactlist = new ArrayList<>();
     public ListContactAdapter adapter;
-    public int pageNumber = 1;
-    private int limitpage = 30;
+    public int pageNumber = 0;
+    private int limitpage = 100;
     public String groupName;
     public String groupColor;
+    public String groupId;
+    boolean isSearch = false;
+    ArrayList<String> id_list = new ArrayList<String>();
+    ArrayList<String> GroupSelectedList = new ArrayList<>();
+    ConnectionDetector connectionDetector;
+
+
+    String[] id_new;
 
     @Nullable
     @Override
@@ -60,9 +78,16 @@ public class AddFriendsFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
+        connectionDetector = new ConnectionDetector(getActivity());
         Bundle args = getArguments();
+        Gson gson = new Gson();
         groupName = args.getString("name");
         groupColor = args.getString("color");
+        groupId = args.getString("id");
+        String json = Pref.getValue(mContext, "selectedGroupContact", "");
+        Type type = new TypeToken<ArrayList<String>>() {
+        }.getType();
+        GroupSelectedList = gson.fromJson(json, type);
 
         ArrayList<ColorModel> colorList = new ArrayList<>();
         colorList = Utils.colorList();
@@ -71,7 +96,9 @@ public class AddFriendsFragment extends BaseFragment {
         for (int i = 0; i < finalColorList.size(); i++) {
 
             if (groupColor.equalsIgnoreCase(finalColorList.get(i).name)) {
+                Pref.setValue(mContext, "add_selected_group_color", finalColorList.get(i).background);
                 ((DashboardNewActivity) getActivity()).setHeaderColor((Color.parseColor(finalColorList.get(i).background)));
+
                 changeStatusbarColor((Color.parseColor(finalColorList.get(i).background)));
             }
         }
@@ -79,8 +106,13 @@ public class AddFriendsFragment extends BaseFragment {
         setup();
         setupSearch();
         setuptoolbar();
+        if(CheckInternet.isInternetConnected(mContext)) {
 
-        new ExecuteTasktWO((pageNumber), limitpage).execute();
+            new ExecuteTasktWO((pageNumber), limitpage).execute();
+        }else
+        {
+            connectionDetector.showToast(getActivity(), R.string.NO_INTERNET_CONNECTION);
+        }
     }
 
     private void setup() {
@@ -105,10 +137,19 @@ public class AddFriendsFragment extends BaseFragment {
 
                     if (scrollState == SCROLL_STATE_IDLE && first == adapter.getCount() && isHavingData) {
                         pageNumber++;
-                        new ExecuteTasktWO((pageNumber), limitpage).execute();
+                        if (!isSearch) {
+                            if(CheckInternet.isInternetConnected(mContext)) {
+
+                                new ExecuteTasktWO((pageNumber), limitpage).execute();
+                            }else
+                            {
+                                connectionDetector.showToast(getActivity(), R.string.NO_INTERNET_CONNECTION);
+
+                            }
+
+                        }
                     }
                 }
-
             }
 
             @Override
@@ -124,6 +165,7 @@ public class AddFriendsFragment extends BaseFragment {
         ((DashboardNewActivity) getActivity()).visibilityTxtTitleleft(View.GONE);
         ((DashboardNewActivity) getActivity()).visibilityTxtTitleright(View.VISIBLE);
         ((DashboardNewActivity) getActivity()).visibilityimgleft(View.VISIBLE);
+
         ((DashboardNewActivity) getActivity()).SettextTxtTitle("Add contacts to " + groupName);
         ((DashboardNewActivity) getActivity()).SettextTxtTitleLeft("Cancel");
         ((DashboardNewActivity) getActivity()).SettextTxtTitleRight("Done");
@@ -137,8 +179,29 @@ public class AddFriendsFragment extends BaseFragment {
         ((DashboardNewActivity) getActivity()).mBinding.header.txtTitleRight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-
+                if(mainConatctArrayList.size()>0) {
+                    id_list.clear();
+                    for (int i = 0; i < mainConatctArrayList.size(); i++) {
+                        if (mainConatctArrayList.get(i).isSelected == true) {
+                            id_list.add(mainConatctArrayList.get(i).getId());
+                        }
+                    }
+                    if(id_list.size()>0) {
+                        if(CheckInternet.isInternetConnected(mContext)) {
+                            new ExecuteTask_add_contact().execute();
+                        }else
+                        {
+                            connectionDetector.showToast(getActivity(), R.string.NO_INTERNET_CONNECTION);
+                        }
+                    }else
+                    {
+                        Toast.makeText(mContext, "Select one or more contacts to Add in group", Toast.LENGTH_SHORT).show();
+                    }
+                    Log.e("id_list", "" + id_list);
+                }else
+                {
+                    Toast.makeText(mContext,"No contacts yet",Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -146,6 +209,16 @@ public class AddFriendsFragment extends BaseFragment {
     }
 
     private void setupSearch() {
+        mBinding.edSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE || event.getAction() == KeyEvent.ACTION_DOWN) {
+                    hideKeyboard();
+                }
+
+                return false;
+            }
+        });
         mBinding.edSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -159,7 +232,9 @@ public class AddFriendsFragment extends BaseFragment {
                 if (charSequence.toString().length() == 0) {
                     mBinding.ivcancelSearch.setVisibility(View.GONE);
                     mainConatctArrayList.addAll(copyContactlist);
+                    isSearch = false;
                 } else {
+                    isSearch = true;
                     mBinding.ivcancelSearch.setVisibility(View.VISIBLE);
 
                     for (int i = 0; i < copyContactlist.size(); i++) {
@@ -176,15 +251,18 @@ public class AddFriendsFragment extends BaseFragment {
 
             }
         });
-
         mBinding.ivcancelSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                isSearch = false;
                 mainConatctArrayList.clear();
+                pageNumber = 0;
+                isHavingData = true;
                 mBinding.ivcancelSearch.setVisibility(View.GONE);
                 mainConatctArrayList.addAll(copyContactlist);
                 adapter.notifyDataSetChanged();
                 mBinding.edSearch.setText("");
+                mBinding.lvContactlist.setSelection(0);
                 hideKeyboard();
             }
         });
@@ -195,6 +273,40 @@ public class AddFriendsFragment extends BaseFragment {
         super.onPause();
         changeStatusbarColor(getResources().getColor(R.color.colorAccent));
         ((DashboardNewActivity) getActivity()).Setimagebackgroundresource(R.mipmap.contact_bar);
+    }
+
+    class ExecuteTask_add_contact extends AsyncTask<String, Integer, String> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            WebService.showProgress(mContext);
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            String res = WebService.Add_contacts_toGroup(id_list, groupId, WebService.ADD_CONTACTS_TO_GROUP, Pref.getValue(mContext, Constants.TOKEN, ""));
+            Log.e("res....add contact", "" + res);
+
+            return res;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            try {
+                WebService.dismissProgress();
+                JSONObject json1 = new JSONObject(result);
+                String status = json1.getString("status");
+                if (status.equalsIgnoreCase("200")) {
+                    Toast.makeText(mContext, "Contacts successfully added in group", Toast.LENGTH_SHORT).show();
+                    ((FragmentActivity) mContext).getSupportFragmentManager().popBackStack();
+                }
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 
     class ExecuteTasktWO extends AsyncTask<String, Integer, String> {
@@ -224,25 +336,18 @@ public class AddFriendsFragment extends BaseFragment {
         @Override
         protected void onPostExecute(String result) {
 
-            Log.e("my_result", result + "--");
+            Log.e("my_result11", result + "--");
             try {
                 WebService.showProgress(getActivity());
+                if(result=="")
+                {
+                    WebService.dismissProgress();
+                }
                 JSONObject json2;
                 JSONObject json1 = new JSONObject(result);
                 json2 = json1.optJSONObject("data");
 
-
-                String total = json2.optString("total");
-                // totoalContact = total;
-                String per_page = json2.optString("per_page");
-                String current_page = json2.optString("current_page");
-                String last_page = json2.optString("last_page");
-                String from = json2.optString("from");
-                String to = json2.optString("to");
-                // Pref.setValue(context, "total_contact", total);
                 JSONArray jsonArray = json2.getJSONArray("data");
-                // Log.e("jsonArray", "" + jsonArray);
-
                 Contact[] contact = new Contact[jsonArray.length()];
 
                 if (jsonArray.length() == 0) {
@@ -305,6 +410,7 @@ public class AddFriendsFragment extends BaseFragment {
                     JSONArray jsonArray1 = jsonObject.getJSONArray("group");
                     Group[] group = new Group[jsonArray1.length()];
                     ArrayList<Group> arrayList_group = new ArrayList<>();
+                    Log.e("group_size",""+jsonArray1.length());
                     for (int temp = 0; temp < jsonArray1.length(); temp++) {
 
                         JSONObject jsonObject1 = jsonArray1.getJSONObject(temp);
@@ -319,17 +425,29 @@ public class AddFriendsFragment extends BaseFragment {
                         arrayList_group.add(group[temp]);
                     }
                     contact[i].setGroup_list(arrayList_group);
-                    //  if (contact[i].getFname().trim().length() > 0) {
-                    mainConatctArrayList.add(contact[i]);
-                    copyContactlist.add(contact[i]);
 
-                    // }
+                    boolean isAdd = true;
+                    for (int j = 0; j < GroupSelectedList.size(); j++) {
+                        if (GroupSelectedList.get(j).equalsIgnoreCase(jsonObject.optString("id"))) {
+                            isAdd = false;
+                        }
+                    }
+                    if(jsonArray1.length()<5) {
+                        if (isAdd) {
+                            mainConatctArrayList.add(contact[i]);
+                            copyContactlist.add(contact[i]);
+                        }
+                    }
+
                 }
                 if (mainConatctArrayList.size() > 0) {
-                    mBinding.llContactList.setVisibility(View.VISIBLE);
+                    mBinding.lvContactlist.setVisibility(View.VISIBLE);
+                    mBinding.txtMsg.setVisibility(View.GONE);
+
 
                 } else {
-                    mBinding.llContactList.setVisibility(View.GONE);
+                    mBinding.lvContactlist.setVisibility(View.GONE);
+                    mBinding.txtMsg.setVisibility(View.VISIBLE);
                 }
                 if (mainConatctArrayList.size() > 0) {
                     adapter.notifyDataSetChanged();

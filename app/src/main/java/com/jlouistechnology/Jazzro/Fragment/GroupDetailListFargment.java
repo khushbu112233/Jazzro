@@ -16,9 +16,11 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.TextView;
-import android.widget.Toast;
+
 import com.google.gson.Gson;
 import com.jlouistechnology.Jazzro.Adapter.PeticularGrouListAdapter;
+import com.jlouistechnology.Jazzro.Helper.CheckInternet;
+import com.jlouistechnology.Jazzro.Helper.ConnectionDetector;
 import com.jlouistechnology.Jazzro.Helper.Constants;
 import com.jlouistechnology.Jazzro.Helper.FontCustom;
 import com.jlouistechnology.Jazzro.Helper.Pref;
@@ -29,10 +31,13 @@ import com.jlouistechnology.Jazzro.Model.PeticularGroupContactModel;
 import com.jlouistechnology.Jazzro.R;
 import com.jlouistechnology.Jazzro.Webservice.WebService;
 import com.jlouistechnology.Jazzro.databinding.FragmentGroupDetailListBinding;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Locale;
+
 import static com.jlouistechnology.Jazzro.Jazzro.DashboardActivity.edt_search;
 import static com.jlouistechnology.Jazzro.Jazzro.DashboardActivity.img_cancel_search;
 import static com.jlouistechnology.Jazzro.Jazzro.DashboardActivity.img_search;
@@ -50,9 +55,13 @@ public class GroupDetailListFargment extends BaseFragment {
     private PeticularGrouListAdapter adapter;
     int isPause = 0;
     int pageNumber = 1;
+    private int offset =1;
     int limit = 30;
     //String last_page="0";
     private boolean isHavingData = true;
+    private boolean isHavingMoreData = true;
+    ConnectionDetector connectionDetector;
+    ArrayList<GroupListDataDetailModel> griupList = new ArrayList<GroupListDataDetailModel>();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_group_detail_list, container, false);
@@ -60,6 +69,7 @@ public class GroupDetailListFargment extends BaseFragment {
         //   Glide.with(getActivity()).load(R.mipmap.background_text).centerCrop().into(mBinding.ivTop);
         ((DashboardActivity) getActivity()).isHideLogout(true);
         isPause = 0;
+        connectionDetector = new ConnectionDetector(getActivity());
         mBinding.txtName.setTypeface(FontCustom.setTitleFont(getActivity()));
         Bundle args = getArguments();
         if (args != null) {
@@ -76,7 +86,7 @@ public class GroupDetailListFargment extends BaseFragment {
         edt_search.setText("");
         img_search.setVisibility(View.VISIBLE);
         edt_search.setFocusableInTouchMode(true);
-          edt_search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        edt_search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH || event.getAction() == KeyEvent.ACTION_DOWN) {
@@ -100,13 +110,16 @@ public class GroupDetailListFargment extends BaseFragment {
             }
         });
 
-        if (Utils.checkInternetConnection(getActivity())) {
+
+        if(CheckInternet.isInternetConnected(mContext)) {
+
+
             pageNumber = 1;
             groupList.clear();
             myList.clear();
             new ExecuteTasktWO(pageNumber, limit).execute();
         } else {
-            Toast.makeText(getActivity(), getResources().getString(R.string.NO_INTERNET_CONNECTION), Toast.LENGTH_SHORT).show();
+            connectionDetector.showToast(getActivity(), R.string.NO_INTERNET_CONNECTION);
         }
         //setSearch();
 
@@ -132,13 +145,13 @@ public class GroupDetailListFargment extends BaseFragment {
                     if (first + count == adapter.getCount() &&isHavingData) {
                         pageNumber++;
                         //  if(pageNumber<=Integer.parseInt(last_page)) {
-                        if (Utils.checkInternetConnection(getActivity())) {
+                        if(CheckInternet.isInternetConnected(mContext)) {
+
                             new ExecuteTasktWO(pageNumber, limit).execute();
                             //   groupListTask(pageNumber, limit);
 
                         } else {
-                            Toast.makeText(getActivity(), getResources().getString(R.string.NO_INTERNET_CONNECTION), Toast.LENGTH_SHORT).show();
-                        }
+                            connectionDetector.showToast(getActivity(), R.string.NO_INTERNET_CONNECTION);  }
                     }
                 }
             }
@@ -224,11 +237,12 @@ public class GroupDetailListFargment extends BaseFragment {
                 myList.clear();
                 //  if (groupList.size() == 0) {
                 pageNumber = 1;
-                if (Utils.checkInternetConnection(getActivity())) {
+                if(CheckInternet.isInternetConnected(mContext)) {
+
                     // groupListTask(pageNumber,limit);
                     new ExecuteTasktWO(pageNumber, limit).execute();
                 } else {
-                    Toast.makeText(getActivity(), getResources().getString(R.string.NO_INTERNET_CONNECTION), Toast.LENGTH_SHORT).show();
+                    connectionDetector.showToast(getActivity(), R.string.NO_INTERNET_CONNECTION);
                 }
 
             }

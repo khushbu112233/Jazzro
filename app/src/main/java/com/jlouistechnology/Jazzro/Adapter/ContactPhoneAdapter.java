@@ -6,25 +6,18 @@ import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.widget.BaseAdapter;
-import android.widget.TextView;
 
-import com.jlouistechnology.Jazzro.Interface.OnClickDeleteListener;
 import com.jlouistechnology.Jazzro.Interface.OnClickEditPhoneListener;
 import com.jlouistechnology.Jazzro.Interface.OnClickPhoneDeleteListener;
 import com.jlouistechnology.Jazzro.Model.Contact;
 import com.jlouistechnology.Jazzro.R;
-import com.jlouistechnology.Jazzro.databinding.ListContactItemLayoutBinding;
 import com.jlouistechnology.Jazzro.databinding.ListContactPhoneItemLayoutBinding;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Created by aipxperts-ubuntu-01 on 10/8/17.
@@ -37,10 +30,11 @@ public class ContactPhoneAdapter extends BaseAdapter {
     OnClickPhoneDeleteListener onClickDeleteListener;
     OnClickEditPhoneListener onClickEditPhoneListener;
     ArrayList<String> edit_value=new ArrayList<>();
-    public ContactPhoneAdapter(Context context, ArrayList<String> list) {
+    ArrayList<Contact> contactArrayList;
+    public ContactPhoneAdapter(Context context, ArrayList<String> list, ArrayList<Contact> contactArrayList) {
         this.context = context;
         this.list = list;
-
+        this.contactArrayList=contactArrayList;
         inflater = (LayoutInflater) context.
                 getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -75,19 +69,21 @@ public class ContactPhoneAdapter extends BaseAdapter {
         rowView = binding.getRoot();
         binding.v1.setVisibility(View.VISIBLE);
         binding.edtPhone1.setText(list.get(position));
-        if(position==0)
-        {
+        if (position == 0) {
             binding.txtPhone1.setText("Mobile");
-        }else if(position==1)
-        {
+
+        } else if (position == 1) {
             binding.txtPhone1.setText("Home");
-        }else if(position==2)
-        {
+
+        } else if (position == 2) {
             binding.txtPhone1.setText("Work");
+
         }
         binding.ivPdelete1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                binding.ivPdelete1.setEnabled(false);
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 if(position==0) {
 
@@ -97,6 +93,7 @@ public class ContactPhoneAdapter extends BaseAdapter {
                                 public void onClick(DialogInterface dialog, int id) {
                                     onClickDeleteListener.OnClickPhoneDeleteListener(position);
                                     notifyDataSetChanged();
+                                    binding.ivPdelete1.setEnabled(true);
 
                                 }
                             })
@@ -104,6 +101,7 @@ public class ContactPhoneAdapter extends BaseAdapter {
                                 public void onClick(DialogInterface dialog, int id) {
                                     //  Action for 'NO' Button
                                     dialog.cancel();
+                                    binding.ivPdelete1.setEnabled(true);
                                 }
                             });
                 }else if(position==1)
@@ -114,6 +112,7 @@ public class ContactPhoneAdapter extends BaseAdapter {
                                 public void onClick(DialogInterface dialog, int id) {
                                     onClickDeleteListener.OnClickPhoneDeleteListener(position);
                                     notifyDataSetChanged();
+                                    binding.ivPdelete1.setEnabled(true);
 
                                 }
                             })
@@ -121,6 +120,7 @@ public class ContactPhoneAdapter extends BaseAdapter {
                                 public void onClick(DialogInterface dialog, int id) {
                                     //  Action for 'NO' Button
                                     dialog.cancel();
+                                    binding.ivPdelete1.setEnabled(true);
                                 }
                             });
                 }else if(position==2)
@@ -131,13 +131,14 @@ public class ContactPhoneAdapter extends BaseAdapter {
                                 public void onClick(DialogInterface dialog, int id) {
                                     onClickDeleteListener.OnClickPhoneDeleteListener(position);
                                     notifyDataSetChanged();
-
+                                    binding.ivPdelete1.setEnabled(true);
                                 }
                             })
                             .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     //  Action for 'NO' Button
                                     dialog.cancel();
+                                    binding.ivPdelete1.setEnabled(true);
                                 }
                             });
                 }

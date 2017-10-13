@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -20,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jlouistechnology.Jazzro.Adapter.ListContactAdapter;
+import com.jlouistechnology.Jazzro.Helper.CheckInternet;
 import com.jlouistechnology.Jazzro.Helper.ConnectionDetector;
 import com.jlouistechnology.Jazzro.Helper.Constants;
 import com.jlouistechnology.Jazzro.Helper.Pref;
@@ -40,11 +42,11 @@ import java.util.ArrayList;
  * Created by aipxperts-ubuntu-01 on 3/8/17.
  */
 
-public class ContactFragment extends Fragment {
+public class ContactFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
     ContactFragmentLayoutBinding mBinding;
     Context context;
     View rootView;
-    ConnectionDetector cd;
+    ConnectionDetector connectionDetector;
     public static int pageNumber = 1;
     private int limitpage = 100;
     public static ListContactAdapter adapter;
@@ -52,7 +54,6 @@ public class ContactFragment extends Fragment {
     private boolean isHavingData = true;
     boolean isPagination = true;
     int isMainLoad = 1;
-    public static int storePageNumber = 1;
     public static ArrayList<Contact> copyContactlist = new ArrayList<>();
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
@@ -70,8 +71,13 @@ public class ContactFragment extends Fragment {
 
         Pref.setValue(context, "selectedGroud", "");
         Pref.setValue(context, "selectedGroup_label", "");
+
         call_without_search_api();
         setadapterinit();
+
+        mBinding.swipeRefreshLayout.setRefreshing(false);
+        mBinding.swipeRefreshLayout.setOnRefreshListener(this);
+
 
         /**
          * search set
@@ -90,7 +96,14 @@ public class ContactFragment extends Fragment {
                                 mBinding.ivcancelSearch.setVisibility(View.VISIBLE);
                                 mainConatctArrayList.clear();
                                 adapter.notifyDataSetChanged();
-                                new ExecuteTask((pageNumber), limitpage).execute(mBinding.searchContact.getText().toString().trim());
+
+                                if(CheckInternet.isInternetConnected(context)) {
+
+                                    new ExecuteTask((pageNumber), limitpage).execute(mBinding.searchContact.getText().toString().trim());
+                                }else
+                                {
+                                    connectionDetector.showToast(getActivity(), R.string.NO_INTERNET_CONNECTION);
+                                }
                                 Utils.hideKeyboard(getActivity());
                             }
                             return true;
@@ -111,7 +124,7 @@ public class ContactFragment extends Fragment {
                 isPagination = true;
                 call_without_search_api();
                 mainConatctArrayList.clear();
-               // mainConatctArrayList.addAll(copyContactlist);
+                // mainConatctArrayList.addAll(copyContactlist);
                 adapter.notifyDataSetChanged();
                 mBinding.ivcancelSearch.setVisibility(View.GONE);
             }
@@ -129,13 +142,12 @@ public class ContactFragment extends Fragment {
                     int count = mBinding.listContact.getChildCount();
 
 
-                if (scrollState == SCROLL_STATE_IDLE &&first + count == adapter.getCount() && isHavingData) {
+                    if (scrollState == SCROLL_STATE_IDLE &&first + count == adapter.getCount() && isHavingData) {
                         pageNumber++;
 
 
                         if (isMainLoad == 1) {
 
-                            storePageNumber = pageNumber;
                             if (mBinding.listContact.getLastVisiblePosition() == (adapter.getCount() - 1)) {
                                 call_without_search_api();
                             }
@@ -147,7 +159,15 @@ public class ContactFragment extends Fragment {
 
                             }
                             else {
-                                new ExecuteTask((pageNumber), limitpage).execute(mBinding.searchContact.getText().toString().trim());
+
+                                if(CheckInternet.isInternetConnected(context)) {
+
+                                    new ExecuteTask((pageNumber), limitpage).execute(mBinding.searchContact.getText().toString().trim());
+                                }else
+                                {
+                                    connectionDetector.showToast(getActivity(), R.string.NO_INTERNET_CONNECTION);
+                                }
+
                             }
                         }
                         Log.e("888", "page no : " + pageNumber);
@@ -179,6 +199,7 @@ public class ContactFragment extends Fragment {
         return rootView;
 
     }
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -211,7 +232,7 @@ public class ContactFragment extends Fragment {
 
 
     private void preview() {
-        cd = new ConnectionDetector(context);
+        connectionDetector = new ConnectionDetector(context);
         ((DashboardNewActivity)context).SettextTxtTitle("Contacts");
         ((DashboardNewActivity)context).visibilityimgright(View.VISIBLE);
         ((DashboardNewActivity)context).visibilityimgleftProgress(View.VISIBLE);
@@ -237,13 +258,34 @@ public class ContactFragment extends Fragment {
      */
     public void call_without_search_api()
     {
-        if (cd.isConnectingToInternet()) {
+
+        if(CheckInternet.isInternetConnected(context)) {
+
 
             new ExecuteTasktWO((pageNumber), limitpage).execute();
 
         } else {
-            cd.showToast(context, R.string.NO_INTERNET_CONNECTION);
+            connectionDetector.showToast(context, R.string.NO_INTERNET_CONNECTION);
+
+            mBinding.swipeRefreshLayout.setRefreshing(false);
+
         }
+    }
+
+    @Override
+    public void onRefresh() {
+
+        mBinding.searchContact.setText("");
+        pageNumber = 1;
+        isMainLoad = 1;
+        isHavingData = true;
+        isPagination = true;
+
+        call_without_search_api();
+        mainConatctArrayList.clear();
+        // mainConatctArrayList.addAll(copyContactlist);
+        adapter.notifyDataSetChanged();
+        mBinding.ivcancelSearch.setVisibility(View.GONE);
     }
 
     /**
@@ -277,8 +319,13 @@ public class ContactFragment extends Fragment {
         protected void onPostExecute(String result) {
 
             Log.e("my_result",result+"--");
+
             try {
                 WebService.showProgress(context);
+                if(result=="")
+                {
+                    WebService.dismissProgress();
+                }
                 JSONObject json2;
                 JSONObject json1 = new JSONObject(result);
                 json2 = json1.optJSONObject("data");
@@ -376,25 +423,24 @@ public class ContactFragment extends Fragment {
                     mainConatctArrayList.add(contact[i]);
                     copyContactlist.add(contact[i]);
 
+                    mBinding.swipeRefreshLayout.setRefreshing(false);
                     // }
                 }
                 if(mainConatctArrayList.size()>0)
                 {
                     mBinding.llContactList.setVisibility(View.VISIBLE);
                     mBinding.llNotFound.setVisibility(View.GONE);
-
-                }else
-                {
-                    mBinding.llContactList.setVisibility(View.GONE);
-                    mBinding.llNotFound.setVisibility(View.VISIBLE);
-                }
-                if (mainConatctArrayList.size() > 0) {
                     adapter.notifyDataSetChanged();
                     WebService.dismissProgress();
-                } else {
+                }else
+                {
+                    Pref.setValue(getActivity(),"last_sync_contact_id",0);
+                    mBinding.llContactList.setVisibility(View.GONE);
+                    mBinding.llNotFound.setVisibility(View.VISIBLE);
                     isHavingData = false;
                     WebService.dismissProgress();
                 }
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -436,6 +482,10 @@ public class ContactFragment extends Fragment {
             try {
 
                 Log.e("my_result",result+"-----");
+                if(result=="")
+                {
+                    WebService.dismissProgress();
+                }
 
                 JSONObject json2;
                 JSONObject json1 = new JSONObject(result);
@@ -554,6 +604,7 @@ public class ContactFragment extends Fragment {
     public void onPause() {
         super.onPause();
         ((DashboardNewActivity)context).Set_header_visibility();
+
     }
 
     @Override

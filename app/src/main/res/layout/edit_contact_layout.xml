@@ -221,7 +221,7 @@
 
                 <View
                     android:id="@+id/view2"
-android:visibility="gone"
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginEnd="14dp"

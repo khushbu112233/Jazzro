@@ -24,5 +24,6 @@
                 android:bottomLeftRadius="10dp"
                 android:bottomRightRadius="10dp"/>
         </shape>
+
     </item>
 </layer-list>

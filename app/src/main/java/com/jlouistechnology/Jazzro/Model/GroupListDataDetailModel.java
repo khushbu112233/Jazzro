@@ -11,6 +11,7 @@ public class GroupListDataDetailModel implements Parcelable{
     public String id;
     public String label;
     public String color;
+    public String number_of_contacts;
     public String isClick = "false";
 
     public GroupListDataDetailModel(Parcel in) {
@@ -18,6 +19,7 @@ public class GroupListDataDetailModel implements Parcelable{
         label = in.readString();
         color = in.readString();
         isClick = in.readString();
+        number_of_contacts = in.readString();
     }
 
     public GroupListDataDetailModel() {
@@ -48,5 +50,6 @@ public class GroupListDataDetailModel implements Parcelable{
         dest.writeString(label);
         dest.writeString(color);
         dest.writeString(isClick);
+        dest.writeString(number_of_contacts);
     }
 }

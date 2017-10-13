@@ -1,36 +1,22 @@
 package com.jlouistechnology.Jazzro.Service;
 
 import android.app.Service;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.IBinder;
-import android.provider.ContactsContract;
-import android.util.Log;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.jlouistechnology.Jazzro.Fragment.SyncNewContactProcessFragment;
-import com.jlouistechnology.Jazzro.Helper.Constants;
-import com.jlouistechnology.Jazzro.Helper.Pref;
-import com.jlouistechnology.Jazzro.Helper.Utils;
-import com.jlouistechnology.Jazzro.Jazzro.DashboardActivity;
-import com.jlouistechnology.Jazzro.Jazzro.DashboardNewActivity;
+import com.jlouistechnology.Jazzro.Helper.CheckInternet;
 import com.jlouistechnology.Jazzro.Model.PhoneContact;
 import com.jlouistechnology.Jazzro.R;
-import com.jlouistechnology.Jazzro.Webservice.WebService;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.regex.Pattern;
 
 /**
  * Created by aipxperts-ubuntu-01 on 28/6/17.
@@ -119,7 +105,7 @@ public class GetallPhoneContactBackgroundAsync extends Service {
 
         if(contacArray.length()>0) {
 
-            if (Utils.checkInternetConnection(context)) {
+            if(CheckInternet.isInternetConnected(context)) {
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
                     new GetallPhoneContact_auto_sync.ExecuteContactTask(contacArray,context).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);

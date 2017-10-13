@@ -18,8 +18,11 @@ import android.widget.Toast;
 
 import com.jlouistechnology.Jazzro.Fragment.AddNewContactFragment;
 import com.jlouistechnology.Jazzro.Fragment.ContactFragment;
+import com.jlouistechnology.Jazzro.Fragment.EditContactFragment;
 import com.jlouistechnology.Jazzro.Fragment.GropListFragment;
 import com.jlouistechnology.Jazzro.Fragment.SettingFragment;
+import com.jlouistechnology.Jazzro.Helper.CheckInternet;
+import com.jlouistechnology.Jazzro.Helper.ConnectionDetector;
 import com.jlouistechnology.Jazzro.Helper.Constants;
 import com.jlouistechnology.Jazzro.Helper.DatabaseHelper;
 import com.jlouistechnology.Jazzro.Helper.Pref;
@@ -37,6 +40,7 @@ public class DashboardNewActivity extends FragmentActivity {
     public static ProgressBar progressBar_sync;
 
     private BroadcastReceiver mReceiver;
+    ConnectionDetector connectionDetector;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +51,7 @@ public class DashboardNewActivity extends FragmentActivity {
 
         StatusBar();
 
-
+        connectionDetector = new ConnectionDetector(DashboardNewActivity.this);
         mBinding.header.progressBarSync.setImageResource(R.mipmap.refresh);
 
         ContactFragment fragment = new ContactFragment();
@@ -91,7 +95,7 @@ public class DashboardNewActivity extends FragmentActivity {
                 //   ((DashboardNewActivity)context).mBinding.header.progressBarSync.setVisibility(View.VISIBLE);
 
                 mBinding.header.progressBarSync.setImageResource(R.drawable.my_progress_interminate1);
-                Log.e("s", "first" + System.currentTimeMillis());
+                Log.e("first_login", "first:" + Pref.getValue(DashboardNewActivity.this, "first_login", ""));
                 if (Pref.getValue(DashboardNewActivity.this, "first_login", "").equals("1")) {
 
 
@@ -126,12 +130,16 @@ public class DashboardNewActivity extends FragmentActivity {
                 mBinding.header.progressBarSync.setImageResource(R.drawable.my_progress_interminate1);
 
                 //new LoadData().execute();
-                if (Pref.getValue(DashboardNewActivity.this, "first_login", "").equals("1")) {
+                if(CheckInternet.isInternetConnected(DashboardNewActivity.this)) {
+                    if (Pref.getValue(DashboardNewActivity.this, "first_login", "").equals("1")) {
 
-                    startService(new Intent(DashboardNewActivity.this, GetallPhoneContact_auto_sync.class));
-                } else {
-                    startService(new Intent(DashboardNewActivity.this, GetallPhoneContact_auto_sync_from_middle.class));
-                    //getAllContacts(DashboardActivity.this);
+                        startService(new Intent(DashboardNewActivity.this, GetallPhoneContact_auto_sync.class));
+                    } else {
+                        startService(new Intent(DashboardNewActivity.this, GetallPhoneContact_auto_sync_from_middle.class));
+                        //getAllContacts(DashboardActivity.this);
+                    }
+                }else {
+                    connectionDetector.showToast(DashboardNewActivity.this, R.string.NO_INTERNET_CONNECTION);
                 }
                 break;
 
@@ -288,11 +296,16 @@ public class DashboardNewActivity extends FragmentActivity {
         if (requestCode == 200 && resultCode == RESULT_OK) {
             if (getCurrentFragment() instanceof AddNewContactFragment) {
                 ((AddNewContactFragment) getCurrentFragment()).onActivity(data);
+            }else if(getCurrentFragment() instanceof EditContactFragment){
+                ((EditContactFragment)getCurrentFragment()).onActivity(data);
             }
 
         } else if (requestCode == 201 && resultCode == RESULT_OK) {
             if (getCurrentFragment() instanceof AddNewContactFragment) {
                 ((AddNewContactFragment) getCurrentFragment()).onActivityGallery(data);
+            }else if(getCurrentFragment() instanceof EditContactFragment){
+                ((EditContactFragment) getCurrentFragment()).onActivityGallery(data);
+
             }
         }
 

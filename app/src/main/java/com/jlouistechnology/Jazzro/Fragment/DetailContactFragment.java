@@ -17,6 +17,8 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.jlouistechnology.Jazzro.Adapter.SelectedGroupDetailListAdapter;
+import com.jlouistechnology.Jazzro.Helper.CheckInternet;
+import com.jlouistechnology.Jazzro.Helper.ConnectionDetector;
 import com.jlouistechnology.Jazzro.Helper.Constants;
 import com.jlouistechnology.Jazzro.Helper.Pref;
 import com.jlouistechnology.Jazzro.Helper.Utils;
@@ -48,6 +50,7 @@ public class DetailContactFragment extends Fragment {
     ArrayList<Contact> ContactArrayList = new ArrayList<>();
     ArrayList<String> value_list = new ArrayList<>();
     ArrayList<String> color_value_list = new ArrayList<>();
+    ConnectionDetector connectionDetector;
     @Override
     public View onCreateView(LayoutInflater inflater,  ViewGroup container,  Bundle savedInstanceState) {
 
@@ -55,6 +58,7 @@ public class DetailContactFragment extends Fragment {
                 inflater, R.layout.detail_contact_layout, container, false);
         rootView = mBinding.getRoot();
         context = getActivity();
+        connectionDetector =  new ConnectionDetector(context);
         //preview();
 
         ((DashboardNewActivity)context).mBinding.header.txtTitleRight.setOnClickListener(new View.OnClickListener() {
@@ -342,7 +346,14 @@ public class DetailContactFragment extends Fragment {
         Utils.hideKeyboard(context);
         Pref.setValue(context, "selectedGroud", "");
 
-        new ExecuteTask().execute();
+        if(CheckInternet.isInternetConnected(context)) {
+
+            new ExecuteTask().execute();
+        }else
+        {
+            connectionDetector.showToast(getActivity(), R.string.NO_INTERNET_CONNECTION);
+        }
+
     }
 
     private void msg_click(String phone) {

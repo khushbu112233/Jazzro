@@ -1,19 +1,35 @@
 package com.jlouistechnology.Jazzro.Fragment;
 
+import android.Manifest;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.databinding.DataBindingUtil;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
@@ -22,6 +38,8 @@ import com.google.gson.reflect.TypeToken;
 import com.jlouistechnology.Jazzro.Adapter.ContactEmailAdapter;
 import com.jlouistechnology.Jazzro.Adapter.ContactPhoneAdapter;
 import com.jlouistechnology.Jazzro.Adapter.SelectedGroupDetailListAdapter;
+import com.jlouistechnology.Jazzro.Helper.CheckInternet;
+import com.jlouistechnology.Jazzro.Helper.ConnectionDetector;
 import com.jlouistechnology.Jazzro.Helper.Constants;
 import com.jlouistechnology.Jazzro.Helper.Pref;
 import com.jlouistechnology.Jazzro.Helper.Utils;
@@ -34,13 +52,19 @@ import com.jlouistechnology.Jazzro.Model.Contact;
 import com.jlouistechnology.Jazzro.Model.Group;
 import com.jlouistechnology.Jazzro.R;
 import com.jlouistechnology.Jazzro.Webservice.WebService;
+import com.jlouistechnology.Jazzro.Widget.TextView_Bold;
+import com.jlouistechnology.Jazzro.Widget.TextView_Regular;
 import com.jlouistechnology.Jazzro.databinding.EditContactLayoutBinding;
-import com.squareup.picasso.Picasso;
 
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.lang.reflect.Type;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -72,6 +96,18 @@ public class EditContactFragment extends Fragment {
     private String updateID = "";
     ArrayList<String> group_selected_id = new ArrayList<>();
 
+    public static final int MEDIA_TYPE_IMAGE = 1;
+    private static final int MY_REQUEST_CODE = 100;
+    public static Uri fileUri;
+    int REQUEST_CAMERA = 200;
+    int SELECT_FILE = 201;
+    private static final String IMAGE_DIRECTORY_NAME = "Camera";
+    Bitmap rotatedBitmap;
+    String encodedString = "";
+    private WindowManager.LayoutParams mLayoutParams;
+    public Dialog mDialogRowBoardList;
+    private Window mWindow;
+    ConnectionDetector connectionDetector;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -79,42 +115,18 @@ public class EditContactFragment extends Fragment {
                 inflater, R.layout.edit_contact_layout, container, false);
         rootView = mBinding.getRoot();
         context = getActivity();
+        connectionDetector = new ConnectionDetector(context);
         //  preview();
- /*       if(selectedGroup_label.size()>0) {
-            if (selectedGroup_label.size() == 1) {
-                float height = 1 * (getResources().getDimension(R.dimen.listview_height));
 
-                ViewGroup.LayoutParams lp = (ViewGroup.LayoutParams) mBinding.selectedGroup.getLayoutParams();
-                lp.height = (int) height;
-                mBinding.selectedGroup.setLayoutParams(lp);
-            } else if (selectedGroup_label.size() == 2) {
-
-                float height = 2 * (getResources().getDimension(R.dimen.listview_height));
-
-                ViewGroup.LayoutParams lp = (ViewGroup.LayoutParams) mBinding.selectedGroup.getLayoutParams();
-                lp.height = (int) height;
-                mBinding.selectedGroup.setLayoutParams(lp);
-            } else {
-                float height = 3 * (getResources().getDimension(R.dimen.listview_height));
-
-                ViewGroup.LayoutParams lp = (ViewGroup.LayoutParams) mBinding.selectedGroup.getLayoutParams();
-                lp.height = (int) height;
-                mBinding.selectedGroup.setLayoutParams(lp);
-
-            }
-        }else
-        {
-            float height = 30.0f;
-
-            ViewGroup.LayoutParams lp = (ViewGroup.LayoutParams) mBinding.selectedGroup.getLayoutParams();
-            lp.height = (int) height;
-            mBinding.selectedGroup.setLayoutParams(lp);
-
-
-        }*/
         /**
          * remove email when click minus image
          */
+        mBinding.imgContact.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showInputDialog_camera();
+            }
+        });
         OnClickDeleteListener onClickDeleteListener = new OnClickDeleteListener() {
             @Override
             public void OnClickDeleteListener(int pos) {
@@ -191,12 +203,12 @@ public class EditContactFragment extends Fragment {
                 Log.e("get value", "email" + email_arraylist.size());
             }
         };
-        contactPhoneAdapter = new ContactPhoneAdapter(context, phone_arraylist);
+        contactPhoneAdapter = new ContactPhoneAdapter(context, phone_arraylist,ContactArrayList);
         contactPhoneAdapter.OnClickEditPhoneListener(onClickEditPhoneListener);
         mBinding.listContactPhone.setAdapter(contactPhoneAdapter);
         contactPhoneAdapter.onClickPhoneDeleteListener(onClickPhoneDeleteListener);
 
-        contactEmailAdapter = new ContactEmailAdapter(context, email_arraylist);
+        contactEmailAdapter = new ContactEmailAdapter(context, email_arraylist,ContactArrayList);
         contactEmailAdapter.onClickEditEmailListener(onClickEditEmailListener);
         mBinding.listContactEmail.setAdapter(contactEmailAdapter);
         contactEmailAdapter.onClickDeleteListener(onClickDeleteListener);
@@ -204,6 +216,7 @@ public class EditContactFragment extends Fragment {
         mBinding.txtDeleteContacts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mBinding.txtDeleteContacts.setEnabled(false);
                 openDeleteDialog();
             }
         });
@@ -235,12 +248,6 @@ public class EditContactFragment extends Fragment {
             }
         });
 
-        ((DashboardNewActivity) getActivity()).mBinding.header.txtTitleLeft.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getActivity().getSupportFragmentManager().popBackStack();
-            }
-        });
 
 
         mBinding.llGroupList.setOnClickListener(new View.OnClickListener() {
@@ -249,7 +256,7 @@ public class EditContactFragment extends Fragment {
                 ArrayList<String> group_name = new ArrayList<String>();
                 if (isFristTime) {
                     for (int i = 0; i < ContactArrayList.get(0).getGroup_list().size(); i++) {
-                       // if (selectedGroup_id.contains(ContactArrayList.get(0).getGroup_list().get(i).getLabel())) {
+                        // if (selectedGroup_id.contains(ContactArrayList.get(0).getGroup_list().get(i).getLabel())) {
                         if(selectedGroup_id.get(i).equalsIgnoreCase(ContactArrayList.get(0).getGroup_list().get(i).getId1())){
                             selectedGroup_label.add(ContactArrayList.get(0).getGroup_list().get(i).getLabel());
                             selectedGroup_id.add(ContactArrayList.get(0).getGroup_list().get(i).getId1());
@@ -450,12 +457,167 @@ public class EditContactFragment extends Fragment {
                     Pref.setValue(context, "SelectedGroupList", "");
                     Pref.setValue(context, "SelectedGroupListID", "");
 
-                    callAddnewContactAPI(selectedGroud);
+                    callAddnewContactAPI(selectedGroup_id);
                 }
             }
         });
 
         return rootView;
+    }
+
+    /**
+     * image function
+     */
+
+    public void showInputDialog_camera() {
+
+        mDialogRowBoardList = new Dialog(context);
+        mDialogRowBoardList.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        mDialogRowBoardList.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        mDialogRowBoardList.setContentView(R.layout.photo_dialog_layout);
+        mDialogRowBoardList.setCancelable(false);
+        mWindow = mDialogRowBoardList.getWindow();
+        mLayoutParams = mWindow.getAttributes();
+        mLayoutParams.gravity = Gravity.BOTTOM;
+        mWindow.setAttributes(mLayoutParams);
+        final TextView_Regular txtgallery = (TextView_Regular) mDialogRowBoardList.findViewById(R.id.txtgallery);
+        final TextView_Regular txtcamera = (TextView_Regular) mDialogRowBoardList.findViewById(R.id.txtcamera);
+        final TextView_Bold cancel = (TextView_Bold) mDialogRowBoardList.findViewById(R.id.cancel);
+
+        txtgallery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if (getActivity().checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                            != PackageManager.PERMISSION_GRANTED) {
+                        getActivity().requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                                MY_REQUEST_CODE);
+                    } else {
+                        Intent intent = new Intent(
+                                Intent.ACTION_PICK,
+                                MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                        intent.setType("image/*");
+                        getActivity().startActivityForResult(
+                                Intent.createChooser(intent, "Select File"),
+                                SELECT_FILE);
+                        mDialogRowBoardList.dismiss();
+                    }
+                } else {
+                    Intent intent = new Intent(
+                            Intent.ACTION_PICK,
+                            MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    intent.setType("image/*");
+                    getActivity().startActivityForResult(
+                            Intent.createChooser(intent, "Select File"),
+                            SELECT_FILE);
+                    mDialogRowBoardList.dismiss();
+                }
+            }
+        });
+
+        txtcamera.setOnClickListener(new View.OnClickListener() {
+
+                                         @Override
+                                         public void onClick(View v) {
+
+
+                                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                                 if (getActivity().checkSelfPermission(Manifest.permission.CAMERA)
+                                                         != PackageManager.PERMISSION_GRANTED) {
+                                                     getActivity().requestPermissions(new String[]{Manifest.permission.CAMERA},
+                                                             MY_REQUEST_CODE);
+                                                 } else {
+                                                     Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                                                     fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE);
+                                                     Log.v("fileUri", fileUri + "--");
+                                                     intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+                                                     // start the image capture Intent
+                                                     getActivity().startActivityForResult(intent, REQUEST_CAMERA);
+                                                     mDialogRowBoardList.dismiss();
+                                                 }
+                                             } else {
+                                                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                                                 fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE);
+                                                 Log.v("fileUri", fileUri + "--");
+                                                 intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+                                                 // start the image capture Intent
+                                                 getActivity().startActivityForResult(intent, REQUEST_CAMERA);
+                                                 mDialogRowBoardList.dismiss();
+                                             }
+
+
+                                         }
+                                     }
+        );
+        cancel.setOnClickListener(new View.OnClickListener()
+
+                                  {
+                                      @Override
+                                      public void onClick(View v) {
+
+                                          mDialogRowBoardList.dismiss();
+                                      }
+                                  }
+
+        );
+
+
+        mDialogRowBoardList.show();
+    }
+
+    public void onActivityGallery(Intent data) {
+        Uri selectedImageUri = data.getData();
+        if (selectedImageUri.toString().startsWith("content")) {
+            String[] projection = {MediaStore.MediaColumns.DATA};
+            Cursor cursor = ((FragmentActivity) context).managedQuery(selectedImageUri, projection, null, null,
+                    null);
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
+            cursor.moveToFirst();
+            String selectedImagePath = cursor.getString(column_index);
+            Bitmap bm;
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inJustDecodeBounds = true;
+            BitmapFactory.decodeFile(selectedImagePath, options);
+            final int REQUIRED_SIZE = 200;
+            int scale = 1;
+            while (options.outWidth / scale / 2 >= REQUIRED_SIZE
+                    && options.outHeight / scale / 2 >= REQUIRED_SIZE)
+                scale *= 2;
+            options.inSampleSize = scale;
+            options.inJustDecodeBounds = false;
+            bm = BitmapFactory.decodeFile(selectedImagePath, options);
+
+            rotatedBitmap = bm;
+
+            if (bm.getWidth() > bm.getHeight()) {
+                Matrix matrix = new Matrix();
+                //matrix.postRotate(90);
+                rotatedBitmap = Bitmap.createBitmap(bm, 0, 0, bm.getWidth(), bm.getHeight(), matrix, true);
+            }
+        } else {
+
+            String file_path = data.getData().toString();
+            Log.e("rotatedBitmap", "---------------" + file_path.substring(5, file_path.length()));
+            File imgFile = new File(file_path.substring(5, file_path.length()));
+            Log.e("rotatedBitmap", "---------------" + imgFile + "--" + imgFile.exists());
+            if (imgFile.exists()) {
+                rotatedBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+                Log.e("rotatedBitmap", rotatedBitmap + "---");
+            }
+        }
+
+
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        rotatedBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        byte[] byteArray = stream.toByteArray();
+
+        Bitmap b = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+        Bitmap bmpnew = Bitmap.createScaledBitmap(b, 500, 500, false);
+        mBinding.imgContact.setImageBitmap(bmpnew);
+
+        encodedString = Base64.encodeToString(byteArray, Base64.DEFAULT);
+
     }
 
     public static boolean isEmailValid(String email) {
@@ -471,6 +633,83 @@ public class EditContactFragment extends Fragment {
         }
         return isValid;
     }
+
+    public void onActivity(Intent data) {
+        Bitmap thumbnail = null;
+        Bitmap rotatedBitmap = null;
+        try {
+            BitmapFactory.Options options = new BitmapFactory.Options();
+
+            // downsizing image as it throws OutOfMemory Exception for larger
+            // images
+            options.inSampleSize = 8;
+
+            final Bitmap bitmap = BitmapFactory.decodeFile(fileUri.getPath(),
+                    options);
+
+            if (bitmap.getWidth() > bitmap.getHeight()) {
+                Matrix matrix = new Matrix();
+                matrix.postRotate(90);
+                rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+            } else {
+                rotatedBitmap = bitmap;
+            }
+
+            // rotatedBitmap=bitmap;
+            Log.v("rotatedBitmap", rotatedBitmap + "--");
+
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            rotatedBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            byte[] byteArray = stream.toByteArray();
+
+            Bitmap b = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+            Bitmap bmpnew = Bitmap.createScaledBitmap(b, 500, 500, false);
+
+            encodedString = Base64.encodeToString(byteArray, Base64.DEFAULT);
+            mBinding.imgContact.setImageBitmap(bmpnew);
+
+            // file1= bitmapToFile(bmpnew);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Uri getOutputMediaFileUri(int type) {
+        return Uri.fromFile(getOutputMediaFile(type));
+    }
+
+    private static File getOutputMediaFile(int type) {
+
+        // External sdcard location
+        File mediaStorageDir = new File(
+                Environment
+                        .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+                IMAGE_DIRECTORY_NAME);
+
+        // Create the storage directory if it does not exist
+        if (!mediaStorageDir.exists()) {
+            if (!mediaStorageDir.mkdirs()) {
+                Log.d(IMAGE_DIRECTORY_NAME, "Oops! Failed create "
+                        + IMAGE_DIRECTORY_NAME + " directory");
+                return null;
+            }
+        }
+
+        // Create a media file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss",
+                Locale.getDefault()).format(new Date());
+        File mediaFile;
+        if (type == MEDIA_TYPE_IMAGE) {
+            mediaFile = new File(mediaStorageDir.getPath() + File.separator
+                    + "IMG_" + timeStamp + ".jpg");
+        } else {
+            return null;
+        }
+
+        return mediaFile;
+    }
+
 
     private void callAddnewContactAPI(ArrayList<String> selectedIDS) {
 
@@ -509,10 +748,12 @@ public class EditContactFragment extends Fragment {
 
             Pref.setValue(context, "email3_add", email3);
         }
-        if (WebService.isNetworkAvailable(getActivity())) {
+
+        if(CheckInternet.isInternetConnected(context)) {
+
             new ExecuteTask().execute();
         } else {
-            Toast.makeText(getActivity(), getResources().getString(R.string.NO_INTERNET_CONNECTION), Toast.LENGTH_LONG).show();
+            connectionDetector.showToast(getActivity(), R.string.NO_INTERNET_CONNECTION);
         }
     }
 
@@ -592,8 +833,6 @@ public class EditContactFragment extends Fragment {
         super.onResume();
         ((DashboardNewActivity) context).Set_header_visibility();
 
-        selectedGroup_label.clear();
-        selectedGroup_id.clear();
         preview();
         Utils.hideKeyboard(context);
         String group = "";
@@ -606,6 +845,8 @@ public class EditContactFragment extends Fragment {
         String group1 = "";
         if (!Pref.getValue(context, "selectedGroud", "").equalsIgnoreCase("")) {
 
+            selectedGroup_label.clear();
+            selectedGroup_id.clear();
             Log.e("aaa", "" + phone_arraylist.size());
             contactPhoneAdapter.notifyDataSetChanged();
 
@@ -688,23 +929,50 @@ public class EditContactFragment extends Fragment {
 
                 ContactArrayList = gson.fromJson(json, type);
 
-                if (!ContactArrayList.get(0).getPhone1().equalsIgnoreCase("")) {
-                    phone_arraylist.add(ContactArrayList.get(0).getPhone1());
-                }
                 if (!ContactArrayList.get(0).getPhone2().equalsIgnoreCase("")) {
-                    phone_arraylist.add(ContactArrayList.get(0).getPhone2());
+                    phone_arraylist.add(ContactArrayList.get(0).getPhone1());
+                } else {
+                    if (!ContactArrayList.get(0).getPhone3().equalsIgnoreCase("")) {
+                        phone_arraylist.add(ContactArrayList.get(0).getPhone1());
+                    }else{
+                        if (!ContactArrayList.get(0).getPhone1().equalsIgnoreCase("")) {
+                            phone_arraylist.add(ContactArrayList.get(0).getPhone1());
+                        }
+                    }
                 }
                 if (!ContactArrayList.get(0).getPhone3().equalsIgnoreCase("")) {
+                    phone_arraylist.add(ContactArrayList.get(0).getPhone2());
                     phone_arraylist.add(ContactArrayList.get(0).getPhone3());
+                } else {
+                    if (!ContactArrayList.get(0).getPhone2().equalsIgnoreCase("")) {
+                        phone_arraylist.add(ContactArrayList.get(0).getPhone2());
+                    }
                 }
-                if (!ContactArrayList.get(0).getEmail1().equalsIgnoreCase("")) {
-                    email_arraylist.add(ContactArrayList.get(0).getEmail1());
-                }
+
+                /**
+                 * email add
+                 */
                 if (!ContactArrayList.get(0).getEmail2().equalsIgnoreCase("")) {
-                    email_arraylist.add(ContactArrayList.get(0).getEmail2());
+                    email_arraylist.add(ContactArrayList.get(0).getEmail1());
+                }else
+                {
+                    if (!ContactArrayList.get(0).getEmail3().equalsIgnoreCase("")) {
+                        email_arraylist.add(ContactArrayList.get(0).getEmail1());
+                    }else
+                    {
+                        if (!ContactArrayList.get(0).getEmail1().equalsIgnoreCase("")) {
+                            email_arraylist.add(ContactArrayList.get(0).getEmail1());
+                        }
+                    }
                 }
                 if (!ContactArrayList.get(0).getEmail3().equalsIgnoreCase("")) {
+                    email_arraylist.add(ContactArrayList.get(0).getEmail2());
                     email_arraylist.add(ContactArrayList.get(0).getEmail3());
+
+                } else {
+                    if (!ContactArrayList.get(0).getEmail2().equalsIgnoreCase("")) {
+                        email_arraylist.add(ContactArrayList.get(0).getEmail2());
+                    }
                 }
                 contactPhoneAdapter.notifyDataSetChanged();
                 contactEmailAdapter.notifyDataSetChanged();
@@ -730,7 +998,7 @@ public class EditContactFragment extends Fragment {
                 Log.e("phone_arraylist", "" + phone_arraylist.size());
                 mBinding.edtFirstName.setText(ContactArrayList.get(0).getFname());
                 mBinding.edtLastName.setText(ContactArrayList.get(0).getLname());
-                Picasso.with(context).load(ContactArrayList.get(0).getImage_url()).into(mBinding.imgContact);
+               // Picasso.with(context).load(ContactArrayList.get(0).getImage_url()).into(mBinding.imgContact);
 
                 updateID = ContactArrayList.get(0).getId();
                 // setRuntimeVisibility(ContactArrayList.get(0).getPhone1(),ContactArrayList.get(0).getPhone2(),ContactArrayList.get(0).getPhone3(),ContactArrayList.get(0).getEmail1(),ContactArrayList.get(0).getEmail2(),ContactArrayList.get(0).getEmail3());
@@ -755,6 +1023,7 @@ public class EditContactFragment extends Fragment {
                     mBinding.selectedGroup.setVisibility(View.GONE);
                     mBinding.llImg.setVisibility(View.GONE);
                 }
+                selectedGroud=selectedGroud1;
                 if (selectedGroup_label1.size() == 1) {
                     float height = 1 * (getResources().getDimension(R.dimen.listview_height));
 
@@ -825,20 +1094,30 @@ public class EditContactFragment extends Fragment {
 
     private void openDeleteDialog() {
 
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         builder.setMessage("Do you want to delete this contact ?")
                 .setCancelable(false)
                 .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        new ExecuteTask_delete().execute();
-                        Pref.srtIsDeleteContact(getActivity(), true);
+                        if(CheckInternet.isInternetConnected(context)) {
+
+                            new ExecuteTask_delete().execute();
+                        }else
+                        {
+                            connectionDetector.showToast(context, R.string.NO_INTERNET_CONNECTION);
+
+                        }
+                            Pref.srtIsDeleteContact(getActivity(), true);
+                        mBinding.txtDeleteContacts.setEnabled(true);
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         //  Action for 'NO' Button
                         dialog.cancel();
+                        mBinding.txtDeleteContacts.setEnabled(true);
                     }
                 });
 
@@ -867,7 +1146,7 @@ public class EditContactFragment extends Fragment {
         @Override
         protected String doInBackground(String... params) {
 
-            String res = WebService.PostData2(group_selected_id, Pref.getValue(context, "updateID_add", ""), Pref.getValue(context, "firstName_add", ""), Pref.getValue(context, "lastName_add", ""), Pref.getValue(context, "company_name_add", ""), Pref.getValue(context, "phone1_add", ""), Pref.getValue(context, "email1_add", ""), Pref.getValue(context, "phone2_add", ""), Pref.getValue(context, "email2_add", ""), Pref.getValue(context, "phone3_add", ""), Pref.getValue(context, "email3_add", ""), WebService.SINGLE_CONTACT, Pref.getValue(context, Constants.TOKEN, ""));
+            String res = WebService.PostData2(group_selected_id,encodedString, Pref.getValue(context, "updateID_add", ""), Pref.getValue(context, "firstName_add", ""), Pref.getValue(context, "lastName_add", ""), Pref.getValue(context, "company_name_add", ""), Pref.getValue(context, "phone1_add", ""), Pref.getValue(context, "email1_add", ""), Pref.getValue(context, "phone2_add", ""), Pref.getValue(context, "email2_add", ""), Pref.getValue(context, "phone3_add", ""), Pref.getValue(context, "email3_add", ""), WebService.SINGLE_CONTACT, Pref.getValue(context, Constants.TOKEN, ""));
             Log.d("nnn", " Response : " + res);
             return res;
         }
@@ -881,24 +1160,30 @@ public class EditContactFragment extends Fragment {
                 WebService.dismissProgress();
                 JSONObject json2;
                 json2 = new JSONObject(result);
+                String status = json2.optString("status");
+                if(status.equalsIgnoreCase("200")) {
 
-                Pref.setValue(context, "updateID_add", "");
-                Pref.setValue(context, "firstName_add", "");
-                Pref.setValue(context, "lastName_add", "");
-                Pref.setValue(context, "company_name_add", "");
-                Pref.setValue(context, "phone1_add", "");
-                Pref.setValue(context, "email1_add", "");
-                Pref.setValue(context, "phone2_add", "");
-                Pref.setValue(context, "email2_add", "");
-                Pref.setValue(context, "phone3_add", "");
-                Pref.setValue(context, "email3_add", "");
-                Pref.setValue(context, "groups_add", "");
+                    Pref.setValue(context, "updateID_add", "");
+                    Pref.setValue(context, "firstName_add", "");
+                    Pref.setValue(context, "lastName_add", "");
+                    Pref.setValue(context, "company_name_add", "");
+                    Pref.setValue(context, "phone1_add", "");
+                    Pref.setValue(context, "email1_add", "");
+                    Pref.setValue(context, "phone2_add", "");
+                    Pref.setValue(context, "email2_add", "");
+                    Pref.setValue(context, "phone3_add", "");
+                    Pref.setValue(context, "email3_add", "");
+                    Pref.setValue(context, "groups_add", "");
 
 
-                Toast.makeText(getActivity(), "Contact updated successfully!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Contact updated successfully!", Toast.LENGTH_SHORT).show();
 
 
-                getActivity().getSupportFragmentManager().popBackStack();
+                    getActivity().getSupportFragmentManager().popBackStack();
+                }else
+                {
+                    Toast.makeText(context,json2.optString("title"),Toast.LENGTH_SHORT).show();
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }

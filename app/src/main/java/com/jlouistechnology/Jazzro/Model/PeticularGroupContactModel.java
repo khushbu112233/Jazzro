@@ -33,5 +33,6 @@ public class PeticularGroupContactModel {
     public String updated_at_formatted = "";
     //   boolean  image_url = "";
 
+    public boolean isSelected = false;
 
 }

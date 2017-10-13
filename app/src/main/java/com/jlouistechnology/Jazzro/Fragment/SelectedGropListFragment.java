@@ -11,11 +11,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.jlouistechnology.Jazzro.Adapter.NewGroupListAdapter;
+import com.jlouistechnology.Jazzro.Helper.CheckInternet;
+import com.jlouistechnology.Jazzro.Helper.ConnectionDetector;
 import com.jlouistechnology.Jazzro.Helper.Constants;
 import com.jlouistechnology.Jazzro.Helper.Pref;
 import com.jlouistechnology.Jazzro.Interface.OnClickGetPosotionListener;
@@ -46,6 +47,7 @@ public class SelectedGropListFragment extends Fragment {
     ArrayList<String> SelectedGroupList = new ArrayList<>();
     ArrayList<String> selectedGroup_id = new ArrayList<>();
     ArrayList<GroupListDataDetailModel> griupList = new ArrayList<GroupListDataDetailModel>();
+    ConnectionDetector connectionDetector;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -53,7 +55,9 @@ public class SelectedGropListFragment extends Fragment {
                 inflater, R.layout.group_list_fragment_layout, container, false);
         rootView = mBinding.getRoot();
         context = getActivity();
+        connectionDetector = new ConnectionDetector(context);
         preview();
+
 
 
         mBinding.listGroup.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -85,7 +89,7 @@ public class SelectedGropListFragment extends Fragment {
     private void grouplistTask() {
 
         WebService.showProgress(context);
-        if (WebService.isNetworkAvailable(getActivity())) {
+        if(CheckInternet.isInternetConnected(context)) {
             ApiInterface apiService =
                     ApiClient.getClient().create(ApiInterface.class);
 
@@ -125,7 +129,8 @@ public class SelectedGropListFragment extends Fragment {
                 }
             });
         } else {
-            Toast.makeText(getActivity(), getResources().getString(R.string.NO_INTERNET_CONNECTION), Toast.LENGTH_LONG).show();
+            connectionDetector.showToast(getActivity(), R.string.NO_INTERNET_CONNECTION);
+            WebService.dismissProgress();
         }
     }
 
@@ -150,6 +155,14 @@ public class SelectedGropListFragment extends Fragment {
                 Log.e("selected", "****  " + SelectedGroupList.get(i));
             }
             grouplistTask();
+
+            ((DashboardNewActivity) context).mBinding.header.imgLeftBack.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ((FragmentActivity) context).getSupportFragmentManager().popBackStack();
+
+                }
+            });
         }
     }
 

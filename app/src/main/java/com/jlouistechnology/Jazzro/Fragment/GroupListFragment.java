@@ -35,6 +35,8 @@ import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.jlouistechnology.Jazzro.Adapter.GroupListAdapter;
+import com.jlouistechnology.Jazzro.Helper.CheckInternet;
+import com.jlouistechnology.Jazzro.Helper.ConnectionDetector;
 import com.jlouistechnology.Jazzro.Helper.Constants;
 import com.jlouistechnology.Jazzro.Helper.FontCustom;
 import com.jlouistechnology.Jazzro.Helper.Pref;
@@ -85,11 +87,13 @@ public class GroupListFragment extends BaseFragment implements StickyListHeaders
     private int[] mSectionIndices;
     private Character[] mSectionLetters;
     public static Filter filter;
+    ConnectionDetector connectionDetector;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_grouplist, container, false);
 
         ((DashboardActivity) getActivity()).isHideLogout(true);
+        connectionDetector = new ConnectionDetector(getActivity());
         Pref.setValue(getActivity(),"from_group","1");
 
         mBinding.txtName.setText("Groups");
@@ -182,11 +186,14 @@ public class GroupListFragment extends BaseFragment implements StickyListHeaders
         if(!Pref.getValue(getActivity(), "total_group", "").equalsIgnoreCase("")) {
             limit = Integer.parseInt(Pref.getValue(getActivity(), "total_group", ""));
         }
-        if (Utils.checkInternetConnection(getActivity())) {
+
+        if(CheckInternet.isInternetConnected(mContext)) {
+
 
             grouplistTask(pageNumber,limit);
         } else {
-            Toast.makeText(getActivity(), getResources().getString(R.string.NO_INTERNET_CONNECTION), Toast.LENGTH_SHORT).show();
+            connectionDetector.showToast(getActivity(), R.string.NO_INTERNET_CONNECTION);
+
             WebService.dismissProgress();
         }
         setSearch();
@@ -248,10 +255,11 @@ public class GroupListFragment extends BaseFragment implements StickyListHeaders
                 edt_search.setText("");
                 img_cancel_search.setVisibility(View.GONE);
 
-                if (Utils.checkInternetConnection(getActivity())) {
+                if(CheckInternet.isInternetConnected(mContext)) {
                     grouplistTask(pageNumber,limit);
                 } else {
-                    Toast.makeText(getActivity(), getResources().getString(R.string.NO_INTERNET_CONNECTION), Toast.LENGTH_SHORT).show();
+                    connectionDetector.showToast(getActivity(), R.string.NO_INTERNET_CONNECTION);
+
                     WebService.dismissProgress();
                 }
             }
@@ -363,7 +371,7 @@ public class GroupListFragment extends BaseFragment implements StickyListHeaders
                     griupList.remove(pos);
                     onResume();
                     Toast.makeText(getActivity(),"Group deleted successfully!", Toast.LENGTH_SHORT).show();
-                   // AddContactGroupFragment.isCountExecute = true;
+                    // AddContactGroupFragment.isCountExecute = true;
                 }
 
             } catch (JSONException e) {
@@ -372,7 +380,9 @@ public class GroupListFragment extends BaseFragment implements StickyListHeaders
         }
     }
     private void grouplistTask(int index, int length) {
-        if (Utils.checkInternetConnection(getActivity())) {
+
+        if(CheckInternet.isInternetConnected(mContext)) {
+
             ApiInterface apiService =
                     ApiClient.getClient().create(ApiInterface.class);
 
@@ -423,8 +433,9 @@ public class GroupListFragment extends BaseFragment implements StickyListHeaders
                 }
             });
         } else {
-            Toast.makeText(getActivity(), getResources().getString(R.string.NO_INTERNET_CONNECTION), Toast.LENGTH_SHORT).show();
+            connectionDetector.showToast(getActivity(), R.string.NO_INTERNET_CONNECTION);
 
+            WebService.dismissProgress();
         }
     }
 
@@ -543,11 +554,12 @@ public class GroupListFragment extends BaseFragment implements StickyListHeaders
             public void onClick(View v) {
 
                 if (str.contains("DELETE")) {
-                    if (Utils.checkInternetConnection(getActivity())) {
+                    if(CheckInternet.isInternetConnected(mContext)) {
                         new deleteGroupTask(groupListDataDetailModel.id, position).execute();
                         openDialog.cancel();
                     } else {
-                        Toast.makeText(getActivity(), getResources().getString(R.string.NO_INTERNET_CONNECTION), Toast.LENGTH_SHORT).show();
+                        connectionDetector.showToast(getActivity(), R.string.NO_INTERNET_CONNECTION);
+
                     }
                 }
             }

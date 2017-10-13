@@ -13,10 +13,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 
 import com.google.gson.Gson;
 import com.jlouistechnology.Jazzro.Adapter.EditGroupAdapter;
+import com.jlouistechnology.Jazzro.Helper.CheckInternet;
+import com.jlouistechnology.Jazzro.Helper.ConnectionDetector;
 import com.jlouistechnology.Jazzro.Helper.Constants;
 import com.jlouistechnology.Jazzro.Helper.Pref;
 import com.jlouistechnology.Jazzro.Helper.Utils;
@@ -32,6 +33,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * Created by aipxperts on 17/8/17.
@@ -41,7 +44,9 @@ public class FriendsListFragment extends BaseFragment {
     FragmentFriendsListBinding mBinding;
     private GroupListDataDetailModel groupData;
     private ArrayList<PeticularGroupContactModel> groupList = new ArrayList<>();
+    ArrayList<String> GroupContactList=new ArrayList<>();
     private ArrayList<PeticularGroupContactModel> copyGroupList = new ArrayList<>();
+    ConnectionDetector connectionDetector;
     EditGroupAdapter adapter1;
     int pageNumber = 1;
     int limit = 100;
@@ -53,13 +58,14 @@ public class FriendsListFragment extends BaseFragment {
         mBinding = DataBindingUtil.inflate(
                 inflater, R.layout.fragment_friends_list, container, false);
 
+        connectionDetector= new ConnectionDetector(getActivity());
+        //Pref.setValue(mContext, "selectedGroupContact", "");
         return mBinding.getRoot();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-
         pageNumber = 1;
         isHavingMoreData = true;
         mBinding.edSearch.setText("");
@@ -91,11 +97,20 @@ public class FriendsListFragment extends BaseFragment {
             }
         }
 
+        if(CheckInternet.isInternetConnected(mContext)) {
+
+            new ExecuteTasktWO(pageNumber, limit).execute();
+        }
+        else
+        {
+            connectionDetector.showToast(getActivity(), R.string.NO_INTERNET_CONNECTION);
+
+        }
 
         setuptoolbar();
         setup();
 
-        mBinding.contactListview.setOnScrollListener(new AbsListView.OnScrollListener() {
+       /* mBinding.contactListview.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
                 if (mBinding.contactListview.getLastVisiblePosition() == (adapter1.getCount() - 1)) {
@@ -114,7 +129,8 @@ public class FriendsListFragment extends BaseFragment {
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 
             }
-        });
+        });*/
+
 
     }
 
@@ -124,7 +140,7 @@ public class FriendsListFragment extends BaseFragment {
         adapter1 = new EditGroupAdapter(getActivity(), groupList, FriendsListFragment.class);
         mBinding.contactListview.setAdapter(adapter1);
 
-        new ExecuteTasktWO(pageNumber, limit).execute();
+
         setupSearch();
 
         mBinding.ivPluse.setOnClickListener(new View.OnClickListener() {
@@ -136,6 +152,10 @@ public class FriendsListFragment extends BaseFragment {
                 AddFriendsFragment fragment = new AddFriendsFragment();
                 args.putString("name", groupData.label);
                 args.putString("color", groupData.color);
+                args.putString("id", groupData.id);
+                Log.e("GroupContactList",""+GroupContactList);
+                String json = gson.toJson(GroupContactList);
+                Pref.setValue(mContext, "selectedGroupContact", json);
                 fragment.setArguments(args);
                 ((FragmentActivity) getActivity()).getSupportFragmentManager().beginTransaction().replace(R.id.frame_main_container, fragment).addToBackStack(null).commit();
 
@@ -168,6 +188,12 @@ public class FriendsListFragment extends BaseFragment {
                         }
                     }
                 }
+                Collections.sort(groupList, new Comparator<PeticularGroupContactModel>() {
+                    @Override
+                    public int compare(PeticularGroupContactModel sp1, PeticularGroupContactModel sp2) {
+                        return sp1.fname.compareTo(sp2.fname);
+                    }
+                });
                 adapter1.notifyDataSetChanged();
             }
 
@@ -244,6 +270,7 @@ public class FriendsListFragment extends BaseFragment {
 
     }
 
+
     class ExecuteTasktWO extends AsyncTask<String, Integer, String> {
         int index;
         int length;
@@ -264,7 +291,7 @@ public class FriendsListFragment extends BaseFragment {
         @Override
         protected String doInBackground(String... params) {
             String res = "";
-            res = WebService.GetData1(WebService.GROUP + "/" + groupData.id + "/? withContacts=" + 1 + "& page=" + index + "&perpage=" + length + "&sortfield=fname" + "&sortdir=asc", Pref.getValue(getActivity(), Constants.TOKEN, ""));
+            res = WebService.GetData1(WebService.GROUP + "/" + groupData.id +"/contacts", Pref.getValue(getActivity(), Constants.TOKEN, ""));
             return res;
         }
 
@@ -272,13 +299,14 @@ public class FriendsListFragment extends BaseFragment {
         protected void onPostExecute(String result) {
 
             Log.e("my_result", result + "----");
-            WebService.dismissProgress();
+
             try {
-                JSONObject json2;
-                JSONObject json1 = new JSONObject(result);
-                json2 = json1.optJSONObject("data");
-                JSONObject contectObject = json2.getJSONObject("contacts");
-                JSONArray jsonArray = contectObject.getJSONArray("data");
+                String json = result.replaceAll("\\\\", "");
+                String json1 = json.substring(1,json.length()-1);
+                JSONArray jsonArray = new JSONArray(json1);
+               /*json2 = json1.optJSONObject("data");
+               JSONObject contectObject = json2.getJSONObject("contacts");
+               JSONArray jsonArray = contectObject.getJSONArray("data");*/
                 if (jsonArray.length() == 0) {
                     isHavingMoreData = false;
                     if (groupList.size() == 0) {
@@ -302,15 +330,29 @@ public class FriendsListFragment extends BaseFragment {
                     PeticularGroupContactModel facebookuserzeebaListModel = gson.fromJson(dataObject.toString(), PeticularGroupContactModel.class);
 
                     groupList.add(facebookuserzeebaListModel);
+                    Collections.sort(groupList, new Comparator<PeticularGroupContactModel>() {
+                        @Override
+                        public int compare(PeticularGroupContactModel sp1, PeticularGroupContactModel sp2) {
+                            return sp1.fname.compareTo(sp2.fname);
+                        }
+                    });
+
                     copyGroupList.add(facebookuserzeebaListModel);
                     adapter1.notifyDataSetChanged();
 
+                    WebService.dismissProgress();
                 }
-
+                GroupContactList.clear();
+                for(int i=0;i<groupList.size();i++) {
+                    if (!GroupContactList.contains(groupList.get(i).id)) {
+                        GroupContactList.add(groupList.get(i).id);
+                    }
+                }
             } catch (Exception e) {
                 e.printStackTrace();
+
+                WebService.dismissProgress();
             }
         }
     }
-
 }

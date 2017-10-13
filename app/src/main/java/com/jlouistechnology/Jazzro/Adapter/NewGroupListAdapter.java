@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.jlouistechnology.Jazzro.Helper.Utils;
 import com.jlouistechnology.Jazzro.Interface.OnClickEditGroupListener;
@@ -32,15 +33,14 @@ public class NewGroupListAdapter extends BaseAdapter {
     LayoutInflater mInflater;
     ArrayList<GroupListDataDetailModel> datalist;
     ImageView mHeaderRight;
-    ArrayList<String> selectedGroud = new ArrayList<>();
-    ArrayList<String> selectedGroup_label = new ArrayList<>();
-    ArrayList<String> selectedGroup_color = new ArrayList<>();
     ArrayList<String> SelectedGroupList = new ArrayList<>();
     ArrayList<String> selectedGroup_id = new ArrayList<>();
     String type;
     OnClickEditGroupListener onClickEditGroupListener;
     OnClickGetPosotionListener onClickGetPosotionListener;
     boolean isFirstTime = true;
+    int count=0;
+
 
     public NewGroupListAdapter(Context context, ArrayList<GroupListDataDetailModel> datalist, ImageView mHeaderRight, String type, ArrayList<String> SelectedGroupList,ArrayList<String> selectedGroup_id) {
         this.context = context;
@@ -92,67 +92,87 @@ public class NewGroupListAdapter extends BaseAdapter {
                 }
             }
         }
+
         if (type.equalsIgnoreCase("main")) {
+
+            mHeaderRight.setVisibility(View.GONE);
+            binding.lnMainAlluserContact.setEnabled(false);
             binding.ivTick.setVisibility(View.GONE);
             Typeface font = Typeface.createFromAsset(context.getAssets(), "fonts/SFUIDisplay_Semibold.ttf");
             binding.txtGroupName.setTypeface(font, Typeface.NORMAL);
         } else {
             if (datalist.get(position).isClick.equalsIgnoreCase("false")) {
                 binding.ivTick.setVisibility(View.GONE);
-
                 Typeface font = Typeface.createFromAsset(context.getAssets(), "fonts/Sf_Regular.otf");
                 binding.txtGroupName.setTypeface(font, Typeface.NORMAL);
 
+
             } else {
+
                 binding.ivTick.setVisibility(View.VISIBLE);
                 Typeface font = Typeface.createFromAsset(context.getAssets(), "fonts/SFUIDisplay_Semibold.ttf");
                 binding.txtGroupName.setTypeface(font, Typeface.NORMAL);
 
+
             }
+            mHeaderRight.setVisibility(View.VISIBLE);
+            binding.lnMainAlluserContact.setEnabled(true);
         }
+
+
+
         if (!type.equalsIgnoreCase("main")) {
+
             binding.lnMainAlluserContact.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
-
-                    if (datalist.get(position).isClick.equalsIgnoreCase("true"))
-
-                    {
-                        datalist.get(position).isClick = "false";
-                    } else
-
-                    {
-                        datalist.get(position).isClick = "true";
+                    int clickCount = 0;
+                    for (int i = 0; i < datalist.size(); i++) {
+                        if (datalist.get(i).isClick.equalsIgnoreCase("true")) {
+                            clickCount++;
+                        }
                     }
 
-                    notifyDataSetChanged();
+                    if (clickCount < 5) {
+                        if (datalist.get(position).isClick.equalsIgnoreCase("true")) {
+                            datalist.get(position).isClick = "false";
+                        } else {
+                            datalist.get(position).isClick = "true";
+                        }
+
+                        notifyDataSetChanged();
+                    }else
+                    {
+                        if (datalist.get(position).isClick.equalsIgnoreCase("true")) {
+                            datalist.get(position).isClick = "false";
+                        }else
+                        {
+                            Toast.makeText(context,"0 Group remaining. Contact can be added in maximum 5 groups",Toast.LENGTH_SHORT).show();
+                        }
+
+                        notifyDataSetChanged();
+
+                    }
                 }
             });
         }
-     /*   binding.lnBgColor.setOnClickListener(new View.OnClickListener()
 
-        {
-            @Override
-            public void onClick(View view) {
-                onClickEditGroupListener.onClick(position);
-            }
-        });*/
-
-        if (type.equalsIgnoreCase("main"))
-
-        {
-            mHeaderRight.setVisibility(View.GONE);
-            binding.lnMainAlluserContact.setEnabled(false);
-        } else if (type.equalsIgnoreCase("selected"))
-
-        {
-            mHeaderRight.setVisibility(View.VISIBLE);
-            binding.lnMainAlluserContact.setEnabled(true);
-        }
         Log.e("label", "" + datalist.get(position).label);
         binding.txtGroupName.setText((datalist.get(position).label));
-        binding.txtMember.setText("1 members");
+
+        if(datalist.get(position).number_of_contacts.equalsIgnoreCase("0"))
+        {
+            binding.txtMember.setText(datalist.get(position).number_of_contacts+" member");
+        }else if(datalist.get(position).number_of_contacts.equalsIgnoreCase("1"))
+        {
+            binding.txtMember.setText(datalist.get(position).number_of_contacts+" member");
+        }else
+        {
+            binding.txtMember.setText(datalist.get(position).number_of_contacts+" members");
+        }
+
+
 
         binding.imgGroup.setBackgroundResource(R.drawable.circle_group_shape);
         binding.txtFirstLetter.setText(datalist.get(position).label.charAt(0) + "");
@@ -181,35 +201,7 @@ public class NewGroupListAdapter extends BaseAdapter {
 
                 onClickGetPosotionListener.onClick(position);
 
-              /*  for (int i = 0; i < datalist.size(); i++) {
-                    if (datalist.get(i).isClick.equalsIgnoreCase("true")) {
-                        selectedGroud.add(datalist.get(i).id);
-                        selectedGroup_label.add(Utils.capitalize(datalist.get(i).label));
-                        selectedGroup_color.add(datalist.get(i).color);
-                    }
-                }
-                Gson gson = new Gson();
 
-
-                //   SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-                //   SharedPreferences.Editor editor = sharedPrefs.edit();
-
-                String json = gson.toJson(selectedGroud);
-                String json1 = gson.toJson(selectedGroup_label);
-                String json2 = gson.toJson(selectedGroup_color);
-
-                Pref.setValue(context, "selectedGroud", json);
-                Pref.setValue(context, "selectedGroup_label", json1);
-                Pref.setValue(context, "selectedGroup_color", json2);
-
-               *//* editor.putString("selectedGroud", json);
-                editor.putString("selectedGroup_label",json1);
-                editor.commit();*//*
-                Log.e("Adaper###", "%%% " + selectedGroud.size());
-                // notifyDataSetChanged();
-                ((FragmentActivity) context).getSupportFragmentManager().popBackStack();
-
-                Pref.setValue(context, "SelectedGroupList", "");*/
             }
         });
 
@@ -224,6 +216,5 @@ public class NewGroupListAdapter extends BaseAdapter {
     {
         this.onClickGetPosotionListener = onClickGetPosotionListener;
     }
-
 
 }

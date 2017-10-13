@@ -5,15 +5,13 @@ import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,41 +22,29 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
 import com.jlouistechnology.Jazzro.Adapter.ColorAdapter;
+import com.jlouistechnology.Jazzro.Helper.CheckInternet;
+import com.jlouistechnology.Jazzro.Helper.ConnectionDetector;
 import com.jlouistechnology.Jazzro.Helper.Constants;
-import com.jlouistechnology.Jazzro.Helper.FontCustom;
 import com.jlouistechnology.Jazzro.Helper.Pref;
 import com.jlouistechnology.Jazzro.Helper.Utils;
-import com.jlouistechnology.Jazzro.Jazzro.DashboardActivity;
 import com.jlouistechnology.Jazzro.Jazzro.DashboardNewActivity;
 import com.jlouistechnology.Jazzro.Model.ColorModel;
-import com.jlouistechnology.Jazzro.Model.Contact;
-import com.jlouistechnology.Jazzro.Model.Group;
-import com.jlouistechnology.Jazzro.Model.GroupListServiceModel;
-import com.jlouistechnology.Jazzro.Model.Group_g;
 import com.jlouistechnology.Jazzro.R;
 import com.jlouistechnology.Jazzro.Webservice.WebService;
 import com.jlouistechnology.Jazzro.databinding.NewGroupLayoutBinding;
-import com.jlouistechnology.Jazzro.network.ApiClient;
-import com.jlouistechnology.Jazzro.network.ApiInterface;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
 /**
  * Created by aipxperts-ubuntu-01 on 22/4/17.
  */
 
-public class NewGroupFragment extends Fragment {
+public class NewGroupFragment extends BaseFragment {
     Context context;
     NewGroupLayoutBinding mBinding;
     TextView txt_title,txtSave,txtCancel;
@@ -70,7 +56,7 @@ public class NewGroupFragment extends Fragment {
     int colorPosition = 0;
     int pageNumber=1;
     boolean isclick=false;
-
+    ConnectionDetector connectionDetector;
     int check_Valid_or_not = 0;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -78,6 +64,7 @@ public class NewGroupFragment extends Fragment {
                 inflater, R.layout.new_group_layout, container, false);
         rootView = mBinding.getRoot();
         context = getActivity();
+        connectionDetector = new ConnectionDetector(context);
         preview();
 
         ArrayList<ColorModel> colorList = new ArrayList<>();
@@ -94,7 +81,17 @@ public class NewGroupFragment extends Fragment {
         mBinding.txtBackgruondColor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mBinding.spinner1.performClick();
+                // Utils.hideKeyboard(context);
+                hideKeyboard();
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        //Do something after 100ms
+                        mBinding.spinner1.performClick();
+                    }
+                }, 500);
+
 
 
             }
@@ -223,7 +220,7 @@ public class NewGroupFragment extends Fragment {
                 Log.e("isclick",""+isclick);
                 check_Valid_or_not = 0;
 
-                if (Utils.checkInternetConnection(getActivity())) {
+                if(CheckInternet.isInternetConnected(mContext)) {
                     if (TextUtils.isEmpty(mBinding.edName.getText().toString().trim())) {
                         check_Valid_or_not = 1;
 
@@ -247,7 +244,7 @@ public class NewGroupFragment extends Fragment {
                     }
 
                 } else {
-                    Toast.makeText(getActivity(), getResources().getString(R.string.NO_INTERNET_CONNECTION), Toast.LENGTH_SHORT).show();
+                    connectionDetector.showToast(getActivity(), R.string.NO_INTERNET_CONNECTION);
                 }
             }
         });
@@ -256,8 +253,9 @@ public class NewGroupFragment extends Fragment {
             public void onClick(View v) {
                 Log.e("isclick",""+isclick);
                 check_Valid_or_not = 0;
+                hideKeyboard();
 
-                if (Utils.checkInternetConnection(getActivity())) {
+                if(CheckInternet.isInternetConnected(mContext)) {
                     if (TextUtils.isEmpty(mBinding.edName.getText().toString().trim())) {
                         check_Valid_or_not = 1;
 
@@ -281,13 +279,14 @@ public class NewGroupFragment extends Fragment {
                     }
 
                 } else {
-                    Toast.makeText(getActivity(), getResources().getString(R.string.NO_INTERNET_CONNECTION), Toast.LENGTH_SHORT).show();
+                    connectionDetector.showToast(getActivity(), R.string.NO_INTERNET_CONNECTION);
                 }
             }
         });
         ((DashboardNewActivity)context).mBinding.header.txtTitleLeft.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                hideKeyboard();
                 getActivity().getSupportFragmentManager().popBackStack();
             }
         });
@@ -411,8 +410,13 @@ public class NewGroupFragment extends Fragment {
                     Toast.makeText(getActivity(),"Group updated successfully!", Toast.LENGTH_SHORT).show();
                     GroupListFragment fragment = new GroupListFragment();
                     ((FragmentActivity)context).getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, fragment).addToBackStack(null).commit();
+                    if(CheckInternet.isInternetConnected(mContext)) {
+                        new ExecuteTask_get_data().execute();
+                    }else
+                    {
+                        connectionDetector.showToast(getActivity(), R.string.NO_INTERNET_CONNECTION);
+                    }
 
-                    new ExecuteTask_get_data().execute();
                     WebService.dismissProgress();
 
                 }

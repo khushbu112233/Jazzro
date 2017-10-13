@@ -14,10 +14,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.jlouistechnology.Jazzro.Adapter.NewGroupListAdapter;
+import com.jlouistechnology.Jazzro.Helper.CheckInternet;
+import com.jlouistechnology.Jazzro.Helper.ConnectionDetector;
 import com.jlouistechnology.Jazzro.Helper.Constants;
 import com.jlouistechnology.Jazzro.Helper.Pref;
 import com.jlouistechnology.Jazzro.Helper.Utils;
@@ -50,8 +51,9 @@ public class GropListFragment extends Fragment {
     ArrayList<GroupListDataDetailModel> griupList = new ArrayList<GroupListDataDetailModel>();
     private boolean isHavingMoreData = true;
     private int limit = 100;
-    private int offset = 0;
+    private int offset =1;
     public NewGroupListAdapter newGroupListAdapter;
+    ConnectionDetector connectionDetector;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -59,6 +61,7 @@ public class GropListFragment extends Fragment {
                 inflater, R.layout.group_list_fragment_layout, container, false);
         rootView = mBinding.getRoot();
         context = getActivity();
+        connectionDetector = new ConnectionDetector(context);
 
         ((DashboardNewActivity) context).mBinding.header.imgRight.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,7 +100,9 @@ public class GropListFragment extends Fragment {
     private void grouplistTask() {
         //
         WebService.showProgress(getActivity());
-        if (WebService.isNetworkAvailable(context)) {
+
+        if(CheckInternet.isInternetConnected(context)) {
+
 
             ApiInterface apiService =
                     ApiClient.getClient().create(ApiInterface.class);
@@ -108,8 +113,10 @@ public class GropListFragment extends Fragment {
                 @Override
                 public void onResponse(Call<GroupListServiceModel> call, retrofit2.Response<GroupListServiceModel> response) {
                     Log.e("VVV", "111" + new Gson().toJson(response.body()));
+
+
                     WebService.dismissProgress();
-                    if (response.body().data.data.size() == 0) {
+                    if (response.body().data.data.size() < 100) {
                         isHavingMoreData = false;
                     } else {
                         isHavingMoreData = true;
@@ -141,7 +148,9 @@ public class GropListFragment extends Fragment {
                 }
             });
         } else {
-            Toast.makeText(getActivity(), getResources().getString(R.string.NO_INTERNET_CONNECTION), Toast.LENGTH_LONG).show();
+            connectionDetector.showToast(getActivity(), R.string.NO_INTERNET_CONNECTION);
+
+            WebService.dismissProgress();
         }
     }
 
@@ -172,6 +181,7 @@ public class GropListFragment extends Fragment {
 
             }
         }, 1000);
+
         grouplistTask();
 
         mBinding.listGroup.setOnScrollListener(new AbsListView.OnScrollListener() {

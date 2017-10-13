@@ -7,13 +7,13 @@ import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.content.res.ResourcesCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -24,9 +24,12 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.jlouistechnology.Jazzro.Adapter.ColorAdapter;
 import com.jlouistechnology.Jazzro.Adapter.EditGroupAdapter;
+import com.jlouistechnology.Jazzro.Helper.CheckInternet;
+import com.jlouistechnology.Jazzro.Helper.ConnectionDetector;
 import com.jlouistechnology.Jazzro.Helper.Constants;
 import com.jlouistechnology.Jazzro.Helper.Pref;
 import com.jlouistechnology.Jazzro.Helper.Utils;
+import com.jlouistechnology.Jazzro.Interface.OnClickDeleteContactListener;
 import com.jlouistechnology.Jazzro.Jazzro.DashboardNewActivity;
 import com.jlouistechnology.Jazzro.Model.ColorModel;
 import com.jlouistechnology.Jazzro.Model.GroupListDataDetailModel;
@@ -66,28 +69,52 @@ public class EditGroupFragment extends BaseFragment {
     boolean isHavingData = true;
     int pageNumber = 1;
     int limit = 100;
-
+    OnClickDeleteContactListener onClickDeleteContactListener;
+    ArrayList<String> id_list = new ArrayList<String>();
+    ConnectionDetector connectionDetector;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         mBinding = DataBindingUtil.inflate(
                 inflater, R.layout.fragment_edit_group, container, false);
+        onClickDeleteContactListener = new OnClickDeleteContactListener() {
+            @Override
+            public void onClick(int poition) {
 
+
+                if (groupList.get(poition).isSelected) {
+                    groupList.get(poition).isSelected = false;
+                } else {
+                    groupList.get(poition).isSelected = true;
+                }
+                adapter1.notifyDataSetChanged();
+
+            }
+        };
         return mBinding.getRoot();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-
+        connectionDetector = new ConnectionDetector(getActivity());
         groupList.clear();
         myList.clear();
         isHavingData = true;
         Bundle args = getArguments();
         Gson gson = new Gson();
         groupData = gson.fromJson((String) args.getSerializable("data"), GroupListDataDetailModel.class);
+        mBinding.contactListview.setClickable(true);
+        mBinding.contactListview.setEnabled(true);
 
-        new ExecuteTasktWO(pageNumber, limit).execute();
+        if(CheckInternet.isInternetConnected(getActivity())) {
+
+            new ExecuteTasktWO(pageNumber, limit).execute();
+        }else
+        {
+            connectionDetector.showToast(getActivity(), R.string.NO_INTERNET_CONNECTION);
+        }
+
         setup(groupData);
     }
 
@@ -113,19 +140,29 @@ public class EditGroupFragment extends BaseFragment {
         mBinding.txtDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                mBinding.txtDelete.setEnabled(false);
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 builder.setMessage("Are you sure you want to delete this group?")
                         .setCancelable(false)
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                new deleteGroupTask().execute();
+
+                                if(CheckInternet.isInternetConnected(context)) {
+
+                                    new deleteGroupTask().execute();
+                                }else
+                                {
+                                    connectionDetector.showToast(getActivity(), R.string.NO_INTERNET_CONNECTION);
+                                }
+
+                                mBinding.txtDelete.setEnabled(true);
                             }
                         })
                         .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 //  Action for 'NO' Button
                                 dialog.cancel();
+                                mBinding.txtDelete.setEnabled(true);
                             }
                         });
 
@@ -140,7 +177,16 @@ public class EditGroupFragment extends BaseFragment {
         mBinding.txtBackgruondColor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mBinding.spinner1.performClick();
+                hideKeyboard();
+
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        //Do something after 100ms
+                        mBinding.spinner1.performClick();
+                    }
+                }, 500);
 
             }
         });
@@ -221,19 +267,25 @@ public class EditGroupFragment extends BaseFragment {
         ((DashboardNewActivity) context).mBinding.header.txtTitleRight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Utils.checkInternetConnection(getActivity())) {
-                    if (TextUtils.isEmpty(mBinding.edName.getText().toString().trim())) {
-                        mBinding.edName.setError("Please provide groupname!");
 
-                    } else if (mBinding.txtBackgruondColor.getText().toString().equalsIgnoreCase("Choose a color")) {
-                        mBinding.txtBackgruondColor.setError("Please select color");
-                    } else {
+
+                if (TextUtils.isEmpty(mBinding.edName.getText().toString().trim())) {
+                    mBinding.edName.setError("Please provide groupname!");
+
+                } else if (mBinding.txtBackgruondColor.getText().toString().equalsIgnoreCase("Choose a color")) {
+                    mBinding.txtBackgruondColor.setError("Please select color");
+                } else {
+
+                    if(CheckInternet.isInternetConnected(context)) {
+
                         new updateTask().execute();
+                    }else
+                    {
+                        connectionDetector.showToast(getActivity(), R.string.NO_INTERNET_CONNECTION);
                     }
 
-                } else {
-                    Toast.makeText(getActivity(), getResources().getString(R.string.NO_INTERNET_CONNECTION), Toast.LENGTH_SHORT).show();
                 }
+
             }
         });
         ((DashboardNewActivity) context).mBinding.header.txtTitleLeft.setOnClickListener(new View.OnClickListener() {
@@ -245,9 +297,10 @@ public class EditGroupFragment extends BaseFragment {
 
 
         adapter1 = new EditGroupAdapter(getActivity(), groupList, EditGroupFragment.class);
+        adapter1.setOnClickDeleteContactListener(onClickDeleteContactListener);
         mBinding.contactListview.setAdapter(adapter1);
 
-        mBinding.contactListview.setOnScrollListener(new AbsListView.OnScrollListener() {
+       /* mBinding.contactListview.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
                 if (mBinding.contactListview.getLastVisiblePosition() == (adapter1.getCount() - 1)) {
@@ -267,7 +320,7 @@ public class EditGroupFragment extends BaseFragment {
 
             }
         });
-
+*/
 
     }
 
@@ -327,6 +380,72 @@ public class EditGroupFragment extends BaseFragment {
                 } else {
 
                     Toast.makeText(getActivity(), "Group updated successfully!", Toast.LENGTH_SHORT).show();
+                    WebService.dismissProgress();
+                    id_list.clear();
+                    for(int i=0;i<groupList.size();i++)
+                    {
+                        if(groupList.get(i).isSelected==true)
+                        {
+                            id_list.add(groupList.get(i).id);
+                        }
+                    }
+
+                    if(CheckInternet.isInternetConnected(context)) {
+
+                        new deleteGroupContactTask().execute();
+                    }else
+                    {
+                        connectionDetector.showToast(getActivity(), R.string.NO_INTERNET_CONNECTION);
+                    }
+
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    public class deleteGroupContactTask extends AsyncTask<String, Integer, String> {
+
+        private String res;
+        private String edName, background;
+        private String id;
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            WebService.showProgress(getActivity());
+
+            edName = mBinding.edName.getText().toString();
+            this.id = groupData.id;
+            this.background = mBinding.txtBackgruondColor.getText().toString();
+
+            Utils.groupName = edName;
+            Utils.groupColor = background;
+
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            res = WebService.deleteGroupContact(id_list, id,WebService.DELETE_CONTACT_FROM_GROUP , Pref.getValue(getActivity(), Constants.TOKEN, ""));
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            // WebService.dismissProgress();
+            try {
+                JSONObject jsonObject = new JSONObject(res);
+                String status = jsonObject.getString("status");
+                if (status.equals("200")) {
+                    Toast.makeText(getActivity(), "Contacts removed from group successfully!", Toast.LENGTH_SHORT).show();
+                    getActivity().getSupportFragmentManager().popBackStack();
+                    WebService.dismissProgress();
+
+                } else {
+
                     getActivity().getSupportFragmentManager().popBackStack();
                     WebService.dismissProgress();
 
@@ -336,7 +455,6 @@ public class EditGroupFragment extends BaseFragment {
             }
         }
     }
-
     public class deleteGroupTask extends AsyncTask<String, Integer, String> {
 
         private String res;
@@ -366,7 +484,6 @@ public class EditGroupFragment extends BaseFragment {
                 if (jsonObject.getString("status").equals("400")) {
 
                 } else {
-
                     Toast.makeText(getActivity(), "Group deleted successfully!", Toast.LENGTH_SHORT).show();
                     getActivity().getSupportFragmentManager().popBackStack();
                     getActivity().getSupportFragmentManager().popBackStack();
@@ -394,11 +511,10 @@ public class EditGroupFragment extends BaseFragment {
             super.onPreExecute();
             WebService.showProgress(getActivity());
         }
-
         @Override
         protected String doInBackground(String... params) {
             String res = "";
-            res = WebService.GetData1(WebService.GROUP + "/" + groupData.id + "/? withContacts=" + 1 + "& page=" + index + "&perpage=" + length + "&sortfield=fname" + "&sortdir=asc", Pref.getValue(getActivity(), Constants.TOKEN, ""));
+            res = WebService.GetData1(WebService.GROUP + "/" + groupData.id +"/contacts", Pref.getValue(getActivity(), Constants.TOKEN, ""));
             return res;
         }
 
@@ -408,11 +524,12 @@ public class EditGroupFragment extends BaseFragment {
             Log.e("my_result", result + "----");
             WebService.dismissProgress();
             try {
-                JSONObject json2;
-                JSONObject json1 = new JSONObject(result);
-                json2 = json1.optJSONObject("data");
-                JSONObject contectObject = json2.getJSONObject("contacts");
-                JSONArray jsonArray = contectObject.getJSONArray("data");
+                String json = result.replaceAll("\\\\", "");
+                String json1 = json.substring(1,json.length()-1);
+                JSONArray jsonArray = new JSONArray(json1);
+               /*json2 = json1.optJSONObject("data");
+               JSONObject contectObject = json2.getJSONObject("contacts");
+               JSONArray jsonArray = contectObject.getJSONArray("data");*/
                 if (jsonArray.length() == 0) {
                     isHavingData = false;
 

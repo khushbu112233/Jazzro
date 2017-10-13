@@ -19,9 +19,18 @@ android {
         applicationId "com.jlouistechnology.Jazzro"
         minSdkVersion 19
         targetSdkVersion 22
-        versionCode 2
-        versionName "1.1"
+        versionCode 3
+        versionName "1.2"
         multiDexEnabled true
+    }
+    signingConfigs {
+        config {
+            storeFile file("/home/aipxperts-ubuntu-01/Khushbu/Jazzrosrc_new/jazzro-android/keystore.jks")
+            storePassword 'android'
+            keyAlias 'jazzro'
+            keyPassword 'android'
+        }
+
     }
     buildTypes {
         release {
@@ -43,7 +52,7 @@ android {
     dexOptions {
         javaMaxHeapSize "4g"
     }
-   /* splits {
+    /*splits {
         abi {
             enable true
             reset()
@@ -108,7 +117,7 @@ dependencies {
     compile 'com.squareup.retrofit2:converter-gson:2.0.2'
     compile 'com.baoyz.swipemenulistview:library:1.3.0'
     compile project(':sectionIndexerlibrary')
-    compile('com.crashlytics.sdk.android:crashlytics:2.6.7@aar') {
+    compile('com.crashlytics.sdk.android:crashlytics:2.7.0@aar') {
         transitive = true;
     }
 }

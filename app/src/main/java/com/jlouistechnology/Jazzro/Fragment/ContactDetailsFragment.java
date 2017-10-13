@@ -1,22 +1,17 @@
 package com.jlouistechnology.Jazzro.Fragment;
 
-import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
@@ -25,32 +20,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.util.Util;
+import com.jlouistechnology.Jazzro.Helper.CheckInternet;
+import com.jlouistechnology.Jazzro.Helper.ConnectionDetector;
 import com.jlouistechnology.Jazzro.Helper.Constants;
 import com.jlouistechnology.Jazzro.Helper.FontCustom;
 import com.jlouistechnology.Jazzro.Helper.Pref;
 import com.jlouistechnology.Jazzro.Helper.Utils;
 import com.jlouistechnology.Jazzro.Jazzro.DashboardActivity;
-import com.jlouistechnology.Jazzro.Jazzro.MainActivity;
 import com.jlouistechnology.Jazzro.R;
 import com.jlouistechnology.Jazzro.Webservice.WebService;
-import com.squareup.picasso.Picasso;
 
 import org.json.JSONObject;
 
-import java.text.DateFormat;
 import java.text.DateFormatSymbols;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
 
 import static com.jlouistechnology.Jazzro.Jazzro.DashboardActivity.img_right_header;
 
@@ -65,12 +52,14 @@ public class ContactDetailsFragment extends Fragment {
     private String jsonString = "";
     TextView txt_call,txt_msg,txt_email_new,txt_delete;
     View rootView;
+    ConnectionDetector connectionDetector;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.contact_list_new_layout, container, false);
         ((DashboardActivity) getActivity()).isHideLogout(false);
         context = getActivity();
+        connectionDetector = new ConnectionDetector(context);
         /**
          * initial component
          */
@@ -90,6 +79,7 @@ public class ContactDetailsFragment extends Fragment {
         txt_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                txt_delete.setEnabled(false);
                 openDeleteDialog();
 
             }
@@ -135,7 +125,13 @@ public class ContactDetailsFragment extends Fragment {
             });
 
         } else {
-            new ExecuteTask().execute();
+            if(CheckInternet.isInternetConnected(context)) {
+
+                new ExecuteTask().execute();
+            }else {
+                connectionDetector.showToast(getActivity(), R.string.NO_INTERNET_CONNECTION);
+            }
+
             img_right_header.setVisibility(View.GONE);
 
         }
@@ -202,14 +198,25 @@ public class ContactDetailsFragment extends Fragment {
                 .setCancelable(false)
                 .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        new ExecuteTask_delete().execute();
+
+                        if(CheckInternet.isInternetConnected(context)) {
+
+                            new ExecuteTask_delete().execute();
+                        }else
+                        {
+                            connectionDetector.showToast(getActivity(), R.string.NO_INTERNET_CONNECTION);
+                        }
                         Pref.srtIsDeleteContact(getActivity(), true);
+
+                        txt_delete.setEnabled(true);
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         //  Action for 'NO' Button
                         dialog.cancel();
+
+                        txt_delete.setEnabled(true);
                     }
                 });
 

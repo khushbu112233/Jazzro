@@ -18,6 +18,8 @@ import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.Toast;
 
+import com.jlouistechnology.Jazzro.Helper.CheckInternet;
+import com.jlouistechnology.Jazzro.Helper.ConnectionDetector;
 import com.jlouistechnology.Jazzro.Helper.Constants;
 import com.jlouistechnology.Jazzro.Helper.DatabaseHelper;
 import com.jlouistechnology.Jazzro.Helper.Pref;
@@ -40,6 +42,7 @@ public class SettingFragment extends BaseFragment {
 
     DatabaseHelper dh;
     int is_exit = 0;
+    ConnectionDetector connectionDetector;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -48,8 +51,9 @@ public class SettingFragment extends BaseFragment {
 
 
         context = getActivity();
-
+        connectionDetector = new ConnectionDetector(context);
         dh = new DatabaseHelper(context);
+
         dh.open();
         Cursor c = dh.get_sync(Pref.getValue(context, Constants.PREF_PROFILE_EMAIL, ""));
         c.moveToFirst();
@@ -116,24 +120,26 @@ public class SettingFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
 
-                Toast.makeText(context, R.string.Sync_starts_in_background, Toast.LENGTH_LONG).show();
-                //   ((DashboardNewActivity)context).mBinding.header.progressBarSync.setVisibility(View.VISIBLE);
-                ((DashboardNewActivity) context).mBinding.header.progressBarSync.setImageResource(R.drawable.my_progress_interminate1);
+                if(CheckInternet.isInternetConnected(mContext)) {
+                    Toast.makeText(context, R.string.Sync_starts_in_background, Toast.LENGTH_LONG).show();
+                    //   ((DashboardNewActivity)context).mBinding.header.progressBarSync.setVisibility(View.VISIBLE);
+                    ((DashboardNewActivity) context).mBinding.header.progressBarSync.setImageResource(R.drawable.my_progress_interminate1);
 
-                Log.e("s", "first" + System.currentTimeMillis());
-                if (Pref.getValue(context, "first_login", "").equals("1")) {
+                    Log.e("s", "first" + System.currentTimeMillis());
+                    if (Pref.getValue(context, "first_login", "").equals("1")) {
+                        Intent intent = new Intent(context, GetallPhoneContact_auto_sync.class);
+                        context.startService(intent);
 
+                    } else {
+                        Intent intent = new Intent(context, GetallPhoneContact_auto_sync_from_middle.class);
+                        context.startService(intent);
 
-                    Intent intent = new Intent(context, GetallPhoneContact_auto_sync.class);
-                    context.startService(intent);
-
-
-                } else {
-                    Intent intent = new Intent(context, GetallPhoneContact_auto_sync_from_middle.class);
-                    context.startService(intent);
-
-                    //((DashboardActivity) getActivity()).getAllContacts(getActivity());
-                    //new LoadData().execute();
+                        //((DashboardActivity) getActivity()).getAllContacts(getActivity());
+                        //new LoadData().execute();
+                    }
+                }else
+                {
+                    connectionDetector.showToast(getActivity(), R.string.NO_INTERNET_CONNECTION);
                 }
             }
         });
@@ -141,6 +147,7 @@ public class SettingFragment extends BaseFragment {
         mBinding.llLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mBinding.llLogout.setEnabled(false);
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 builder.setMessage("Are you sure you want to logout ?")
                         .setCancelable(false)
@@ -155,12 +162,14 @@ public class SettingFragment extends BaseFragment {
                                 startActivity(intent);
                                 ((FragmentActivity) context).finish();
                                 Pref.deleteAll(context);
+                                mBinding.llLogout.setEnabled(true);
                             }
                         })
                         .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 //  Action for 'NO' Button
                                 dialog.cancel();
+                                mBinding.llLogout.setEnabled(true);
                             }
                         });
 

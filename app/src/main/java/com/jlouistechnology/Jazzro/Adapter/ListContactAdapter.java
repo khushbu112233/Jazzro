@@ -25,7 +25,6 @@ import com.jlouistechnology.Jazzro.databinding.ListContactItemLayoutBinding;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Created by aipxperts on 9/12/16.
@@ -33,10 +32,6 @@ import java.util.HashMap;
 public class ListContactAdapter extends BaseAdapter {
     Context context;
     public ArrayList<Contact> list = new ArrayList<>();
-
-    HashMap<String, String> map;
-    String acc_no;
-    private ArrayList<Contact> myList = new ArrayList<>();
     ArrayList<Contact> copyList = new ArrayList<>();
     LayoutInflater inflater;
     Class fragment;
@@ -49,13 +44,6 @@ public class ListContactAdapter extends BaseAdapter {
 
         inflater = (LayoutInflater) context.
                 getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-    }
-
-    public void updateCpyArraylist(ArrayList<Contact> list2) {
-
-        myList = list2;
-        copyList = list2;
 
     }
 
@@ -72,7 +60,7 @@ public class ListContactAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
-        list.get(position).setFname(list.get(position).getFname().toUpperCase());
+      //  list.get(position).setFname(list.get(position).getFname().toUpperCase());
         return list.get(position);
     }
 
@@ -113,13 +101,21 @@ public class ListContactAdapter extends BaseAdapter {
         } else {
             binding.ivPluse.setVisibility(View.VISIBLE);
             binding.llGroupColor.setVisibility(View.GONE);
+            binding.ivPluse.setTextColor(Color.parseColor(Pref.getValue(context,"add_selected_group_color","")));
+            binding.lnMainAlluserContact.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
+                }
+            });
         }
 
         if (list.get(position).isSelected) {
-            binding.ivPluse.setImageResource(R.mipmap.minus_contact);
+            binding.ivPluse.setText("−");
+            binding.ivPluse.setTextSize(31);
         } else {
-            binding.ivPluse.setImageResource(R.mipmap.add_contact_add);
+            binding.ivPluse.setText("+");
+            binding.ivPluse.setTextSize(31);
         }
 
         binding.ivPluse.setOnClickListener(new View.OnClickListener() {
@@ -137,7 +133,7 @@ public class ListContactAdapter extends BaseAdapter {
         if (list.get(position).getGroup_list().size() > 0) {
 
 
-            Log.e("finalColorList", "" + finalColorList);
+            Log.e("finalColorList", "" + finalColorList.size());
             for (int i = 0; i < list.get(position).getGroup_list().size(); i++) {
 
                 for (int j = 0; j < finalColorList.size(); j++) {
@@ -157,6 +153,7 @@ public class ListContactAdapter extends BaseAdapter {
                 {*/
                         drawable.setColor(Color.parseColor(finalColorList.get(j).color));
                         //}
+
                     }
                 }
 

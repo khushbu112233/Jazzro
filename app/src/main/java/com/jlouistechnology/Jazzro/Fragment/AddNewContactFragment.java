@@ -4,7 +4,6 @@ import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.databinding.DataBindingUtil;
@@ -16,7 +15,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -36,6 +34,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.jlouistechnology.Jazzro.Adapter.SelectedGroupDetailListAdapter;
+import com.jlouistechnology.Jazzro.Helper.CheckInternet;
 import com.jlouistechnology.Jazzro.Helper.ConnectionDetector;
 import com.jlouistechnology.Jazzro.Helper.Constants;
 import com.jlouistechnology.Jazzro.Helper.CountryToPhonePrefix;
@@ -86,7 +85,7 @@ public class AddNewContactFragment extends Fragment {
     ArrayList<String> selectedGroup_color = new ArrayList<>();
     String firstName, lastName, email, phone;
     int check_Valid_or_not = 0;
-
+    ConnectionDetector connectionDetector;
     private String countryCode = "";
     private String updateID = "";
     ArrayList<String> group_selected_id = new ArrayList<>();
@@ -100,6 +99,7 @@ public class AddNewContactFragment extends Fragment {
 
         rootView = mBinding.getRoot();
         context = getActivity();
+        connectionDetector = new ConnectionDetector(getActivity());
 
         /*SharedPreferences preferences = context.getSharedPreferences("selectedGroud", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
@@ -151,6 +151,7 @@ public class AddNewContactFragment extends Fragment {
         mBinding.llGroups.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Utils.hideKeyboard(context);
                 Gson gson = new Gson();
                 String json = gson.toJson(selectedGroup_label);
                 Pref.setValue(context, "SelectedGroupList", json);
@@ -337,10 +338,12 @@ public class AddNewContactFragment extends Fragment {
             Pref.setValue(context, "email1_add", email);
         }
 
-        if (WebService.isNetworkAvailable(getActivity())) {
+        if(CheckInternet.isInternetConnected(context)) {
+
             new ExecuteTask().execute();
         } else {
-            Toast.makeText(getActivity(), getResources().getString(R.string.NO_INTERNET_CONNECTION), Toast.LENGTH_LONG).show();
+            connectionDetector.showToast(getActivity(), R.string.NO_INTERNET_CONNECTION);
+
         }
     }
 
@@ -700,7 +703,7 @@ public class AddNewContactFragment extends Fragment {
         @Override
         protected String doInBackground(String... params) {
 
-            String res = WebService.PostData2(group_selected_id, Pref.getValue(context, "updateID_add", ""), Pref.getValue(context, "firstName_add", ""), Pref.getValue(context, "lastName_add", ""), Pref.getValue(context, "company_name_add", ""), Pref.getValue(context, "phone1_add", ""), Pref.getValue(context, "email1_add", ""),"","","","", WebService.SINGLE_CONTACT, Pref.getValue(context, Constants.TOKEN, ""));
+            String res = WebService.PostData2(group_selected_id,encodedString, Pref.getValue(context, "updateID_add", ""), Pref.getValue(context, "firstName_add", ""), Pref.getValue(context, "lastName_add", ""), Pref.getValue(context, "company_name_add", ""), Pref.getValue(context, "phone1_add", ""), Pref.getValue(context, "email1_add", ""),"","","","", WebService.SINGLE_CONTACT, Pref.getValue(context, Constants.TOKEN, ""));
             Log.d("nnn", " Response : " + res);
             return res;
         }
